@@ -38,7 +38,7 @@ export const deleteExpiredOTPs = async () => {
 
 // Register User
 export const register = catchAsyncError(async (req, res, next) => {
-  const { fname, lname, email, uname, password, confirmPassword } = req.body;
+  let { fname, lname, email, uname, password, confirmPassword } = req.body;
 
   // Input Validation
   if (!fname) {
