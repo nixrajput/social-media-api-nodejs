@@ -20,9 +20,54 @@ An open-source RESTful API developed using NodeJS, ExpressJS and MongoDB helps y
 - Like/Unlike Comment
 - Delete Comment
 
+## Usage
+
+- Clone the repository
+
+```bash
+git clone https://github.com/nixrajput/social-media-api-nodejs.git
+```
+
+- Install required modules
+  
+```bash
+npm install
+```
+
+- Create a new directory `config` in `src` directory
+- Create a new file `config.env` in `config` directory
+- Add following VARIABLES in `config.env` or in production Environment Variables
+  
+```env
+PORT = YOUR PORT
+
+MONGO_URI = 'YOUR MONGO-DB URI'
+DB_NAME = 'YOUR MONGO-DB DATABASE NAME'
+
+NODE_ENV = 'development'
+
+JWT_SECRET = 'YOUR SECRET'
+JWT_EXPIRES_IN = 7d
+
+SMTP_FROM = 'Test <noreply@yourcompany.com>'
+
+SENDGRID_API_KEY = 'YOUR SENDGRID API KEY'
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME = 'YOUR CLOUDINARY CLOUD NAME'
+CLOUDINARY_API_KEY = 'YOUR CLOUDINARY API KEY'
+CLOUDINARY_API_SECRET = 'YOUR CLOUDINARY API SECRET'
+```
+
+- Run the server
+
+```bash
+npm run dev
+```
+
 ## Documentation
 
-[Docs](https://rapidapi.com/nixlab-technologies-nixlab-technologies-default/api/social-media5)
+[Link](https://rapidapi.com/nixlab-technologies-nixlab-technologies-default/api/social-media5)
 
 ## Connect With Me
 
