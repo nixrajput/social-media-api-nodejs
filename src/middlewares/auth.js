@@ -1,9 +1,12 @@
 import jwt from "jsonwebtoken";
 import ErrorHandler from "../helpers/errorHandler.js";
 import catchAsyncError from "../helpers/catchAsyncError.js";
-import User from "../modules/user/models/user.js";
+import models from "../models/index.js";
+import utility from "../utils/utility.js";
 
-export const isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
+const authMiddleware = {};
+
+authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const bearerHeader = req.headers.authorization;
 
   if (!bearerHeader) {
@@ -19,13 +22,19 @@ export const isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
 
   const userData = jwt.verify(token, process.env.JWT_SECRET);
 
-  req.user = await User.findById(userData.id);
+  req.user = await models.User.findById(userData.id);
+
+  const message = await utility.checkUserAccountStatus(req.user.accountStatus);
+
+  if (message) {
+    return next(new ErrorHandler(message, 404));
+  }
 
   next();
 });
 
 // AUthorize Roles
-export function authorizeRoles(...roles) {
+authMiddleware.authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
@@ -35,4 +44,6 @@ export function authorizeRoles(...roles) {
 
     next();
   };
-}
+};
+
+export default authMiddleware;

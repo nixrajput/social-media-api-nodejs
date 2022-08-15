@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const loginDetailsSchema = new mongoose.Schema({
+const deviceInfoSchema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
@@ -20,6 +20,6 @@ const loginDetailsSchema = new mongoose.Schema({
   },
 });
 
-const LoginDetails = mongoose.model("LoginDetails", loginDetailsSchema);
+const DeviceInfo = mongoose.model("DeviceInfo", deviceInfoSchema);
 
-export default LoginDetails;
+export default DeviceInfo;

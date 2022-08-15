@@ -5,7 +5,7 @@ import compression from "compression";
 import cors from "cors";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
-import { deleteExpiredOTPs } from "./modules/user/controllers/index.js";
+import utility from "./utils/utility.js";
 
 export const runApp = () => {
   const app = express();
@@ -29,7 +29,7 @@ export const runApp = () => {
   // Schedule a task
   cron.schedule("59 23 * * *", () => {
     console.log("[cron]: task running every day at 11:59 PM");
-    deleteExpiredOTPs();
+    utility.deleteExpiredOTPs();
   });
 
   // Index Route
