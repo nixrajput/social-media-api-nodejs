@@ -7,7 +7,7 @@ const authorizeRoles = authMiddleware.authorizeRoles;
 
 const adminRouter = Router();
 
-// Admin Routes
+// Admin Routes  --------------------------------------------------------------------
 
 adminRouter
   .route("/admin/users")
@@ -52,6 +52,16 @@ adminRouter
     isAuthenticatedUser,
     authorizeRoles("admin"),
     adminController.updateAccountStatus
+  );
+
+/// POSTS
+
+adminRouter
+  .route("/admin/get-posts")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getAllPosts
   );
 
 export default adminRouter;

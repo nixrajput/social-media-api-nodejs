@@ -70,10 +70,20 @@ userRouter
   .route("/search-user")
   .get(isAuthenticatedUser, userController.searchUser);
 
-// userRouter.route("/get-random-users").get(isAuthenticatedUser, getRandomUsers);
+userRouter
+  .route("/get-recommend-users")
+  .get(isAuthenticatedUser, userController.getRecommendedUsers);
 
-// userRouter.route("/save-login-info").post(isAuthenticatedUser, saveLoginInfo);
+userRouter
+  .route("/save-device-info")
+  .post(isAuthenticatedUser, userController.saveDeviceInfo);
 
-// userRouter.route("/get-login-info").get(isAuthenticatedUser, getLoginInfo);
+userRouter
+  .route("/get-device-info")
+  .get(isAuthenticatedUser, userController.getUserDeviceInfo);
+
+userRouter
+  .route("/delete-device-info")
+  .delete(isAuthenticatedUser, userController.deleteDeviceInfo);
 
 export default userRouter;

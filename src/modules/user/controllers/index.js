@@ -13,6 +13,10 @@ import changeUsername from "./profile/changeUsername.js";
 import checkUsernameAvailable from "./check-username/checkUsernameAvailable.js";
 import deleteProfile from "./profile/deleteProfile.js";
 import searchUser from "./user/searchUser.js";
+import getRecommendedUsers from "./recommend-users/getRecommendedUsers.js";
+import saveDeviceInfo from "./device-info/saveDeviceInfo.js";
+import getUserDeviceInfo from "./device-info/getUserDeviceInfo.js";
+import deleteDeviceInfo from "./device-info/deleteDeviceInfo.js";
 
 const userController = {};
 
@@ -31,5 +35,9 @@ userController.changeUsername = changeUsername;
 userController.checkUsernameAvailable = checkUsernameAvailable;
 userController.deleteProfile = deleteProfile;
 userController.searchUser = searchUser;
+userController.getRecommendedUsers = getRecommendedUsers;
+userController.saveDeviceInfo = saveDeviceInfo;
+userController.getUserDeviceInfo = getUserDeviceInfo;
+userController.deleteDeviceInfo = deleteDeviceInfo;
 
 export default userController;

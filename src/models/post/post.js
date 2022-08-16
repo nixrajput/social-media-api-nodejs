@@ -3,13 +3,6 @@ import mongoose from "mongoose";
 const postSchema = new mongoose.Schema({
   caption: String,
 
-  images: [
-    {
-      public_id: String,
-      url: String,
-    },
-  ],
-
   mediaFiles: [
     {
       link: {
@@ -41,7 +34,7 @@ const postSchema = new mongoose.Schema({
 
   postStatus: {
     type: String,
-    enum: ["active", "deleted", "drafted"],
+    enum: ["active", "deleted", "reported", "drafted"],
     default: "active",
   },
 

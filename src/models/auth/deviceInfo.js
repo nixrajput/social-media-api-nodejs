@@ -6,13 +6,21 @@ const deviceInfoSchema = new mongoose.Schema({
     ref: "User",
   },
 
-  devices: [
-    {
-      deviceInfo: Object,
-      locationInfo: Object,
-      lastActive: Date,
-    },
-  ],
+  deviceId: {
+    type: String,
+    required: true,
+  },
+
+  deviceInfo: Object,
+
+  locationInfo: Object,
+
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+
+  lastActive: Date,
 
   createdAt: {
     type: Date,

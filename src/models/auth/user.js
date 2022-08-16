@@ -130,6 +130,12 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 
+  loggedInDevices: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "DeviceInfo",
+    },
+  ],
   lastActive: Date,
 
   createdAt: {
