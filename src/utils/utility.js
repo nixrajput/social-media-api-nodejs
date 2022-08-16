@@ -2,7 +2,6 @@ import sgMail from "@sendgrid/mail";
 import optGenerator from "otp-generator";
 import models from "../models/index.js";
 import dates from "./dateFunc.js";
-import ErrorHandler from "../helpers/errorHandler.js";
 
 const utility = {};
 

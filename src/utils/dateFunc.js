@@ -13,12 +13,6 @@ const dates = {
       : NaN;
   },
 
-  // Compare two dates (could be of any type supported by the convert
-  // function above) and returns:
-  //  -1 : if a < b
-  //   0 : if a = b
-  //   1 : if a > b
-  // NaN : if a or b is an illegal date
   compare: function (a, b) {
     return isFinite((a = this.convert(a).valueOf())) &&
       isFinite((b = this.convert(b).valueOf()))
