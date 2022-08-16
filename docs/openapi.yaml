@@ -1,0 +1,683 @@
+openapi: 3.0.3
+info:
+  title: Social Media API
+  description: |-
+    An open-source RESTful API by [NixLab Technologies](https://nixlab.co.in) developed using NodeJS, ExpressJS and MongoDB to integrate backend and frontend with ease.
+
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    Some useful links:
+    - [Repository (GitHub)](https://github.com/nixrajput/social-media-api-nodejs)
+    - [API definition](https://github.com/nixrajput/social-media-api-nodejs/blob/master/openapi.yaml)
+
+  termsOfService: https://nixlab.co.in/terms
+  contact:
+    email: nixlab.in@gmail.com
+  license:
+    name: GPL 3.0
+    url: https://github.com/nixrajput/social-media-api-nodejs/blob/master/LICENSE.md
+  version: 1.0.0
+
+externalDocs:
+  description: Find out more about NixLab
+  url: https://nixlab.co.in
+
+servers:
+  - url: https://social-api.nixlab.co.in/api/v1
+
+tags:
+  - name: auth
+    description: Operations for authentication
+  - name: user
+    description: Operations for users
+  - name: admin
+    description: Operations for admins
+
+# ------------------ PATHS -------------------------------------------
+
+paths:
+  /login:
+    post:
+      tags:
+        - auth
+      summary: Login to the account
+      description: Login to account using email and password
+      operationId: userLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                  example: "password"
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "logged in successfully"
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI5NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMmNkCmE4YmYyOGJlYmI0NWY2NGI2OCIsImlhdCI6MTY2MDE5MDI4NCwiZXhwIjoxNjYwNzk1MDg0fQ.xh4bq236fJNid9IwVwRTCejYurDWl8zipwNT-DeSVbD"
+                  expiresAt:
+                    type: integer
+                    example: 1660795084
+
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "password is incorrect"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "user not found"
+
+  /register:
+    post:
+      tags:
+        - auth
+      summary: Register to create an account
+      description: Register to create an account
+      operationId: userRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fname:
+                  type: string
+                  example: "test"
+                lname:
+                  type: string
+                  example: "name"
+                email:
+                  type: string
+                  format: email
+                uname:
+                  type: string
+                  example: "username"
+                password:
+                  type: string
+                  format: password
+                  example: "password"
+                confirmPassword:
+                  type: string
+                  format: password
+                  example: "password"
+        required: true
+      responses:
+        "201":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "registered successfully"
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "email is required"
+
+  /forgot-password:
+    post:
+      tags:
+        - auth
+      summary: Send OTP for password reset
+      description: Send OTP for password reset
+      operationId: forgotPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "test@email.com"
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "otp has been sent successfully"
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "email is invalid"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "user not found"
+
+  /reset-password:
+    post:
+      tags:
+        - auth
+      summary: Reset your password using OTP
+      description: Reset your password using OTP
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otp:
+                  type: string
+                  example: "0123456"
+                newPassword:
+                  type: string
+                  example: "password"
+                confirmPassword:
+                  type: string
+                  example: "password"
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "password has been reset successfully"
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "otp is invalid"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "user not found"
+
+  /me:
+    get:
+      tags:
+        - user
+      summary: Get profile details
+      description: Get profile details of logged in user
+      operationId: getProfileDetails
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    $ref: "#/components/schemas/Profile"
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "user not found"
+
+  /upload-avatar:
+    post:
+      tags:
+        - user
+      summary: Upload profile picture
+      description: Upload profile picture
+      operationId: uploadProfilePicture
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "profile picture uploaded successfully"
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "please provide an avatar image"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "user not found"
+
+  /delete-avatar:
+    delete:
+      tags:
+        - user
+      summary: Remove profile picture
+      description: Remove profile picture
+      operationId: removeProfilePicture
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "profile picture removed successfully"
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "user not found"
+
+  /update-profile:
+    put:
+      tags:
+        - user
+      summary: Update profile details
+      description: Update profile details
+      operationId: updateProfile
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fname:
+                  type: string
+                  example: "test"
+                lname:
+                  type: string
+                  example: "name"
+                about:
+                  type: string
+                  example: "about"
+                gender:
+                  type: string
+                  example: "Male"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "profile has been updated successfully"
+        "400":
+          description: error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "user not found"
+
+# ------------------ SCHEMAS -------------------------------------------
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Profile:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: uuid
+        fname:
+          type: string
+          example: "fname"
+        lname:
+          type: string
+          example: "lname"
+        email:
+          type: string
+          format: email
+        uname:
+          type: string
+          example: "username"
+        avatar:
+          type: object
+          properties:
+            public_id:
+              type: string
+            url:
+              type: string
+        posts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Post"
+        followers:
+          type: array
+          items:
+            type: string
+        following:
+          type: array
+          items:
+            type: string
+        role:
+          type: string
+          example: user
+          enum:
+            - user
+            - admin
+        accountStatus:
+          type: string
+          example: active
+          enum:
+            - active
+            - deleted
+            - suspended
+            - deactivated
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: integer
+        token:
+          type: string
+          format: byte
+        isVerified:
+          type: boolean
+        about:
+          type: string
+        dob:
+          type: string
+          format: date
+        gender:
+          type: string
+        accountType:
+          type: string
+          example: public
+          enum:
+            - private
+            - public
+        emailVerified:
+          type: boolean
+        phoneVerified:
+          type: boolean
+        profession:
+          type: string
+      xml:
+        name: profile
+
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+        caption:
+          type: string
+        mediaFiles:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              link:
+                type: object
+                properties:
+                  public_id:
+                    type: string
+                  url:
+                    type: string
+        owner:
+          $ref: "#/components/schemas/Owner"
+        likes:
+          type: array
+          items:
+            type: string
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment"
+        postStatus:
+          type: string
+          example: active
+          enum:
+            - active
+            - deleted
+            - reported
+            - drafted
+        createdAt:
+          type: string
+          format: date-time
+      xml:
+        name: customer
+
+    Owner:
+      type: object
+      properties:
+        _id:
+          type: string
+        fname:
+          type: string
+        lname:
+          type: string
+        email:
+          type: string
+        uname:
+          type: string
+        avatar:
+          type: object
+          properties:
+            public_id:
+              type: string
+            url:
+              type: string
+        accountStatus:
+          type: string
+          example: active
+          enum:
+            - active
+            - deleted
+            - suspended
+            - deactivated
+        isVerified:
+          type: boolean
+        accountType:
+          type: string
+          example: public
+          enum:
+            - private
+            - public
+      xml:
+        name: owner
+
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+        comment:
+          type: string
+        user:
+          $ref: "#/components/schemas/Owner"
+        post:
+          type: string
+        likes:
+          type: array
+          items:
+            type: string
+
+      xml:
+        name: comment
+
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "an error occurred"

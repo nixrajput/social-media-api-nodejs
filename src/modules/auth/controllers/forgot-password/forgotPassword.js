@@ -9,9 +9,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   const { email } = req.body;
 
   if (!email) {
-    return next(
-      new ErrorHandler("please enter your email associated with account", 400)
-    );
+    return next(new ErrorHandler("email is required", 400));
   }
 
   const user = await models.User.findOne({ email });
@@ -23,7 +21,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   const message = await utility.checkUserAccountStatus(user.accountStatus);
 
   if (message) {
-    return next(new ErrorHandler(message, 404));
+    return next(new ErrorHandler(message, 400));
   }
 
   // Generating OTP
@@ -59,7 +57,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
       message: "otp has been sent successfully",
     });
   } catch (err) {
-    return next(new ErrorHandler(err.message, 500));
+    return next(new ErrorHandler(err.message, 400));
   }
 });
 

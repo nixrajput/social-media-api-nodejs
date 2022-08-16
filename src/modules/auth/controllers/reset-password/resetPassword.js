@@ -10,15 +10,15 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
   const { otp, newPassword, confirmPassword } = req.body;
 
   if (!otp) {
-    return next(new ErrorHandler("please enter OTP", 400));
+    return next(new ErrorHandler("otp is required", 400));
   }
 
   if (!newPassword) {
-    return next(new ErrorHandler("please enter new password", 400));
+    return next(new ErrorHandler("new password is required", 400));
   }
 
   if (!confirmPassword) {
-    return next(new ErrorHandler("please enter confirm password", 400));
+    return next(new ErrorHandler("confirm password is required", 400));
   }
 
   if (newPassword !== confirmPassword) {
@@ -28,11 +28,11 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
   const otpObj = await models.OTP.findOne({ otp });
 
   if (!otpObj) {
-    return next(new ErrorHandler("otp is invalid", 401));
+    return next(new ErrorHandler("otp is invalid", 400));
   }
 
   if (otpObj.isVerified === true) {
-    return next(new ErrorHandler("otp is already used", 401));
+    return next(new ErrorHandler("otp is already used", 400));
   }
 
   if (dates.compare(otpObj.expiresAt, new Date()) === 1) {
@@ -41,13 +41,13 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
     });
 
     if (!user) {
-      return next(new ErrorHandler("otp is invalid or expired", 401));
+      return next(new ErrorHandler("otp is invalid or expired", 400));
     }
 
     const message = await utility.checkUserAccountStatus(user.accountStatus);
 
     if (message) {
-      return next(new ErrorHandler(message, 404));
+      return next(new ErrorHandler(message, 400));
     }
 
     user.password = newPassword;
@@ -63,7 +63,7 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
       message: "password has been reset successfully",
     });
   } else {
-    return next(new ErrorHandler("otp is expired", 401));
+    return next(new ErrorHandler("otp is expired", 400));
   }
 });
 
