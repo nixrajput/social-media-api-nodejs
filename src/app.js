@@ -35,7 +35,10 @@ export const runApp = () => {
 
   // Index Route
   app.route("/").get(function (req, res) {
-    res.sendFile(path.join(process.cwd() + "/public/index.html"));
+    res.status(200).json({
+      success: true,
+      message: "server is running",
+    });
   });
 
   return app;

@@ -67,7 +67,7 @@ npm run dev
 
 ## Documentation
 
-[Link](https://rapidapi.com/nixlab-technologies-nixlab-technologies-default/api/social-media5)
+[Link](https://app.swaggerhub.com/apis-docs/nixrajput-apis/social-media-api/1.0.0)
 
 ## Connect With Me
 
