@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import compression from "compression";
@@ -34,7 +35,7 @@ export const runApp = () => {
 
   // Index Route
   app.route("/").get(function (req, res) {
-    res.sendFile(process.cwd() + "/public/apidoc.html");
+    res.sendFile(path.join(process.cwd() + "/public/index.html"));
   });
 
   return app;
