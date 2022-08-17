@@ -91,17 +91,28 @@ const register = catchAsyncError(async (req, res, next) => {
   // await user.generateToken();
   // await user.save();
 
-  const htmlMessage = `<p>Hello ${user.fname},</p>
-      <h2>Welcome to NixLab Technologies.</h2>
-      <p>We're glad you're here!</p>
-      <p>This is a auto-generated email. Please do not reply to this email.</p>
-      <p>Regards, <br>
-      NixLab Technologies Team</p>`;
+  const htmlMessage = `<p>Hi ${user.fname},</p>
+  <p>
+    Thank you so much for creating an account with us. We're glad you're here!
+  </p>
+  <p>
+    To learn more about our product and services, visit our website
+    <a href="https://nixlab.co.in" target="_blank">here</a>.
+  </p>
+  <p>
+    If you have any questions, feel free to contact us at
+    <a href="mailto:nixlab.in@gmail.com" target="_blank">nixlab.in@gmail.com</a>.
+  </p>
+  <p>This is a auto-generated email. Please do not reply to this email.</p>
+  <p>
+    Regards, <br />
+    NixLab Technologies Team
+  </p>`;
 
   try {
     await utility.sendEmail({
       email: user.email,
-      subject: `Welcome to NixLab Technologies`,
+      subject: `Welcome to NixLab Technologies!`,
       htmlMessage: htmlMessage,
     });
   } catch (err) {

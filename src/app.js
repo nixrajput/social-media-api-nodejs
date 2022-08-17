@@ -37,7 +37,7 @@ export const runApp = () => {
   app.route("/").get(function (req, res) {
     res.status(200).json({
       success: true,
-      message: "server is running",
+      message: "server is up and running",
     });
   });
 

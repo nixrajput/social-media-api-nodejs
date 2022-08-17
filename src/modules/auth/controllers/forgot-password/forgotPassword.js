@@ -36,14 +36,20 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
 
   await user.save();
 
-  const htmlMessage = `<p>Hello ${user.fname},</p>
-      <br><p>Your password reset OTP is: </p>
-      <br><h1>${otp}</h1><br>
-      <p>This OTP is valid for only 15 minutes.</p>
-      <p>If you have not requested this email then, please ignore it.</p>
-      <p>This is a auto-generated email. Please do not reply to this email.</p>
-      <p>Regards, <br>
-      NixLab Technologies Team</p>`;
+  const htmlMessage = `<p>Hi ${user.fname},</p>
+  <p>Your OTP for password reset is:</p>
+  <h3>${otp}</h3>
+  <p>This OTP is valid for 15 minutes & usable once.</p>
+  <p>If you have not requested this email then, please ignore it.</p>
+  <p>
+    If you have any questions, feel free to contact us at
+    <a href="mailto:nixlab.in@gmail.com" target="_blank">nixlab.in@gmail.com</a>.
+  </p>
+  <p>This is a auto-generated email. Please do not reply to this email.</p>
+  <p>
+    Regards, <br />
+    NixLab Technologies Team
+  </p>`;
 
   try {
     await utility.sendEmail({

@@ -10,24 +10,28 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const bearerHeader = req.headers.authorization;
 
   if (!bearerHeader) {
-    return next(new ErrorHandler("Auth header is missing.", 404));
+    return next(new ErrorHandler("auth parameter is missing in header", 400));
   }
 
   const bearer = bearerHeader.split(" ");
   const token = bearer[1];
 
   if (!token) {
-    return next(new ErrorHandler("Auth token not found.", 404));
+    return next(new ErrorHandler("auth token not found in header", 404));
   }
 
   const userData = jwt.verify(token, process.env.JWT_SECRET);
 
   req.user = await models.User.findById(userData.id);
 
+  if (token !== req.user.token) {
+    return next(new ErrorHandler("token is expired or invalid", 400));
+  }
+
   const message = await utility.checkUserAccountStatus(req.user.accountStatus);
 
   if (message) {
-    return next(new ErrorHandler(message, 404));
+    return next(new ErrorHandler(message, 400));
   }
 
   next();
