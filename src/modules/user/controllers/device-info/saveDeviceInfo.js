@@ -48,7 +48,7 @@ const saveDeviceInfo = catchAsyncError(async (req, res, next) => {
       locationInfo: locationInfo,
       lastActive: lastActive,
     });
-    user.loggedInDevices.push(loginDetails);
+    user.loggedInDevices.push(loginDetails._id);
     await user.save();
   }
 
