@@ -12,7 +12,6 @@ const isAuthenticatedUser = authMiddleware.isAuthenticatedUser;
 postRouter
   .route("/create-post")
   .post(
-    multerMiddleware.array("mediaFiles"),
     isAuthenticatedUser,
     postController.createNewPost
   );
