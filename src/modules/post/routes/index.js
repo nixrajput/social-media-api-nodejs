@@ -13,7 +13,15 @@ postRouter
   .route("/create-post")
   .post(
     isAuthenticatedUser,
-    postController.createNewPost
+    postController.createPost
+  );
+
+postRouter
+  .route("/create-upload-post")
+  .post(
+    multerMiddleware.array("mediaFiles"),
+    isAuthenticatedUser,
+    postController.createUploadPost
   );
 
 postRouter
