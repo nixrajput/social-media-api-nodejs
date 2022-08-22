@@ -21,7 +21,7 @@ const deletePost = catchAsyncError(async (req, res, next) => {
   }
 
   for (let i = 0; i < post.mediaFiles.length; i++) {
-    let publicId = post.mediaFiles[i].link.public_id;
+    let publicId = post.mediaFiles[i].public_id;
     let mediaType = post.mediaFiles[i].mediaType;
     if (mediaType === "image") {
       await cloudinary.v2.uploader.destroy(publicId);
