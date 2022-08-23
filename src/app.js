@@ -1,5 +1,4 @@
 import express from "express";
-import path from "path";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import compression from "compression";
@@ -7,6 +6,7 @@ import cors from "cors";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import utility from "./utils/utility.js";
+import models from "./models/index.js";
 
 export const runApp = () => {
   const app = express();
