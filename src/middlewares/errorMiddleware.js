@@ -18,13 +18,13 @@ const errorMiddleware = (err, req, res, next) => {
 
   // Wrong JWT error
   if (err.name === "jsonWebTokenError") {
-    const message = `jwt token is invalid`;
+    const message = `token is invalid`;
     err = new ErrorHandler(message, 400);
   }
 
   // JWT Expire error
   if (err.name === "TokenExpiredError") {
-    const message = `jwt token is expired`;
+    const message = `token is expired`;
     err = new ErrorHandler(message, 400);
   }
 

@@ -20,13 +20,20 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("auth token not found in header", 404));
   }
 
-  const userData = jwt.verify(token, process.env.JWT_SECRET);
 
-  req.user = await models.User.findById(userData.id);
+  /// decodedData is an object that will be used to store 
+  /// the decoded data from the token
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
-  if (token !== req.user.token) {
+  // console.log(decodedData);
+
+  const user = await models.User.findById(decodedData.id);
+
+  if (token !== user.token) {
     return next(new ErrorHandler("token is expired or invalid", 400));
   }
+
+  req.user = user;
 
   const message = await utility.checkUserAccountStatus(req.user.accountStatus);
 

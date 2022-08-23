@@ -8,24 +8,30 @@ import utility from "../../../../utils/utility.js";
 /// LOGIN USER ///
 
 const login = catchAsyncError(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { emailUname, password } = req.body;
 
-  if (!email) {
-    return next(new ErrorHandler("email is required", 400));
-  }
-
-  if (email && !validators.validateEmail(email)) {
-    return next(new ErrorHandler("email is invalid", 400));
+  if (!emailUname) {
+    return next(new ErrorHandler("email or username is required", 400));
   }
 
   if (!password) {
     return next(new ErrorHandler("password is required", 400));
   }
 
-  const user = await models.User.findOne({ email }).select("+password");
+  let user;
 
-  if (!user) {
-    return next(new ErrorHandler("email is incorrect", 400));
+  if (emailUname && validators.validateEmail(emailUname)) {
+    user = await models.User.findOne({ email: emailUname }).select("+password");
+    if (!user) {
+      return next(new ErrorHandler("email is incorrect", 400));
+    }
+  }
+  else {
+    user = await models.User.findOne({ uname: emailUname }).select("+password");
+
+    if (!user) {
+      return next(new ErrorHandler("username is incorrect", 400));
+    }
   }
 
   const isPasswordMatched = await user.matchPassword(password);
