@@ -40,9 +40,9 @@ const login = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("password is incorrect", 400));
   }
 
-  if (!user.isValid) {
-    return next(new ErrorHandler("account is not verified", 400));
-  }
+  // if (!user.isValid) {
+  //   return next(new ErrorHandler("account is not verified", 400));
+  // }
 
   const message = await utility.checkUserAccountStatus(user.accountStatus);
 
