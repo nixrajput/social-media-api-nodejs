@@ -6,7 +6,6 @@ import cors from "cors";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import utility from "./utils/utility.js";
-import models from "./models/index.js";
 
 export const runApp = () => {
   const app = express();

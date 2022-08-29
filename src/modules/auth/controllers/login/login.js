@@ -34,10 +34,14 @@ const login = catchAsyncError(async (req, res, next) => {
     }
   }
 
-  const isPasswordMatched = await user.matchPassword(password);
+  const isMatch = await user.matchPassword(password);
 
-  if (!isPasswordMatched) {
+  if (!isMatch) {
     return next(new ErrorHandler("password is incorrect", 400));
+  }
+
+  if (!user.isValid) {
+    return next(new ErrorHandler("account is not verified", 400));
   }
 
   const message = await utility.checkUserAccountStatus(user.accountStatus);

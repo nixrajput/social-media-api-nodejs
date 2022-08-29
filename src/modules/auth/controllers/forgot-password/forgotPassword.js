@@ -15,7 +15,7 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   const user = await models.User.findOne({ email });
 
   if (!user) {
-    return next(new ErrorHandler("user not found", 404));
+    return next(new ErrorHandler("email is incorrect", 404));
   }
 
   const message = await utility.checkUserAccountStatus(user.accountStatus);
@@ -42,8 +42,11 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   <p>This OTP is valid for 15 minutes & usable once.</p>
   <p>If you have not requested this email then, please ignore it.</p>
   <p>
-    If you have any questions, feel free to contact us at
+    For any queries, feel free to contact us at
     <a href="mailto:nixlab.in@gmail.com" target="_blank">nixlab.in@gmail.com</a>.
+  </p>
+  <p> If you want know more about NixLab, please visit our website 
+        <a href="https://www.nixlab.co.in" target="_blank">here</a>.
   </p>
   <p>This is a auto-generated email. Please do not reply to this email.</p>
   <p>

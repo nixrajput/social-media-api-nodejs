@@ -119,6 +119,11 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
+  isValid: {
+    type: Boolean,
+    default: false,
+  },
+
   otp: {
     type: mongoose.Types.ObjectId,
     ref: "OTP",

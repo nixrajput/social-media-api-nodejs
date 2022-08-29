@@ -9,13 +9,17 @@ const verifyEmail = catchAsyncError(async (req, res, next) => {
   const { otp } = req.body;
 
   if (!otp) {
-    return next(new ErrorHandler("please enter the otp", 400));
+    return next(new ErrorHandler("otp is required", 400));
+  }
+
+  if (otp.length !== 6) {
+    return next(new ErrorHandler("otp is invalid", 400));
   }
 
   const otpObj = await models.OTP.findOne({ otp });
 
   if (!otpObj) {
-    return next(new ErrorHandler("otp is invalid", 401));
+    return next(new ErrorHandler("otp is incorrect or invalid", 401));
   }
 
   if (otpObj.isVerified === true) {
