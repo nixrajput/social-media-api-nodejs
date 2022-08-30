@@ -45,6 +45,7 @@ const verifyAccount = catchAsyncError(async (req, res, next) => {
         if (otpObj._id.toString() === user.otp.toString()) {
             if (user.isValid === false) {
                 user.isValid = true;
+                user.emailVerified = true;
                 user.otp = undefined;
                 otpObj.isVerified = true;
 
