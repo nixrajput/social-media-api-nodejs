@@ -6,7 +6,7 @@ const errorMiddleware = (err, req, res, next) => {
 
   // Wrong MongoDB Id error
   if (err.name === "CastError") {
-    const message = `resource not found - invalid: ${err.path}`;
+    const message = `Resource not found - (invalid: ${err.path})`;
     err = new ErrorHandler(message, 400);
   }
 

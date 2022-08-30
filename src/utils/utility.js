@@ -2,6 +2,7 @@ import sgMail from "@sendgrid/mail";
 import optGenerator from "otp-generator";
 import models from "../models/index.js";
 import dates from "./dateFunc.js";
+import ResponseMessages from "../contants/responseMessages.js";
 
 const utility = {};
 
@@ -29,6 +30,7 @@ utility.deleteExpiredOTPs = async () => {
   console.log("[cron] task has deleted expired OTPs.");
 };
 
+/// Send Email
 utility.sendEmail = async (options) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -43,7 +45,7 @@ utility.sendEmail = async (options) => {
   await sgMail
     .send(msg)
     .then(() => {
-      console.log("Email sent");
+      console.log(`Email sent to ${options.email}.`);
     })
     .catch((error) => {
       console.log(error.message);
@@ -51,6 +53,7 @@ utility.sendEmail = async (options) => {
     });
 };
 
+/// Generate OTP
 utility.generateOTP = async (size = 6, expireTimeInMin = 15) => {
   const options = {
     lowerCaseAlphabets: false,
@@ -67,17 +70,18 @@ utility.generateOTP = async (size = 6, expireTimeInMin = 15) => {
   return { otp, expiresAt };
 };
 
+/// Check Account Status
 utility.checkUserAccountStatus = async (status) => {
   if (status === "deleted") {
-    return "account has been deleted";
+    return ResponseMessages.ACCOUNT_DELETED;
   }
 
   if (status === "suspended") {
-    return "account has been suspended";
+    return ResponseMessages.ACCOUNT_SUSPENDED;
   }
 
   if (status === "deactivated") {
-    return "account has been deactivated";
+    return ResponseMessages.ACCOUNT_DEACTIVATED;
   }
 };
 
