@@ -25,6 +25,25 @@ const createPost = catchAsyncError(async (req, res, next) => {
 
   await user.save();
 
+  await post.populate([
+    {
+      path: "owner",
+      model: "User",
+      select: [
+        "_id",
+        "fname",
+        "lname",
+        "email",
+        "uname",
+        "avatar",
+        "profession",
+        "accountType",
+        "accountStatus",
+        "isVerified",
+      ],
+    }
+  ]);
+
   res.status(201).json({
     success: true,
     message: "post created successfully",
