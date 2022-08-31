@@ -124,6 +124,7 @@ const createUploadPost = catchAsyncError(async (req, res, next) => {
     res.status(201).json({
         success: true,
         message: "post created successfully",
+        post,
     });
 });
 

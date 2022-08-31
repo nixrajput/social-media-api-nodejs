@@ -33,6 +33,10 @@ postRouter
   .get(isAuthenticatedUser, postController.likeUnlikePost);
 
 postRouter
+  .route('/get-post-liked-users')
+  .get(isAuthenticatedUser, postController.getLikedUsers);
+
+postRouter
   .route("/post")
   .get(isAuthenticatedUser, postController.getPostDetails)
   .delete(isAuthenticatedUser, postController.deletePost);

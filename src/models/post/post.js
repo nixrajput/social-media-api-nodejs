@@ -19,10 +19,22 @@ const postSchema = new mongoose.Schema({
 
   likes: [
     {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
+      likedBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+
+      likedAt: {
+        type: Date,
+        default: Date.now,
+      },
+    }
   ],
+
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
 
   comments: [
     {
@@ -31,9 +43,14 @@ const postSchema = new mongoose.Schema({
     },
   ],
 
+  commentsCount: {
+    type: Number,
+    default: 0,
+  },
+
   postStatus: {
     type: String,
-    enum: ["active", "deleted", "reported", "drafted"],
+    enum: ["active", "deleted", "reported", "drafted", "archived"],
     default: "active",
   },
 

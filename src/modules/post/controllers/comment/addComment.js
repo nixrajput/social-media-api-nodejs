@@ -28,6 +28,7 @@ const addComment = catchAsyncError(async (req, res, next) => {
   });
 
   post.comments.push(newComment._id);
+  post.commentsCount++;
 
   if (post.owner.toString() !== req.user._id.toString()) {
     await models.Notification.create({
@@ -44,6 +45,7 @@ const addComment = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "comment added successfully",
+    newComment,
   });
 });
 

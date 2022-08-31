@@ -89,12 +89,48 @@ const userSchema = new mongoose.Schema({
     },
   ],
 
+  newFollowers: [
+    {
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+
   following: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
   ],
+
+  newFollowings: [
+    {
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+
+  followersCount: {
+    type: Number,
+    default: 0,
+  },
+
+  followingsCount: {
+    type: Number,
+    default: 0,
+  },
 
   accountType: {
     type: String,
@@ -141,6 +177,7 @@ const userSchema = new mongoose.Schema({
       ref: "DeviceInfo",
     },
   ],
+
   lastActive: Date,
 
   createdAt: {

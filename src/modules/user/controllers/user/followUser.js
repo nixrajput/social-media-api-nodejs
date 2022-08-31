@@ -23,9 +23,11 @@ const followUser = catchAsyncError(async (req, res, next) => {
   if (user.following.includes(userToFollow._id)) {
     const indexFollowing = user.following.indexOf(userToFollow._id);
     user.following.splice(indexFollowing, 1);
+    user.followingsCount--;
 
     const indexFollower = userToFollow.followers.indexOf(user._id);
     userToFollow.followers.splice(indexFollower, 1);
+    userToFollow.followersCount--;
 
     await user.save();
     await userToFollow.save();
@@ -36,7 +38,9 @@ const followUser = catchAsyncError(async (req, res, next) => {
     });
   } else {
     user.following.push(userToFollow._id);
+    user.followingsCount++;
     userToFollow.followers.push(user._id);
+    userToFollow.followersCount++;
 
     await user.save();
     await userToFollow.save();

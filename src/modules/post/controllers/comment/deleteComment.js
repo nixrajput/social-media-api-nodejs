@@ -32,6 +32,7 @@ const deleteComment = catchAsyncError(async (req, res, next) => {
     const commentIndex = post.comments.indexOf(comment._id);
 
     post.comments.splice(commentIndex, 1);
+    post.commentsCount--;
 
     await post.save();
 

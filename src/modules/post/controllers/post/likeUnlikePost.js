@@ -15,10 +15,13 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("post not found", 404));
   }
 
-  if (post.likes.includes(req.user._id)) {
-    const index = post.likes.indexOf(req.user._id);
+  const isLiked = post.likes.find((like) => like.likedBy.toString() === req.user._id.toString());
+
+  if (isLiked) {
+    const index = post.likes.indexOf(isLiked);
 
     post.likes.splice(index, 1);
+    post.likesCount--;
 
     await post.save();
 
@@ -27,7 +30,10 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
       message: "post unliked",
     });
   } else {
-    post.likes.push(req.user._id);
+    post.likes.push({
+      likedBy: req.user._id,
+    });
+    post.likesCount++;
 
     const notification = await models.Notification.findOne({
       user: req.user._id,

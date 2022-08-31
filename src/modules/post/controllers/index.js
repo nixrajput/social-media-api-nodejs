@@ -8,6 +8,7 @@ import getComments from "./comment/getComments.js";
 import likeUnlikeComment from "./comment/likeUnlikeComment.js";
 import deleteComment from "./comment/deleteComment.js";
 import createUploadPost from "./post/createUploadPost.js";
+import getLikedUsers from "./post/getLikedUsers.js";
 
 const postController = {};
 
@@ -21,5 +22,6 @@ postController.getComments = getComments;
 postController.likeUnlikeComment = likeUnlikeComment;
 postController.deleteComment = deleteComment;
 postController.createUploadPost = createUploadPost;
+postController.getLikedUsers = getLikedUsers;
 
 export default postController;

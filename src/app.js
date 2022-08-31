@@ -6,6 +6,7 @@ import cors from "cors";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import utility from "./utils/utility.js";
+import models from "./models/index.js";
 
 export const runApp = () => {
   const app = express();
@@ -31,6 +32,51 @@ export const runApp = () => {
     console.log("[cron]: task running every day at 11:59 PM");
     utility.deleteExpiredOTPs();
   });
+
+  // (async () => {
+  //   const users = await models.User.find();
+  //   console.log(users.length);
+  //   for (let user of users) {
+  //     // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
+  //     // console.log("done");
+  //     // models.Post.db.collection("posts").updateOne(
+  //     //   { _id: post._id },
+  //     //   { $unset: { newLikes1: 0 } }
+  //     // );
+
+  //     //let postLikes = post.newLikes;
+  //     // console.log(postLikes);
+  //     // let postComments = post.comments;
+  //     // let postLikesCount = postLikes.length;
+  //     // let postCommentsCount = postComments.length;
+
+  //     // let followersCount = user.followers.length;
+  //     // let followingCount = user.following.length;
+
+  //     // user.followersCount = followersCount;
+  //     // user.followingsCount = followingCount;
+
+  //     // await user.save();
+
+  //     // for (let like of postLikes) {
+  //     //   console.log(like);
+  //     //   post.newLikes1.push({
+  //     //     likedBy: like.likedBy,
+  //     //     likedAt: like.likedAt,
+  //     //   });
+  //     // }
+  //     // let user = await models.User.findById(like.likedBy);
+  //     // user.likes.push(post._id);
+  //     // let postNewLikes = post.newLikes1;
+  //     // post.likes = postNewLikes;
+  //     // await post.save();
+
+  //     // post.likesCount = postLikesCount;
+  //     // post.commentsCount = postCommentsCount;
+  //     // await post.save();
+  //   }
+  //   console.log("operation done");
+  // })();
 
   // Index Route
   app.route("/").get(function (req, res) {
