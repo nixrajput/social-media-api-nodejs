@@ -10,7 +10,7 @@ const getComments = catchAsyncError(async (req, res, next) => {
   }
 
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 5;
+  let limit = parseInt(req.query.limit) || 10;
 
   const comments = await models.Comment.find({
     post: req.query.postId,
@@ -24,7 +24,7 @@ const getComments = catchAsyncError(async (req, res, next) => {
       "uname",
       "avatar",
       "profession",
-      "accountType",
+      "accountPrivacy",
       "accountStatus",
       "isVerified",
     ])
@@ -62,9 +62,8 @@ const getComments = catchAsyncError(async (req, res, next) => {
     hasPrevPage = true;
   }
 
-  const baseUrl = `${req.protocol}://${req.get("host")}${
-    req.originalUrl
-  }`.split("?")[0];
+  const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl
+    }`.split("?")[0];
 
   if (hasPrevPage) {
     prevPage = `${baseUrl}?page=${prevPageIndex}&limit=${limit}`;

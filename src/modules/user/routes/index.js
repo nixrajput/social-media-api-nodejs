@@ -46,13 +46,24 @@ userRouter
   .get(isAuthenticatedUser, userController.sendEmailVerificationOtp)
   .post(isAuthenticatedUser, userController.verifyEmail);
 
+
+/// Follow Operations
+
 userRouter
   .route("/follow-user")
   .get(isAuthenticatedUser, userController.followUser);
 
 userRouter
+  .route("/accept-follow-request")
+  .get(isAuthenticatedUser, userController.acceptFollowRequest);
+
+userRouter
   .route("/user-details")
   .get(isAuthenticatedUser, userController.getUserDetails);
+
+userRouter
+  .route("/get-user-posts")
+  .get(isAuthenticatedUser, userController.getUserPosts);
 
 userRouter
   .route("/get-followings")

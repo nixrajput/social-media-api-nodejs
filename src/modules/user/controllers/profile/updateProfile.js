@@ -54,8 +54,8 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     user.profession = req.body.profession;
   }
 
-  if (req.body.accountType) {
-    user.accountType = req.body.accountType;
+  if (req.body.accountPrivacy) {
+    user.accountPrivacy = req.body.accountPrivacy;
   }
 
   await user.save();

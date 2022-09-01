@@ -16,14 +16,16 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
     email: 1,
     uname: 1,
     posts: 1,
+    followersCount: 1,
+    followingsCount: 1,
     followers: 1,
-    following: 1,
     avatar: 1,
     about: 1,
     dob: 1,
     gender: 1,
     profession: 1,
-    accountType: 1,
+    website: 1,
+    accountPrivacy: 1,
     role: 1,
     accountStatus: 1,
     isVerified: 1,
@@ -34,36 +36,48 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("user not found", 404));
   }
 
-  await user.populate({
-    path: "posts",
-    model: "Post",
-    select: ["-__v"],
-    populate: [
-      {
-        path: "owner",
-        model: "User",
-        select: [
-          "_id",
-          "fname",
-          "lname",
-          "email",
-          "uname",
-          "avatar",
-          "profession",
-          "accountType",
-          "accountStatus",
-          "isVerified",
-        ],
-      },
-    ],
-    options: {
-      sort: { createdAt: -1 },
-    },
-  });
+  let followingStatus = "notFollowing";
+
+  if (user.followers.includes(req.user._id)) {
+    followingStatus = "following";
+  }
+  else {
+    const followRequest = await models.Notification.findOne({
+      user: req.user._id,
+      owner: user._id,
+      type: "followRequest",
+    });
+    if (followRequest) {
+      followingStatus = "requested";
+    }
+  }
+
+  const userDetails = {};
+
+  userDetails.id = user._id;
+  userDetails.fname = user.fname;
+  userDetails.lname = user.lname;
+  userDetails.email = user.email;
+  userDetails.uname = user.uname;
+  userDetails.followersCount = user.followersCount;
+  userDetails.followingsCount = user.followingsCount;
+  userDetails.postCount = user.posts.length;
+  userDetails.followingStatus = followingStatus;
+  userDetails.avatar = user.avatar;
+  userDetails.about = user.about;
+  userDetails.dob = user.dob;
+  userDetails.gender = user.gender;
+  userDetails.profession = user.profession;
+  userDetails.website = user.website;
+  userDetails.accountPrivacy = user.accountPrivacy;
+  userDetails.role = user.role;
+  userDetails.accountStatus = user.accountStatus;
+  userDetails.isVerified = user.isVerified;
+  userDetails.createdAt = user.createdAt;
 
   res.status(200).json({
     success: true,
-    user: user,
+    user: userDetails,
   });
 });
 

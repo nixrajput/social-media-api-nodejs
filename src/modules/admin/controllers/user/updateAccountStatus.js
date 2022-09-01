@@ -20,7 +20,7 @@ const updateAccountStatus = catchAsyncError(async (req, res, next) => {
   if (!status) {
     return next(
       new ErrorHandler(
-        "please enter a vaid status ['active', 'suspended', 'deleted', 'deactivated']",
+        "please enter a vaid status ['active', 'inactive', 'deactivated', 'suspended', 'blocked', 'deleted', 'banned', 'reported', 'pending', 'withheld', 'restricted']",
         400
       )
     );

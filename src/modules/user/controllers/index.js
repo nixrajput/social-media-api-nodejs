@@ -3,7 +3,7 @@ import changePassword from "./profile/changePassword.js";
 import updateProfile from "./profile/updateProfile.js";
 import uploadProfilePicture from "./profile-picture/uploadProfilePic.js";
 import removeProfilePicture from "./profile-picture/removeProfilePic.js";
-import followUser from "./user/followUser.js";
+import followUser from "./follow-user/followUser.js";
 import getUserDetails from "./user/getUserDetails.js";
 import getFollowers from "./followers/getFollowers.js";
 import getFollowings from "./followings/getFollowings.js";
@@ -17,6 +17,8 @@ import getRecommendedUsers from "./recommend-users/getRecommendedUsers.js";
 import saveDeviceInfo from "./device-info/saveDeviceInfo.js";
 import getUserDeviceInfo from "./device-info/getUserDeviceInfo.js";
 import deleteDeviceInfo from "./device-info/deleteDeviceInfo.js";
+import acceptFollowRequest from "./follow-user/acceptFollowRequest.js";
+import getUserPosts from "./user/getUserPosts.js";
 
 const userController = {};
 
@@ -39,5 +41,7 @@ userController.getRecommendedUsers = getRecommendedUsers;
 userController.saveDeviceInfo = saveDeviceInfo;
 userController.getUserDeviceInfo = getUserDeviceInfo;
 userController.deleteDeviceInfo = deleteDeviceInfo;
+userController.acceptFollowRequest = acceptFollowRequest;
+userController.getUserPosts = getUserPosts;
 
 export default userController;

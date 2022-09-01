@@ -21,7 +21,7 @@ const getProfileDetails = catchAsyncError(async (req, res, next) => {
             "uname",
             "avatar",
             "profession",
-            "accountType",
+            "accountPrivacy",
             "accountStatus",
             "isVerified",
           ],

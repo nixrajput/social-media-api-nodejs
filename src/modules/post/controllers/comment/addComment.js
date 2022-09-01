@@ -36,16 +36,32 @@ const addComment = catchAsyncError(async (req, res, next) => {
       user: req.user._id,
       body: "commented on your post.",
       refId: post._id,
-      type: "post",
+      type: "comment",
     });
   }
 
   await post.save();
 
+  await newComment.populate("user", [
+    "_id",
+    "fname",
+    "lname",
+    "email",
+    "uname",
+    "avatar",
+    "profession",
+    "accountType",
+    "accountStatus",
+    "isVerified",
+  ])
+    .sort({
+      createdAt: -1,
+    });
+
   res.status(200).json({
     success: true,
     message: "comment added successfully",
-    newComment,
+    comment: newComment,
   });
 });
 

@@ -64,7 +64,6 @@ const userSchema = new mongoose.Schema({
   profession: {
     type: String,
     maxlength: 100,
-    default: "user",
   },
 
   location: {
@@ -84,13 +83,6 @@ const userSchema = new mongoose.Schema({
 
   followers: [
     {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
-
-  newFollowers: [
-    {
       user: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
@@ -103,13 +95,6 @@ const userSchema = new mongoose.Schema({
   ],
 
   following: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
-
-  newFollowings: [
     {
       user: {
         type: mongoose.Schema.ObjectId,
@@ -127,12 +112,12 @@ const userSchema = new mongoose.Schema({
     default: 0,
   },
 
-  followingsCount: {
+  followingCount: {
     type: Number,
     default: 0,
   },
 
-  accountType: {
+  accountPrivacy: {
     type: String,
     enum: ["public", "private"],
     default: "public",
@@ -140,14 +125,25 @@ const userSchema = new mongoose.Schema({
 
   role: {
     type: String,
-    enum: ["user", "admin"],
+    enum: ["user", "admin", "superadmin", "moderator"],
     default: "user",
   },
 
   accountStatus: {
     type: String,
-    enum: ["active", "suspended", "deleted", "deactivated"],
+    enum: [
+      "active", "inactive", "deactivated",
+      "suspended", "blocked", "deleted",
+      "banned", "reported", "pending",
+      "withheld", "restricted",
+    ],
     default: "active",
+  },
+
+  verificationStatus: {
+    type: String,
+    enum: ["verified", "unverified", "pending", "rejected"],
+    default: "unverified",
   },
 
   isVerified: {
@@ -166,17 +162,12 @@ const userSchema = new mongoose.Schema({
   },
 
   token: String,
+
   expiresAt: Number,
 
   resetPasswordToken: String,
-  resetPasswordExpire: Date,
 
-  loggedInDevices: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "DeviceInfo",
-    },
-  ],
+  resetPasswordExpire: Date,
 
   lastActive: Date,
 

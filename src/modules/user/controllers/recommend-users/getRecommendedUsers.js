@@ -7,7 +7,7 @@ const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
 
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 10;
+  let limit = parseInt(req.query.limit) || 20;
 
   const users = await models.User.find(
     {
@@ -23,7 +23,7 @@ const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
       uname: 1,
       avatar: 1,
       profession: 1,
-      accountType: 1,
+      accountPrivacy: 1,
       accountStatus: 1,
       isVerified: 1,
       createdAt: 1,
@@ -60,9 +60,8 @@ const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
     hasPrevPage = true;
   }
 
-  const baseUrl = `${req.protocol}://${req.get("host")}${
-    req.originalUrl
-  }`.split("?")[0];
+  const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl
+    }`.split("?")[0];
 
   if (hasPrevPage) {
     prevPage = `${baseUrl}?page=${prevPageIndex}&limit=${limit}`;

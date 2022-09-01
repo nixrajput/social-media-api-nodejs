@@ -13,12 +13,10 @@ const getFollowers = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("user not found", 404));
   }
 
-  const followers = user.followers;
-
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 5;
+  let limit = parseInt(req.query.limit) || 10;
 
-  let totalFollowers = followers.length;
+  let totalFollowers = user.followers.length;
   let totalPages = Math.ceil(totalFollowers / limit);
 
   if (currentPage < 1) {
@@ -59,22 +57,32 @@ const getFollowers = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const followerData = followers.slice(skip, skip + limit);
+  await user.populate({
+    path: "followers",
+    model: "User",
+    select: ["-__v"],
+    populate: [
+      {
+        path: "user",
+        model: "User",
+        select: [
+          "_id",
+          "fname",
+          "lname",
+          "email",
+          "uname",
+          "avatar",
+          "profession",
+          "accountPrivacy",
+          "accountStatus",
+          "isVerified",
+          "createdAt",
+        ],
+      },
+    ],
+  });
 
-  const results = await models.User.find({ _id: { $in: followerData } })
-    .select({
-      _id: 1,
-      fname: 1,
-      lname: 1,
-      email: 1,
-      uname: 1,
-      avatar: 1,
-      profession: 1,
-      accountType: 1,
-      accountStatus: 1,
-      isVerified: 1,
-      createdAt: 1,
-    }).sort({ uname: 1 });
+  const results = user.followers.slice(skip, skip + limit);
 
   res.status(200).json({
     success: true,

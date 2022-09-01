@@ -54,6 +54,14 @@ adminRouter
     adminController.updateAccountStatus
   );
 
+adminRouter
+  .route("/admin/user/update-verification-status")
+  .put(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.updateVerificationStatus
+  );
+
 /// POSTS
 
 adminRouter

@@ -16,13 +16,13 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
             "uname",
             "avatar",
             "profession",
-            "accountType",
+            "accountPrivacy",
             "accountStatus",
             "isVerified",
         ])
         .sort({
             createdAt: -1,
-        });;
+        });
 
     if (!post) {
         return next(new ErrorHandler("post not found", 404));

@@ -19,7 +19,7 @@ const updateUserRole = catchAsyncError(async (req, res, next) => {
 
   if (!role) {
     return next(
-      new ErrorHandler("please enter a vaid role ['user', 'admin']", 400)
+      new ErrorHandler("please enter a vaid role ['user', 'admin', 'superadmin', 'moderator']", 400)
     );
   }
 

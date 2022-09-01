@@ -6,7 +6,7 @@ import cors from "cors";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import utility from "./utils/utility.js";
-import models from "./models/index.js";
+// import models from "./models/index.js";
 
 export const runApp = () => {
   const app = express();
@@ -39,10 +39,15 @@ export const runApp = () => {
   //   for (let user of users) {
   //     // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
   //     // console.log("done");
-  //     // models.Post.db.collection("posts").updateOne(
-  //     //   { _id: post._id },
-  //     //   { $unset: { newLikes1: 0 } }
-  //     // );
+
+  //     // user.accountPrivacy = user.accountType;
+  //     // await user.save();
+
+  //     // await models.User.updateOne({ _id: user._id }, {
+  //     //   $unset: {
+  //     //     newFollowers: 0, newFollowings: 0
+  //     //   }
+  //     // });
 
   //     //let postLikes = post.newLikes;
   //     // console.log(postLikes);
@@ -50,11 +55,35 @@ export const runApp = () => {
   //     // let postLikesCount = postLikes.length;
   //     // let postCommentsCount = postComments.length;
 
-  //     // let followersCount = user.followers.length;
-  //     // let followingCount = user.following.length;
+  //     // let newFollowers = user.followers;
+  //     // let newFollowing = user.following;
+
+  //     // if (newFollowers.length > 0) {
+  //     //   for (let newFollower of newFollowers) {
+  //     //     user.newFollowers.push({
+  //     //       user: newFollower,
+  //     //     });
+  //     //   }
+  //     // }
+
+  //     // if (newFollowing.length > 0) {
+  //     //   for (let item of newFollowing) {
+  //     //     user.newFollowings.push({
+  //     //       user: item,
+  //     //     });
+  //     //   }
+  //     // }
+
+  //     // user.followers = user.newFollowers;
+  //     // user.following = user.newFollowings;
+
+  //     //await user.save();
+
+  //     //console.log(newFollowers)
+
 
   //     // user.followersCount = followersCount;
-  //     // user.followingsCount = followingCount;
+  //     // user.newF = followingCount;
 
   //     // await user.save();
 
