@@ -103,6 +103,13 @@ utility.checkUserAccountType = async (type) => {
 };
 
 utility.getFollowingStatus = async (user, followId) => {
+
+  const isSameUser = await utility.checkIfSameUser(user, followId);
+
+  if (isSameUser) {
+    return "self";
+  }
+
   const isFollowing = user.following.find(
     (following) => following.user.toString() === followId.toString()
   );
