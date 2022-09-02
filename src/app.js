@@ -77,6 +77,9 @@ export const runApp = () => {
   //     // user.followers = user.newFollowers;
   //     // user.following = user.newFollowings;
 
+  //     // let postsCount = user.posts.length;
+  //     // user.postsCount = postsCount;
+
   //     //await user.save();
 
   //     //console.log(newFollowers)

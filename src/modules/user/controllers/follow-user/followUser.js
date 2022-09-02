@@ -25,11 +25,6 @@ const followUser = catchAsyncError(async (req, res, next) => {
     (following) => following.user.toString() === userToFollow._id.toString()
   );
 
-  // res.status(200).json({
-  //   success: true,
-  //   isFollowing: isFollowing ? true : false,
-  // });
-
   if (isFollowing) {
     const indexFollowing = user.following.indexOf(isFollowing);
     user.following.splice(indexFollowing, 1);

@@ -1,13 +1,15 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
 const getFollowings = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
     return next(new ErrorHandler("please enter user id in query params", 400));
   }
 
-  const user = await models.User.findById(req.query.id).select("following");
+  const user = await models.User.findById(req.query.id)
+    .select("following followingCount");
 
   if (!user) {
     return next(new ErrorHandler("user not found", 404));
@@ -16,7 +18,7 @@ const getFollowings = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
 
-  let totalFollowings = user.following.length;
+  let totalFollowings = user.followingCount;
   let totalPages = Math.ceil(totalFollowings / limit);
 
   if (currentPage < 1) {
@@ -57,32 +59,38 @@ const getFollowings = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  await user.populate({
-    path: "following",
-    model: "User",
-    select: ["-__v"],
-    populate: [
-      {
-        path: "user",
-        model: "User",
-        select: [
-          "_id",
-          "fname",
-          "lname",
-          "email",
-          "uname",
-          "avatar",
-          "profession",
-          "accountPrivacy",
-          "accountStatus",
-          "isVerified",
-          "createdAt",
-        ],
-      },
-    ],
-  });
+  const slicedFollowings = user.following.slice(skip, skip + limit);
 
-  const results = user.following.slice(skip, skip + limit);
+  const results = [];
+
+  for (let i = 0; i < slicedFollowings.length; i++) {
+    const following = slicedFollowings[i];
+    const followingData = await models.User.findById(following.user)
+      .select([
+        "_id", "fname", "lname", "email", "uname", "avatar", "profession",
+        "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+      ]);
+
+    const followingStatus = await utility.getFollowingStatus(req.user, followingData._id);
+
+    results.push({
+      user: {
+        _id: followingData._id,
+        fname: followingData.fname,
+        lname: followingData.lname,
+        email: followingData.email,
+        uname: followingData.uname,
+        avatar: followingData.avatar,
+        followingStatus: followingStatus,
+        profession: followingData.profession,
+        accountPrivacy: followingData.accountPrivacy,
+        accountStatus: followingData.accountStatus,
+        isVerified: followingData.isVerified,
+        createdAt: followingData.createdAt,
+      },
+      createdAt: following.createdAt,
+    });
+  }
 
   res.status(200).json({
     success: true,

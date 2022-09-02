@@ -85,4 +85,96 @@ utility.checkUserAccountStatus = async (status) => {
   }
 };
 
+utility.checkUserAccountType = async (type) => {
+  if (type === "superadmin") {
+    return ResponseMessages.ACCOUNT_SUPERADMIN;
+  }
+  if (type === "admin") {
+    return ResponseMessages.ACCOUNT_ADMIN;
+  }
+
+  if (type === "moderator") {
+    return ResponseMessages.ACCOUNT_MODERATOR;
+  }
+
+  if (type === "user") {
+    return ResponseMessages.ACCOUNT_USER;
+  }
+};
+
+utility.getFollowingStatus = async (user, followId) => {
+  const isFollowing = user.following.find(
+    (following) => following.user.toString() === followId.toString()
+  );
+
+  if (isFollowing) return "following";
+
+  const followRequest = await models.Notification.findOne({
+    user: user._id,
+    owner: followId,
+    type: "followRequest",
+  });
+
+  if (followRequest) return "requested";
+
+  return "notFollowing";
+}
+
+utility.checkIfSameUser = async (user, userId) => {
+  if (user._id.toString() === userId.toString()) {
+    return true;
+  }
+
+  return false;
+};
+
+utility.checkIfPostOwner = async (postId, user) => {
+  const post = await models.Post.findById(postId).select("owner");
+
+  if (post.owner.toString() === user._id.toString()) {
+    return true;
+  }
+
+  return false;
+};
+
+utility.checkIfPostLiked = async (postId, user) => {
+  const post = await models.Post.findById(postId).select("likes");
+  const isLiked = post.likes.find(
+    (like) => like.likedBy.toString() === user._id.toString()
+  );
+
+  if (isLiked) {
+    return true;
+  }
+
+  return false;
+};
+
+utility.getOwnerData = async (ownerId, reqUser) => {
+  const owner = await models.User.findById(ownerId)
+    .select([
+      "_id", "fname", "lname", "email", "uname", "avatar", "profession",
+      "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+    ]);
+  const ownerData = {};
+
+  const followingStatus = await utility.getFollowingStatus(reqUser, owner._id);
+
+  ownerData._id = owner._id;
+  ownerData.fname = owner.fname;
+  ownerData.lname = owner.lname;
+  ownerData.email = owner.email;
+  ownerData.uname = owner.uname;
+  ownerData.avatar = owner.avatar;
+  ownerData.profession = owner.profession;
+  ownerData.accountPrivacy = owner.accountPrivacy;
+  ownerData.accountStatus = owner.accountStatus;
+  ownerData.isVerified = owner.isVerified;
+  ownerData.createdAt = owner.createdAt;
+  ownerData.followingStatus = followingStatus;
+
+  return ownerData;
+};
+
 export default utility;

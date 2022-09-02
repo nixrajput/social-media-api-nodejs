@@ -22,6 +22,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
   const user = await models.User.findById(req.user._id);
 
   user.posts.push(post._id);
+  user.postsCount++;
 
   await user.save();
 

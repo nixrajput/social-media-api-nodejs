@@ -81,6 +81,11 @@ const userSchema = new mongoose.Schema({
     },
   ],
 
+  postsCount: {
+    type: Number,
+    default: 0,
+  },
+
   followers: [
     {
       user: {

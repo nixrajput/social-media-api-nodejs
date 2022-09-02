@@ -1,16 +1,13 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
 /// GET USER POSTS ///
 
 const getUserPosts = catchAsyncError(async (req, res, next) => {
-    const user = await models.User.findById(req.query.id).select({
-        _id: 1,
-        posts: 1,
-        accountPrivacy: 1,
-        followers: 1,
-    });
+    const user = await models.User.findById(req.query.id)
+        .select(["_id", "accountPrivacy",]);
 
     if (!user) {
         return next(new ErrorHandler("user not found", 404));
@@ -20,34 +17,35 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
     let limit = parseInt(req.query.limit) || 10;
 
     if (user.accountPrivacy === "private") {
-        if (user.followers.includes(req.user._id) || req.user._id.toString() === user._id.toString()) {
+        const followingStatus = await utility.getFollowingStatus(req.user, user._id);
+        const isSameUser = await utility.checkIfSameUser(req.user, user._id);
+        if (followingStatus === "following" || isSameUser) {
+            const posts = await models.Post.find({ owner: user._id })
+                .sort({ createdAt: -1 });
 
-            await user.populate({
-                path: "posts",
-                model: "Post",
-                select: ["-__v"],
-                populate: [
-                    {
-                        path: "owner",
-                        model: "User",
-                        select: [
-                            "_id",
-                            "fname",
-                            "lname",
-                            "email",
-                            "uname",
-                            "avatar",
-                            "profession",
-                            "accountPrivacy",
-                            "accountStatus",
-                            "isVerified",
-                            "createdAt",
-                        ],
-                    },
-                ],
-            });
+            const ownerData = await utility.getOwnerData(user._id, req.user);
 
-            let posts = user.posts;
+            const postsResults = [];
+
+            for (let i = 0; i < posts.length; i++) {
+                const post = posts[i];
+
+                const isLiked = await utility.checkIfPostLiked(post._id, req.user);
+
+                const postData = {};
+                postData._id = post._id;
+                postData.caption = post.caption;
+                postData.mediaFiles = post.mediaFiles;
+                postData.owner = ownerData;
+                postData.likesCount = post.likesCount;
+                postData.commentsCount = post.commentsCount;
+                postData.isLiked = isLiked;
+                postData.postStatus = post.postStatus;
+                postData.createdAt = post.createdAt;
+
+                postsResults.push(postData);
+            }
+
             let totalPosts = posts.length;
             let totalPages = Math.ceil(totalPosts / limit);
 
@@ -89,7 +87,7 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
                 nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
             }
 
-            const results = posts.slice(skip, skip + limit);
+            const results = postsResults.slice(skip, skip + limit);
 
             res.status(200).json({
                 success: true,
@@ -117,32 +115,32 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
             });
         }
     } else {
-        await user.populate({
-            path: "posts",
-            model: "Post",
-            select: ["-__v"],
-            populate: [
-                {
-                    path: "owner",
-                    model: "User",
-                    select: [
-                        "_id",
-                        "fname",
-                        "lname",
-                        "email",
-                        "uname",
-                        "avatar",
-                        "profession",
-                        "accountPrivacy",
-                        "accountStatus",
-                        "isVerified",
-                        "createdAt",
-                    ],
-                },
-            ],
-        });
+        const posts = await models.Post.find({ owner: user._id })
+            .sort({ createdAt: -1 });
 
-        let posts = user.posts;
+        const ownerData = await utility.getOwnerData(user._id, req.user);
+
+        const postsResults = [];
+
+        for (let i = 0; i < posts.length; i++) {
+            const post = posts[i];
+
+            const isLiked = await utility.checkIfPostLiked(post._id, req.user);
+
+            const postData = {};
+            postData._id = post._id;
+            postData.caption = post.caption;
+            postData.mediaFiles = post.mediaFiles;
+            postData.owner = ownerData;
+            postData.likesCount = post.likesCount;
+            postData.commentsCount = post.commentsCount;
+            postData.isLiked = isLiked;
+            postData.postStatus = post.postStatus;
+            postData.createdAt = post.createdAt;
+
+            postsResults.push(postData);
+        }
+
         let totalPosts = posts.length;
         let totalPages = Math.ceil(totalPosts / limit);
 
@@ -184,7 +182,7 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
             nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
         }
 
-        const results = posts.slice(skip, skip + limit);
+        const results = postsResults.slice(skip, skip + limit);
 
         res.status(200).json({
             success: true,

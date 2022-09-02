@@ -39,6 +39,7 @@ const deletePost = catchAsyncError(async (req, res, next) => {
   const index = user.posts.indexOf(req.query.id);
 
   user.posts.splice(index, 1);
+  user.postsCount--;
 
   await user.save();
 

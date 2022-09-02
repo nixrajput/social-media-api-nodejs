@@ -43,6 +43,11 @@ ResponseMessages.ACCOUNT_NOT_VERIFIED = 'Account not verified';
 ResponseMessages.ACCOUNT_ALREADY_VERIFIED = 'Account already verified';
 ResponseMessages.CANNOT_FOLLOW_YOURSELF = 'You cannot follow yourself';
 
+ResponseMessages.ACCOUNT_SUPERADMIN = 'Superadmin account';
+ResponseMessages.ACCOUNT_ADMIN = 'Admin account';
+ResponseMessages.ACCOUNT_USER = 'User account';
+ResponseMessages.ACCOUNT_MODERATOR = 'Moderator account';
+
 /// Invalid Response Messages
 ResponseMessages.INVALID_FIRST_NAME_LENGTH = 'First name must be at least 3 characters';
 ResponseMessages.INVALID_USERNAME_LENGTH = 'Username must be between 3-15 characters';
