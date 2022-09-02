@@ -10,7 +10,7 @@ const getProfileDetails = catchAsyncError(async (req, res, next) => {
       "dob", "gender", "about", "profession", "website", "location",
       "postsCount", "followersCount", "followingCount", "isValid",
       "accountPrivacy", "accountStatus", "isVerified", "verificationStatus",
-      "role", "createdAt",
+      "role", "createdAt", "emailVerified", "phone", "phoneVerified",
     ]);
 
   const profileDetails = {};
@@ -19,8 +19,11 @@ const getProfileDetails = catchAsyncError(async (req, res, next) => {
   profileDetails.fname = user.fname;
   profileDetails.lname = user.lname;
   profileDetails.email = user.email;
+  profileDetails.emailVerified = user.emailVerified;
   profileDetails.uname = user.uname;
   profileDetails.avatar = user.avatar;
+  profileDetails.phone = user.phone;
+  profileDetails.phoneVerified = user.phoneVerified;
   profileDetails.dob = user.dob;
   profileDetails.gender = user.gender;
   profileDetails.about = user.about;
