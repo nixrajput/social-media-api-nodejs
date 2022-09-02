@@ -54,7 +54,7 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
 
   const userDetails = {};
 
-  userDetails.id = user._id;
+  userDetails._id = user._id;
   userDetails.fname = user.fname;
   userDetails.lname = user.lname;
   userDetails.email = user.email;
