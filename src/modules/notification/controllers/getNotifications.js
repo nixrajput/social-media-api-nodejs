@@ -28,10 +28,11 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
     notificationData._id = notification._id;
     notificationData.owner = ownerData;
     notificationData.user = userData;
+    notificationData.refId = notification.refId;
     notificationData.body = notification.body;
-    notificationData.type = notifications.type;
+    notificationData.type = notification.type;
     notificationData.isRead = notification.isRead;
-    notificationData.createdAt = notifications.createdAt;
+    notificationData.createdAt = notification.createdAt;
 
     notificationResults.push(notificationData);
   }
