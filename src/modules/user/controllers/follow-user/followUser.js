@@ -28,7 +28,7 @@ const followUser = catchAsyncError(async (req, res, next) => {
   if (isFollowing) {
     const indexFollowing = user.following.indexOf(isFollowing);
     user.following.splice(indexFollowing, 1);
-    user.followingsCount--;
+    user.followingCount--;
 
     const isFollower = userToFollow.followers.find(
       (follower) => follower.user.toString() === user._id.toString()
@@ -72,7 +72,7 @@ const followUser = catchAsyncError(async (req, res, next) => {
       user.following.push({
         user: userToFollow._id,
       });
-      user.followingsCount++;
+      user.followingCount++;
 
       userToFollow.followers.push({
         user: user._id,

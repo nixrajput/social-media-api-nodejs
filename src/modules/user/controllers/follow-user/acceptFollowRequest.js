@@ -30,7 +30,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
     userRequested.following.push({
         user: user._id,
     });
-    userRequested.followingsCount++;
+    userRequested.followingCount++;
 
     followRequest.body = `started following you`;
     followRequest.isRead = true;
