@@ -1,6 +1,7 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
 /// GET COMMENTS ///
 
@@ -12,22 +13,7 @@ const getComments = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
 
-  const comments = await models.Comment.find({
-    post: req.query.postId,
-  })
-    .select("-__v")
-    .populate("user", [
-      "_id",
-      "fname",
-      "lname",
-      "email",
-      "uname",
-      "avatar",
-      "profession",
-      "accountPrivacy",
-      "accountStatus",
-      "isVerified",
-    ])
+  const comments = await models.Comment.find({ post: req.query.postId })
     .sort({
       createdAt: -1,
     });
@@ -73,7 +59,25 @@ const getComments = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const results = comments.slice(skip, skip + limit);
+  const slicedComments = comments.slice(skip, skip + limit);
+
+  const results = [];
+
+  for (let i = 0; i < slicedComments.length; i++) {
+    const comment = slicedComments[i];
+
+    const ownerData = await utility.getOwnerData(comment.user, req.user);
+
+    const commentData = {};
+    commentData._id = comment._id;
+    commentData.comment = comment.comment;
+    commentData.user = ownerData;
+    commentData.likesCount = comment.likesCount;
+    commentData.commentStatus = comment.commentStatus;
+    commentData.createdAt = comment.createdAt;
+
+    results.push(commentData);
+  }
 
   res.status(200).json({
     success: true,

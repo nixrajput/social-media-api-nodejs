@@ -69,29 +69,29 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
 
     for (let i = 0; i < slicedPostLikers.length; i++) {
         const postLiker = slicedPostLikers[i];
-        const followerData = await models.User.findById(postLiker.likedBy)
+        const postLikerData = await models.User.findById(postLiker.likedBy)
             .select([
                 "_id", "fname", "lname", "email", "uname", "avatar", "profession",
                 "accountPrivacy", "accountStatus", "isVerified", "createdAt",
             ]);
 
-        const followingStatus = await utility.getFollowingStatus(req.user, followerData._id);
+        const followingStatus = await utility.getFollowingStatus(req.user, postLikerData._id);
 
         results.push({
             _id: postLiker._id,
             likedBy: {
-                _id: followerData._id,
-                fname: followerData.fname,
-                lname: followerData.lname,
-                email: followerData.email,
-                uname: followerData.uname,
-                avatar: followerData.avatar,
+                _id: postLikerData._id,
+                fname: postLikerData.fname,
+                lname: postLikerData.lname,
+                email: postLikerData.email,
+                uname: postLikerData.uname,
+                avatar: postLikerData.avatar,
                 followingStatus: followingStatus,
-                profession: followerData.profession,
-                accountPrivacy: followerData.accountPrivacy,
-                accountStatus: followerData.accountStatus,
-                isVerified: followerData.isVerified,
-                createdAt: followerData.createdAt,
+                profession: postLikerData.profession,
+                accountPrivacy: postLikerData.accountPrivacy,
+                accountStatus: postLikerData.accountStatus,
+                isVerified: postLikerData.isVerified,
+                createdAt: postLikerData.createdAt,
             },
             likedAt: postLiker.likedAt,
         });

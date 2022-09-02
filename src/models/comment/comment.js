@@ -23,11 +23,29 @@ const commentSchema = new mongoose.Schema({
     },
   ],
 
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
+
+  commentStatus: {
+    type: String,
+    enum: [
+      "active", "deleted", "reported", "archived",
+      "unarhived", "withheld", "pending", "published",
+      "unpublished", "rejected", "approved", "blocked",
+      "banned", "muted", "verified", "unverified",
+      "flagged", "hidden", "removed",
+    ],
+    default: "active",
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
+
 
 const Comment = mongoose.model("Comment", commentSchema);
 
