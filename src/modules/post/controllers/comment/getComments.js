@@ -71,6 +71,7 @@ const getComments = catchAsyncError(async (req, res, next) => {
     const commentData = {};
     commentData._id = comment._id;
     commentData.comment = comment.comment;
+    commentData.post = comment.post;
     commentData.user = ownerData;
     commentData.likesCount = comment.likesCount;
     commentData.commentStatus = comment.commentStatus;
