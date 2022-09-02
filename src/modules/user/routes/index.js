@@ -54,8 +54,20 @@ userRouter
   .get(isAuthenticatedUser, userController.followUser);
 
 userRouter
+  .route("/get-follow-requests")
+  .get(isAuthenticatedUser, userController.getFollowRequests);
+
+userRouter
   .route("/accept-follow-request")
   .get(isAuthenticatedUser, userController.acceptFollowRequest);
+
+userRouter
+  .route("/cancel-follow-request")
+  .get(isAuthenticatedUser, userController.cancelFollowRequest);
+
+userRouter
+  .route("/remove-follow-request")
+  .delete(isAuthenticatedUser, userController.removeFollowRequest);
 
 userRouter
   .route("/user-details")

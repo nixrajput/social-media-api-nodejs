@@ -3,11 +3,11 @@ import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
 
-/// FOLLOW USER ///
+/// ACCEPT/REMOVE FOLLOW REQUEST ///
 
 const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
 
-    if (!req.query.id || !req.query.action) {
+    if (!req.query.id) {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
 
@@ -18,14 +18,6 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
 
     if (!followRequest) {
         return next(new ErrorHandler("follow request not found", 404));
-    }
-
-    if (req.query.action === "remove") {
-        await followRequest.remove();
-        res.status(200).json({
-            success: true,
-            message: "follow request removed",
-        });
     }
 
     const user = await models.User.findById(req.user._id);
@@ -40,6 +32,10 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
     });
     userRequested.followingsCount++;
 
+    followRequest.body = `started following you`;
+    followRequest.isRead = true;
+    followRequest.type = "followRequestAccepted";
+
     await models.Notification.create({
         owner: userRequested._id,
         user: user._id,
@@ -47,7 +43,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
         type: "followRequestAccepted",
     });
 
-    await followRequest.remove();
+    await followRequest.save();
     await user.save();
     await userRequested.save();
 

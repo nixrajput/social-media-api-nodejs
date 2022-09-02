@@ -18,7 +18,10 @@ import saveDeviceInfo from "./device-info/saveDeviceInfo.js";
 import getUserDeviceInfo from "./device-info/getUserDeviceInfo.js";
 import deleteDeviceInfo from "./device-info/deleteDeviceInfo.js";
 import acceptFollowRequest from "./follow-user/acceptFollowRequest.js";
+import cancelFollowRequest from "./follow-user/cancelFollowRequest.js";
+import removeFollowRequest from "./follow-user/removeFollowRequest.js";
 import getUserPosts from "./user/getUserPosts.js";
+import getFollowRequests from "./profile/getFollowRequests.js";
 
 const userController = {};
 
@@ -42,6 +45,9 @@ userController.saveDeviceInfo = saveDeviceInfo;
 userController.getUserDeviceInfo = getUserDeviceInfo;
 userController.deleteDeviceInfo = deleteDeviceInfo;
 userController.acceptFollowRequest = acceptFollowRequest;
+userController.cancelFollowRequest = cancelFollowRequest;
+userController.removeFollowRequest = removeFollowRequest;
 userController.getUserPosts = getUserPosts;
+userController.getFollowRequests = getFollowRequests;
 
 export default userController;
