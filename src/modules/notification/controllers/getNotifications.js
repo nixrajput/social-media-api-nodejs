@@ -1,6 +1,7 @@
 import catchAsyncError from "../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
+import utility from "../../../utils/utility.js";
 
 const getNotifications = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
@@ -13,45 +14,30 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
   let limit = parseInt(req.query.limit) || 10;
 
   const notifications = await models.Notification.find({ owner: userId })
-    .select("-__v")
-    .populate([
-      {
-        path: "owner",
-        model: "User",
-        select: [
-          "_id",
-          "fname",
-          "lname",
-          "email",
-          "uname",
-          "avatar",
-          "profession",
-          "accountPrivacy",
-          "accountStatus",
-          "isVerified",
-        ],
-      },
-      {
-        path: "user",
-        model: "User",
-        select: [
-          "_id",
-          "fname",
-          "lname",
-          "email",
-          "uname",
-          "avatar",
-          "profession",
-          "accountPrivacy",
-          "accountStatus",
-          "isVerified",
-        ],
-      },
-    ])
     .sort({ createdAt: -1 });
 
-  let totalPosts = notifications.length;
-  let totalPages = Math.ceil(totalPosts / limit);
+  const notificationResults = [];
+
+  for (let i = 0; i < notifications.length; i++) {
+    const notification = notifications[i];
+
+    const ownerData = await utility.getOwnerData(notification.owner, req.user);
+    const userData = await utility.getOwnerData(notification.user, req.user);
+
+    const notificationData = {};
+    notificationData._id = notification._id;
+    notificationData.owner = ownerData;
+    notificationData.user = userData;
+    notificationData.body = notification.body;
+    notificationData.type = notifications.type;
+    notificationData.isRead = notification.isRead;
+    notificationData.createdAt = notifications.createdAt;
+
+    notificationResults.push(notificationData);
+  }
+
+  let totalNotifications = notifications.length;
+  let totalPages = Math.ceil(totalNotifications / limit);
 
   if (currentPage < 1) {
     currentPage = 1;
@@ -91,7 +77,7 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const results = notifications.slice(skip, skip + limit);
+  const results = notificationResults.slice(skip, skip + limit);
 
   res.status(200).json({
     success: true,
