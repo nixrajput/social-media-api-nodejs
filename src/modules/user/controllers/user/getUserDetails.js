@@ -17,7 +17,7 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
     uname: 1,
     posts: 1,
     followersCount: 1,
-    followingsCount: 1,
+    followingCount: 1,
     followers: 1,
     avatar: 1,
     about: 1,
@@ -60,7 +60,7 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
   userDetails.email = user.email;
   userDetails.uname = user.uname;
   userDetails.followersCount = user.followersCount;
-  userDetails.followingsCount = user.followingsCount;
+  userDetails.followingCount = user.followingCount;
   userDetails.postCount = user.posts.length;
   userDetails.followingStatus = followingStatus;
   userDetails.avatar = user.avatar;
