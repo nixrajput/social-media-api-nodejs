@@ -74,6 +74,7 @@ const getFollowings = catchAsyncError(async (req, res, next) => {
     const followingStatus = await utility.getFollowingStatus(req.user, followingData._id);
 
     results.push({
+      _id: following._id,
       user: {
         _id: followingData._id,
         fname: followingData.fname,

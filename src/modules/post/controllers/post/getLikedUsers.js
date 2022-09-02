@@ -1,25 +1,14 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
 const getLikedUsers = catchAsyncError(async (req, res, next) => {
     if (!req.query.id) {
         return next(new ErrorHandler("please enter user id in query params", 400));
     }
 
-    const post = await models.Post.findById(req.query.id).select("likes")
-        .populate("likes.likedBy", [
-            "_id",
-            "fname",
-            "lname",
-            "email",
-            "uname",
-            "avatar",
-            "profession",
-            "accountPrivacy",
-            "accountStatus",
-            "isVerified",
-        ])
+    const post = await models.Post.findById(req.query.id).select("_id likes")
         .sort({
             createdAt: -1,
         });
@@ -74,7 +63,39 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
         nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
     }
 
-    const results = postLikes.slice(skip, skip + limit);
+    const slicedPostLikers = postLikes.slice(skip, skip + limit);
+
+    const results = [];
+
+    for (let i = 0; i < slicedPostLikers.length; i++) {
+        const postLiker = slicedPostLikers[i];
+        const followerData = await models.User.findById(postLiker.likedBy)
+            .select([
+                "_id", "fname", "lname", "email", "uname", "avatar", "profession",
+                "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+            ]);
+
+        const followingStatus = await utility.getFollowingStatus(req.user, followerData._id);
+
+        results.push({
+            _id: postLiker._id,
+            likedBy: {
+                _id: followerData._id,
+                fname: followerData.fname,
+                lname: followerData.lname,
+                email: followerData.email,
+                uname: followerData.uname,
+                avatar: followerData.avatar,
+                followingStatus: followingStatus,
+                profession: followerData.profession,
+                accountPrivacy: followerData.accountPrivacy,
+                accountStatus: followerData.accountStatus,
+                isVerified: followerData.isVerified,
+                createdAt: followerData.createdAt,
+            },
+            likedAt: postLiker.likedAt,
+        });
+    }
 
     res.status(200).json({
         success: true,

@@ -8,7 +8,7 @@ const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
 
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 20;
+  let limit = parseInt(req.query.limit) || 15;
 
   const users = await models.User.find(
     {
