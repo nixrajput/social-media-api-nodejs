@@ -1,6 +1,7 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
 /// ADD NEW COMMENT ///
 
@@ -42,26 +43,21 @@ const addComment = catchAsyncError(async (req, res, next) => {
 
   await post.save();
 
-  await newComment.populate("user", [
-    "_id",
-    "fname",
-    "lname",
-    "email",
-    "uname",
-    "avatar",
-    "profession",
-    "accountType",
-    "accountStatus",
-    "isVerified",
-  ])
-    .sort({
-      createdAt: -1,
-    });
+  const ownerData = await utility.getOwnerData(newComment.user, req.user);
+
+  const commentData = {};
+  commentData._id = newComment._id;
+  commentData.comment = newComment.comment;
+  commentData.post = newComment.post;
+  commentData.user = ownerData;
+  commentData.likesCount = newComment.likesCount;
+  commentData.commentStatus = newComment.commentStatus;
+  commentData.createdAt = newComment.createdAt;
 
   res.status(200).json({
     success: true,
     message: "comment added successfully",
-    comment: newComment,
+    comment: commentData,
   });
 });
 

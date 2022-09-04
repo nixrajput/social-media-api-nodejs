@@ -34,6 +34,10 @@ userRouter
   );
 
 userRouter
+  .route("/deactivate-account")
+  .get(isAuthenticatedUser, userController.deactivateAccount);
+
+userRouter
   .route("/delete-avatar")
   .delete(isAuthenticatedUser, userController.removeProfilePicture);
 

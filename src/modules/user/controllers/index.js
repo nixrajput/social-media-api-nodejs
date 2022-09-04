@@ -22,6 +22,7 @@ import cancelFollowRequest from "./follow-user/cancelFollowRequest.js";
 import removeFollowRequest from "./follow-user/removeFollowRequest.js";
 import getUserPosts from "./user/getUserPosts.js";
 import getFollowRequests from "./profile/getFollowRequests.js";
+import deactivateAccount from "./profile/deactivateAccount.js";
 
 const userController = {};
 
@@ -49,5 +50,6 @@ userController.cancelFollowRequest = cancelFollowRequest;
 userController.removeFollowRequest = removeFollowRequest;
 userController.getUserPosts = getUserPosts;
 userController.getFollowRequests = getFollowRequests;
+userController.deactivateAccount = deactivateAccount;
 
 export default userController;

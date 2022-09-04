@@ -21,7 +21,7 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
     const index = comment.likes.indexOf(req.user._id);
 
     comment.likes.splice(index, 1);
-
+    comment.likesCount--;
     await comment.save();
 
     res.status(200).json({
@@ -30,7 +30,7 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
     });
   } else {
     comment.likes.push(req.user._id);
-
+    comment.likesCount++;
     await comment.save();
 
     res.status(200).json({
