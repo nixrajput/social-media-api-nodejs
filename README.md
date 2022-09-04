@@ -2,7 +2,7 @@
 
 *An open-source RESTful API developed using NodeJS, ExpressJS and MongoDB helps you to integrate User Authentication and Social Media Post Management in your application with ease.*
 
-**Note: Due to significant updates and changes in database and API structure, the API is no longer compatible with the previous version. Please refer to the documentation for more details.**
+**Note: An open-source RESTful API developed using NodeJS, ExpressJS and MongoDB helps you to integrate User Authentication and Social Media Post Management in your application with ease.**
 
 **It is possible that your old version of the API may not work with the new version. In that case, you can refer to the documentation for the new version.**
 
