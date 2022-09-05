@@ -58,6 +58,14 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     user.accountPrivacy = req.body.accountPrivacy;
   }
 
+  if (req.body.website) {
+    user.website = req.body.website;
+  }
+
+  if (req.body.location) {
+    user.location = req.body.location;
+  }
+
   await user.save();
 
   res.status(200).json({

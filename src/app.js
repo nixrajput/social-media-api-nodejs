@@ -4,7 +4,7 @@ import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
 import cron from "node-cron";
-import errorMiddleware from "./middlewares/errorMiddleware.js";
+import errorMiddleware from "./middlewares/errors.js";
 import utility from "./utils/utility.js";
 // import models from "./models/index.js";
 
