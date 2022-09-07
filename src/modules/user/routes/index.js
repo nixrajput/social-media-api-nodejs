@@ -46,9 +46,14 @@ userRouter
   .post(isAuthenticatedUser, userController.changeUsername);
 
 userRouter
-  .route("/verify-email")
-  .get(isAuthenticatedUser, userController.sendEmailVerificationOtp)
-  .post(isAuthenticatedUser, userController.verifyEmail);
+  .route("/change-email")
+  .get(isAuthenticatedUser, userController.changeEmailOtp)
+  .post(isAuthenticatedUser, userController.changeEmail);
+
+userRouter
+  .route("/add-change-phone")
+  .post(isAuthenticatedUser, userController.addChangePhoneOtp)
+  .put(isAuthenticatedUser, userController.addChangePhone);
 
 
 /// Follow Operations

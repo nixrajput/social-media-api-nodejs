@@ -9,23 +9,44 @@ ResponseMessages.FIRST_NAME_REQUIRED = 'First name is required';
 ResponseMessages.LAST_NAME_REQUIRED = 'Last name is required';
 ResponseMessages.USERAME_REQUIRED = 'Username is required';
 ResponseMessages.CONFIRM_PASSWORD_REQUIRED = 'Confirm password is required';
+ResponseMessages.OLD_PASSWORD_REQUIRED = 'Old password is required';
+ResponseMessages.NEW_PASSWORD_REQUIRED = 'New password is required';
+ResponseMessages.PHONE_REQUIRED = 'Phone is required';
+ResponseMessages.COUNTRY_CODE_REQUIRED = 'Country code is required';
+ResponseMessages.OTP_REQUIRED = 'OTP is required';
+ResponseMessages.ROLE_REQUIRED = 'Role is required';
+ResponseMessages.MESSAGE_REQUIRED = 'Message is required';
+
 
 /// Incorrect Response Messages
 ResponseMessages.INCORRECT_EMAIL = 'Incorrect email';
 ResponseMessages.INCORRECT_USERNAME = 'Incorrect username';
 ResponseMessages.INCORRECT_PASSWORD = 'Incorrect password';
+ResponseMessages.INCORRECT_OTP = 'Incorrect OTP';
+ResponseMessages.INCORRECT_PHONE = 'Incorrect phone';
+ResponseMessages.INCORRECT_CURRENT_PASSWORD = 'Incorrect current password';
+ResponseMessages.INCORRECT_OLD_PASSWORD = 'Incorrect old password';
 
 /// Success Response Messages
 ResponseMessages.SUCCESS = 'Success';
 ResponseMessages.LOGIN_SUCCESS = 'Login success';
 ResponseMessages.SIGNUP_SUCCESS = 'Signup success';
 ResponseMessages.LOGOUT_SUCCESS = 'Logout success';
+ResponseMessages.OTP_SEND_SUCCESS = 'OTP send successfully';
+ResponseMessages.EMAIL_SEND_SUCCESS = 'Email send successfully';
+ResponseMessages.EMAIL_CHANGE_SUCCESS = 'Email changed successfully';
+ResponseMessages.PASSWORD_CHANGE_SUCCESS = 'Password changed successfully';
+ResponseMessages.PASSWORD_RESET_SUCCESS = 'Password reset successfully';
+ResponseMessages.PHONE_CHANGE_SUCCESS = 'Phone changed successfully';
+ResponseMessages.ACCOUNT_VERIFY_SUCCESS = 'Account verified successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
 ResponseMessages.LOGIN_FAILURE = 'Login failure';
 ResponseMessages.SIGNUP_FAILURE = 'Signup failure';
 ResponseMessages.LOGOUT_FAILURE = 'Logout failure';
+
+ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 
 /// Delete Response Messages
 ResponseMessages.ACCOUNT_DELETED = 'Account deleted';
@@ -48,7 +69,21 @@ ResponseMessages.ACCOUNT_ADMIN = 'Admin account';
 ResponseMessages.ACCOUNT_USER = 'User account';
 ResponseMessages.ACCOUNT_MODERATOR = 'Moderator account';
 
+ResponseMessages.OTP_ALREADY_SENT = 'OTP already sent';
+ResponseMessages.OTP_EXPIRED = 'OTP expired';
+ResponseMessages.OTP_NOT_SENT = 'OTP not sent';
+ResponseMessages.OTP_ALREADY_USED = 'OTP already used';
+
+ResponseMessages.EMAIL_ALREADY_EXISTS = 'Email already exists';
+ResponseMessages.PHONE_ALREADY_EXISTS = 'Phone already exists';
+ResponseMessages.PHONE_ALREADY_USED = 'This phone number is already used';
+
 /// Invalid Response Messages
+ResponseMessages.INVALID_PHONE = 'Invalid phone';
+ResponseMessages.INVALID_EMAIL = 'Invalid email';
+ResponseMessages.INVALID_USERNAME = 'Invalid username';
+ResponseMessages.INVALID_PASSWORD = 'Invalid password';
+ResponseMessages.INVALID_OTP = 'Invalid OTP';
 ResponseMessages.INVALID_FIRST_NAME_LENGTH = 'First name must be at least 3 characters';
 ResponseMessages.INVALID_USERNAME_LENGTH = 'Username must be between 3-15 characters';
 ResponseMessages.INVALID_CREDENTIALS = 'Invalid credentials';
@@ -64,7 +99,7 @@ ResponseMessages.INVALID_USER_ID = 'Invalid user id';
 ResponseMessages.INVALID_USER_TYPE = 'Invalid user type';
 ResponseMessages.INVALID_USER_STATUS = 'Invalid user status';
 ResponseMessages.INVALID_USER_ACCOUNT_STATUS = 'Invalid user account status';
-ResponseMessages.INVALID_ACCOUNT_VALIDATION = 'Your account is not verified, please update your app and verify your account to proceed';
+ResponseMessages.INVALID_ACCOUNT_VALIDATION = 'Your account is not verified, please verify your account';
 ResponseMessages.UNAUTHORIZED = 'You are not authorized to perform this operation';
 ResponseMessages.NOT_FOUND = 'Not found';
 ResponseMessages.INVALID_REQUEST = 'Invalid request';

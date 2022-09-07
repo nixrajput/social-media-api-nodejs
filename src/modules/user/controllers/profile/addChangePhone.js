@@ -3,12 +3,13 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import dates from "../../../../utils/dateFunc.js";
+import utility from "../../../../utils/utility.js";
 import validators from "../../../../utils/validators.js";
 
-/// VERIFY ACCOUNT ///
+/// ADD/CHANGE EMAIL ///
 
-const verifyAccount = catchAsyncError(async (req, res, next) => {
-    const { email, otp } = req.body;
+const addChangePhone = catchAsyncError(async (req, res, next) => {
+    const { otp, phone, countryCode } = req.body;
 
     if (!otp) {
         return next(new ErrorHandler(ResponseMessages.OTP_REQUIRED, 400));
@@ -18,12 +19,16 @@ const verifyAccount = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.INVALID_OTP, 400));
     }
 
-    if (!email) {
-        return next(new ErrorHandler(ResponseMessages.EMAIL_REQUIRED, 400));
+    if (!phone) {
+        return next(new ErrorHandler(ResponseMessages.PHONE_REQUIRED, 400));
     }
 
-    if (email && !validators.validateEmail(email)) {
-        return next(new ErrorHandler(ResponseMessages.INVALID_EMAIL, 400));
+    if (!countryCode) {
+        return next(new ErrorHandler(ResponseMessages.COUNTRY_CODE_REQUIRED, 400));
+    }
+
+    if ((phone && countryCode) && !validators.validatePhone(countryCode + phone)) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_PHONE, 400));
     }
 
     const otpObj = await models.OTP.findOne({ otp });
@@ -40,38 +45,40 @@ const verifyAccount = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.OTP_EXPIRED, 400));
     }
 
-    const user = await models.User.findOne({ email: email });
+    const user = await models.User.findById(req.user._id);
 
     if (!user) {
-        return next(new ErrorHandler("user not found", 404));
+        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
     }
 
     if (otpObj.user.toString() === user._id.toString()) {
-        if (user.isValid === false) {
-            user.isValid = true;
-            user.emailVerified = true;
-            otpObj.isUsed = true;
-
-            await otpObj.save();
-            await user.save();
-
-            res.status(200).json({
-                success: true,
-                message: ResponseMessages.ACCOUNT_VERIFY_SUCCESS,
-            });
+        if (user.phone === phone) {
+            return next(new ErrorHandler(ResponseMessages.PHONE_ALREADY_EXISTS, 400));
         }
+
+        const isPhoneAvailable = await utility.checkPhoneAvailable(phone);
+
+        if (!isPhoneAvailable) {
+            return next(new ErrorHandler(ResponseMessages.PHONE_ALREADY_USED, 400));
+        }
+
+        user.phone = phone;
+        user.countryCode = countryCode;
 
         otpObj.isUsed = true;
 
         await otpObj.save();
+        await user.save();
 
         res.status(200).json({
             success: true,
-            message: ResponseMessages.ACCOUNT_ALREADY_VERIFIED,
+            message: ResponseMessages.PHONE_CHANGE_SUCCESS,
         });
+
     } else {
         return next(new ErrorHandler(ResponseMessages.INCORRECT_OTP, 400));
     }
+
 });
 
-export default verifyAccount;
+export default addChangePhone;

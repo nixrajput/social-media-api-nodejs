@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please enter an email."],
-    unique: [true, "Email already exists."],
   },
 
   emailVerified: {
@@ -28,15 +27,13 @@ const userSchema = new mongoose.Schema({
   uname: {
     type: String,
     required: [true, "Please enter an username."],
-    unique: [true, "Username not available."],
     minlength: [3, "Username must be at least 3 characters."],
     maxlength: [20, "Username must not exceeds 20 characters."],
   },
 
-  phone: {
-    countryCode: String,
-    phoneNo: String,
-  },
+  phone: String,
+
+  countryCode: String,
 
   phoneVerified: {
     type: Boolean,
@@ -159,11 +156,6 @@ const userSchema = new mongoose.Schema({
   isValid: {
     type: Boolean,
     default: false,
-  },
-
-  otp: {
-    type: mongoose.Types.ObjectId,
-    ref: "OTP",
   },
 
   token: String,

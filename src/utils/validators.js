@@ -103,4 +103,16 @@ validators.validateEmail = (email) => {
   return emailRegExp.test(email);
 };
 
+const PhoneNumberValidator = ["+", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+validators.validatePhone = (phone) => {
+  if (phone.length < 10 || phone.length > 15) return false;
+
+  for (var c of phone) {
+    if (!PhoneNumberValidator.includes(c)) return false;
+  }
+
+  return true;
+};
+
 export default validators;

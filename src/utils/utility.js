@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import twilio from "twilio";
 import optGenerator from "otp-generator";
 import models from "../models/index.js";
 import dates from "./dateFunc.js";
@@ -30,27 +31,68 @@ utility.deleteExpiredOTPs = async () => {
   console.log("[cron] task has deleted expired OTPs.");
 };
 
-/// Send Email
+
+/// SEND SMS USING TWILIO
+utility.sendSMS = async (options) => {
+
+  if (!options.phone || options.phone === "") {
+    return Error(ResponseMessages.PHONE_REQUIRED);
+  }
+
+  if (!options.message || options.message === "") {
+    return Error(ResponseMessages.MESSAGE_REQUIRED);
+  }
+
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const client = twilio(accountSid, authToken);
+
+  const { phone, message } = options;
+
+  await client.messages.create({
+    to: phone,
+    from: process.env.TWILIO_PHONE_NO,
+    body: message,
+  });
+};
+
+
+/// SEND SMS USING TWILIO - SENDGRID
 utility.sendEmail = async (options) => {
+  if (!options.email || options.email === "") {
+    throw Error(ResponseMessages.EMAIL_REQUIRED);
+  }
+
+  /// Set API Key
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  const msg = {
-    to: options.email, // Change to your recipient
-    from: process.env.SMTP_FROM, // Change to your verified sender
-    subject: options.subject,
-    text: options.message,
-    html: options.htmlMessage,
-  };
+  let msg = {};
 
-  await sgMail
-    .send(msg)
-    .then(() => {
-      console.log(`Email sent to ${options.email}.`);
-    })
-    .catch((error) => {
-      console.log(error.message);
-      console.error(error);
-    });
+  if (options.htmlMessage) {
+    msg = {
+      to: options.email,
+      from: process.env.SMTP_FROM,
+      subject: options.subject,
+      html: options.htmlMessage,
+    };
+  }
+  else {
+    msg = {
+      to: options.email,
+      from: process.env.SMTP_FROM,
+      subject: options.subject,
+      text: options.message,
+    };
+  }
+
+  try {
+    console.log("Sending Email...");
+    await sgMail.send(msg);
+    console.log(`${ResponseMessages.EMAIL_SEND_SUCCESS}: ${options.email}`);
+  }
+  catch (err) {
+    throw Error(err.message)
+  }
 };
 
 /// Generate OTP
@@ -68,6 +110,28 @@ utility.generateOTP = async (size = 6, expireTimeInMin = 15) => {
   const expiresAt = Date.now() + expireTimeInMin * 60 * 1000;
 
   return { otp, expiresAt };
+};
+
+/// Check if Email is Already Used
+utility.checkEmailAvailable = async (email) => {
+  let user = await models.User.findOne({ email });
+
+  if (user) {
+    return false;
+  }
+
+  return true;
+};
+
+/// Check if Phone is Already Used
+utility.checkPhoneAvailable = async (phone) => {
+  let user = await models.User.findOne({ phone });
+
+  if (user) {
+    return false;
+  }
+
+  return true;
 };
 
 /// Check Account Status

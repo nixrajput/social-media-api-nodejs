@@ -3,24 +3,25 @@ import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 import validators from "../../../../utils/validators.js";
+import ResponseMessages from "../../../../contants/responseMessages.js";
 
 /// ACCOUNT VERIFICATION EMAIL ///
 
-const sendAccountVerificationEmail = catchAsyncError(async (req, res, next) => {
+const verifyAccountOtp = catchAsyncError(async (req, res, next) => {
     const { email } = req.body;
 
     if (!email) {
-        return next(new ErrorHandler("email is required", 400));
+        return next(new ErrorHandler(ResponseMessages.EMAIL_REQUIRED, 400));
     }
 
     if (!validators.validateEmail(email)) {
-        return next(new ErrorHandler("email is invalid", 400));
+        return next(new ErrorHandler(ResponseMessages.INVALID_EMAIL, 400));
     }
 
     const user = await models.User.findOne({ email });
 
     if (!user) {
-        return next(new ErrorHandler("email is incorrect", 404));
+        return next(new ErrorHandler(ResponseMessages.INCORRECT_EMAIL, 404));
     }
 
     const message = await utility.checkUserAccountStatus(user.accountStatus);
@@ -32,18 +33,15 @@ const sendAccountVerificationEmail = catchAsyncError(async (req, res, next) => {
     // Generating OTP
     const { otp, expiresAt } = await utility.generateOTP();
 
-    const otpObj = await models.OTP.create({
+    await models.OTP.create({
         otp,
         expiresAt,
+        user: user._id
     });
-
-    user.otp = otpObj._id;
-
-    await user.save();
 
     const htmlMessage = `<p>Hi ${user.fname},</p>
     <p>Your OTP for account verification is:</p>
-    <h3>${otp}</h3>
+    <h2>${otp}</h2>
     <p>This OTP is valid for 15 minutes & usable once.</p>
     <p>If you have not requested this email then, please ignore it.</p>
     <p>
@@ -68,11 +66,11 @@ const sendAccountVerificationEmail = catchAsyncError(async (req, res, next) => {
 
         res.status(200).json({
             success: true,
-            message: "otp has been sent successfully",
+            message: ResponseMessages.OTP_SEND_SUCCESS,
         });
     } catch (err) {
         return next(new ErrorHandler(err.message, 400));
     }
 });
 
-export default sendAccountVerificationEmail;
+export default verifyAccountOtp;

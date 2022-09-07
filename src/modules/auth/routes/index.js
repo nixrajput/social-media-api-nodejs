@@ -15,7 +15,7 @@ authRouter.route("/forgot-password").post(authController.forgotPassword);
 authRouter.route("/reset-password").post(authController.resetPassword);
 
 authRouter.route("/verify-account")
-    .post(authController.sendAccountVerificationEmail)
+    .post(authController.verifyAccountOtp)
     .put(authController.verifyAccount);
 
 export default authRouter;

@@ -5,7 +5,12 @@ const otpSchema = new mongoose.Schema({
 
   expiresAt: Date,
 
-  isVerified: {
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+
+  isUsed: {
     type: Boolean,
     default: false,
   },

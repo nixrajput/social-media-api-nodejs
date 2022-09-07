@@ -7,8 +7,8 @@ import followUser from "./follow-user/followUser.js";
 import getUserDetails from "./user/getUserDetails.js";
 import getFollowers from "./followers/getFollowers.js";
 import getFollowings from "./followings/getFollowings.js";
-import sendEmailVerificationOtp from "./profile/sendEmailVerificationOtp.js";
-import verifyEmail from "./profile/verifyEmail.js";
+import changeEmailOtp from "./profile/changeEmailOtp.js";
+import changeEmail from "./profile/changeEmail.js";
 import changeUsername from "./profile/changeUsername.js";
 import checkUsernameAvailable from "./check-username/checkUsernameAvailable.js";
 import deleteProfile from "./profile/deleteProfile.js";
@@ -23,6 +23,8 @@ import removeFollowRequest from "./follow-user/removeFollowRequest.js";
 import getUserPosts from "./user/getUserPosts.js";
 import getFollowRequests from "./profile/getFollowRequests.js";
 import deactivateAccount from "./profile/deactivateAccount.js";
+import addChangePhoneOtp from "./profile/addChangePhoneOtp.js";
+import addChangePhone from "./profile/addChangePhone.js";
 
 const userController = {};
 
@@ -35,8 +37,8 @@ userController.followUser = followUser;
 userController.getUserDetails = getUserDetails;
 userController.getFollowers = getFollowers;
 userController.getFollowings = getFollowings;
-userController.sendEmailVerificationOtp = sendEmailVerificationOtp;
-userController.verifyEmail = verifyEmail;
+userController.changeEmailOtp = changeEmailOtp;
+userController.changeEmail = changeEmail;
 userController.changeUsername = changeUsername;
 userController.checkUsernameAvailable = checkUsernameAvailable;
 userController.deleteProfile = deleteProfile;
@@ -51,5 +53,7 @@ userController.removeFollowRequest = removeFollowRequest;
 userController.getUserPosts = getUserPosts;
 userController.getFollowRequests = getFollowRequests;
 userController.deactivateAccount = deactivateAccount;
+userController.addChangePhoneOtp = addChangePhoneOtp;
+userController.addChangePhone = addChangePhone;
 
 export default userController;

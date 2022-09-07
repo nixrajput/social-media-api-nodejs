@@ -26,7 +26,8 @@ const app = runApp();
 
   // Connecting to DB
   const connectToDatabase = function () {
-    return mongoose.connect(
+    console.log("[database]: connecting to MongoDB...");
+    mongoose.connect(
       process.env.MONGO_URI,
       {
         dbName: process.env.DB_NAME,
@@ -50,7 +51,7 @@ const app = runApp();
           app.use("*", (req, res, next) => {
             res.status(500).json({
               success: false,
-              message: "server is offline due to database error",
+              message: "[server] offline due to database error",
             });
           });
 

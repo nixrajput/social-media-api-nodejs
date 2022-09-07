@@ -45,7 +45,7 @@ export const runApp = () => {
 
   //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     newFollowers: 0, newFollowings: 0
+  //     //     otp: 0
   //     //   }
   //     // });
 
