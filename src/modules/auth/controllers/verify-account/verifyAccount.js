@@ -43,7 +43,7 @@ const verifyAccount = catchAsyncError(async (req, res, next) => {
     const user = await models.User.findOne({ email: email });
 
     if (!user) {
-        return next(new ErrorHandler("user not found", 404));
+        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
     }
 
     if (otpObj.user.toString() === user._id.toString()) {

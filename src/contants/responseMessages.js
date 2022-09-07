@@ -78,6 +78,8 @@ ResponseMessages.EMAIL_ALREADY_EXISTS = 'Email already exists';
 ResponseMessages.PHONE_ALREADY_EXISTS = 'Phone already exists';
 ResponseMessages.PHONE_ALREADY_USED = 'This phone number is already used';
 
+ResponseMessages.VALID_TOKEN = 'Valid token';
+
 /// Invalid Response Messages
 ResponseMessages.INVALID_PHONE = 'Invalid phone';
 ResponseMessages.INVALID_EMAIL = 'Invalid email';

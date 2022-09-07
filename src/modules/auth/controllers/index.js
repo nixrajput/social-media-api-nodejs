@@ -5,6 +5,7 @@ import resetPassword from "./reset-password/resetPassword.js";
 import logout from "./logout/logout.js";
 import verifyAccountOtp from "./verify-account/verifyAccountOtp.js";
 import verifyAccount from "./verify-account/verifyAccount.js";
+import validateToken from "./validate-token/validateToken.js";
 
 const authController = {};
 
@@ -15,5 +16,6 @@ authController.resetPassword = resetPassword;
 authController.logout = logout;
 authController.verifyAccountOtp = verifyAccountOtp;
 authController.verifyAccount = verifyAccount;
+authController.validateToken = validateToken;
 
 export default authController;
