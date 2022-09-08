@@ -25,6 +25,7 @@ import getFollowRequests from "./profile/getFollowRequests.js";
 import deactivateAccount from "./profile/deactivateAccount.js";
 import addChangePhoneOtp from "./profile/addChangePhoneOtp.js";
 import addChangePhone from "./profile/addChangePhone.js";
+import verifyPassword from "./verify-password/verifyPassword.js";
 
 const userController = {};
 
@@ -55,5 +56,6 @@ userController.getFollowRequests = getFollowRequests;
 userController.deactivateAccount = deactivateAccount;
 userController.addChangePhoneOtp = addChangePhoneOtp;
 userController.addChangePhone = addChangePhone;
+userController.verifyPassword = verifyPassword;
 
 export default userController;

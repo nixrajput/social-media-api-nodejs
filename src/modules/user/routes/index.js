@@ -47,13 +47,17 @@ userRouter
 
 userRouter
   .route("/change-email")
-  .get(isAuthenticatedUser, userController.changeEmailOtp)
-  .post(isAuthenticatedUser, userController.changeEmail);
+  .post(isAuthenticatedUser, userController.changeEmailOtp)
+  .put(isAuthenticatedUser, userController.changeEmail);
 
 userRouter
   .route("/add-change-phone")
   .post(isAuthenticatedUser, userController.addChangePhoneOtp)
   .put(isAuthenticatedUser, userController.addChangePhone);
+
+userRouter
+  .route("/verify-password")
+  .post(isAuthenticatedUser, userController.verifyPassword);
 
 
 /// Follow Operations

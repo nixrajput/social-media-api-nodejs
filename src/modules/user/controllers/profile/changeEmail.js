@@ -48,16 +48,6 @@ const changeEmail = catchAsyncError(async (req, res, next) => {
   }
 
   if (otpObj.user.toString() === user._id.toString()) {
-    if (email === user.email) {
-      return next(new ErrorHandler(ResponseMessages.EMAIL_ALREADY_EXISTS, 400));
-    }
-
-    const isEmailAvailable = await utility.checkEmailAvailable(email);
-
-    if (!isEmailAvailable) {
-      return next(new ErrorHandler(ResponseMessages.EMAIL_ALREADY_USED, 400));
-    }
-
     user.email = email;
     user.emailVerified = true;
 
@@ -65,6 +55,32 @@ const changeEmail = catchAsyncError(async (req, res, next) => {
 
     await otpObj.save();
     await user.save();
+
+    const htmlMessage = `<p>Hi ${user.fname},</p>
+    <p>Your email has been changed successfully.</p>
+    <p>If you did not change your email, please contact us immediately.</p>
+  <p>
+    If you have any questions, feel free to contact us at
+    <a href="mailto:nixlab.in@gmail.com" target="_blank">nixlab.in@gmail.com</a>.
+  </p>
+  <p> If you want know more about NixLab, please visit our website 
+        <a href="https://www.nixlab.co.in" target="_blank">here</a>.
+  </p>
+  <p>This is a auto-generated email. Please do not reply to this email.</p>
+  <p>
+    Regards, <br />
+    NixLab Technologies Team
+  </p>`;
+
+    try {
+      await utility.sendEmail({
+        email: email,
+        subject: `Email Changed Successfully`,
+        htmlMessage: htmlMessage,
+      });
+    } catch (err) {
+      console.log(err);
+    }
 
     res.status(200).json({
       success: true,

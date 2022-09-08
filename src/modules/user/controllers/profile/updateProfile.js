@@ -29,15 +29,6 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     }
   }
 
-  // if (req.body.phone) {
-  //     const phoneRegExp = /^\d{10}$/;
-  //     if (!String(req.body.phone.phoneNo).match(phoneRegExp)) {
-  //         return next(new ErrorHandler("Enter a valid phone number.", 400));
-  //     }
-
-  //     user.phone = req.body.phone;
-  // }
-
   if (req.body.gender) {
     user.gender = req.body.gender;
   }

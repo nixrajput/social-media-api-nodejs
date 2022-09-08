@@ -32,8 +32,8 @@ ResponseMessages.SUCCESS = 'Success';
 ResponseMessages.LOGIN_SUCCESS = 'Login success';
 ResponseMessages.SIGNUP_SUCCESS = 'Signup success';
 ResponseMessages.LOGOUT_SUCCESS = 'Logout success';
-ResponseMessages.OTP_SEND_SUCCESS = 'OTP send successfully';
-ResponseMessages.EMAIL_SEND_SUCCESS = 'Email send successfully';
+ResponseMessages.OTP_SEND_SUCCESS = 'OTP sent successfully';
+ResponseMessages.EMAIL_SEND_SUCCESS = 'Email sent successfully';
 ResponseMessages.EMAIL_CHANGE_SUCCESS = 'Email changed successfully';
 ResponseMessages.PASSWORD_CHANGE_SUCCESS = 'Password changed successfully';
 ResponseMessages.PASSWORD_RESET_SUCCESS = 'Password reset successfully';
@@ -75,10 +75,12 @@ ResponseMessages.OTP_NOT_SENT = 'OTP not sent';
 ResponseMessages.OTP_ALREADY_USED = 'OTP already used';
 
 ResponseMessages.EMAIL_ALREADY_EXISTS = 'Email already exists';
+ResponseMessages.EMAIL_ALREADY_ASSOSIATED = 'Email already associated with another account';
 ResponseMessages.PHONE_ALREADY_EXISTS = 'Phone already exists';
 ResponseMessages.PHONE_ALREADY_USED = 'This phone number is already used';
 
 ResponseMessages.VALID_TOKEN = 'Valid token';
+ResponseMessages.CORRECT_PASSWORD = 'Correct password';
 
 /// Invalid Response Messages
 ResponseMessages.INVALID_PHONE = 'Invalid phone';

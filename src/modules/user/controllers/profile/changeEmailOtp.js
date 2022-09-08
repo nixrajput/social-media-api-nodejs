@@ -3,14 +3,36 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
+import validators from "../../../../utils/validators.js";
 
 /// SEND CHANGE EMAIL OTP ///
 
 const changeEmailOtp = catchAsyncError(async (req, res, next) => {
+
+  const { email } = req.body;
+
+  if (!email || email === "") {
+    return next(new ErrorHandler(ResponseMessages.EMAIL_REQUIRED, 400));
+  }
+
+  if (email && !validators.validateEmail(email)) {
+    return next(new ErrorHandler(ResponseMessages.INVALID_EMAIL, 400));
+  }
+
   const user = await models.User.findById(req.user._id);
 
   if (!user) {
     return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+  }
+
+  if (user.email === email) {
+    return next(new ErrorHandler(ResponseMessages.EMAIL_ALREADY_EXISTS, 400));
+  }
+
+  const isEmailAvailable = await utility.checkEmailAvailable(email);
+
+  if (!isEmailAvailable) {
+    return next(new ErrorHandler(ResponseMessages.EMAIL_ALREADY_ASSOSIATED, 400));
   }
 
   // Generating OTP
@@ -42,7 +64,7 @@ const changeEmailOtp = catchAsyncError(async (req, res, next) => {
 
   try {
     await utility.sendEmail({
-      email: user.email,
+      email: email,
       subject: `OTP for Email Change Request`,
       htmlMessage: htmlMessage,
     });
