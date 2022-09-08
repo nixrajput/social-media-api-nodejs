@@ -3,7 +3,6 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import dates from "../../../../utils/dateFunc.js";
-import utility from "../../../../utils/utility.js";
 import validators from "../../../../utils/validators.js";
 
 /// ADD/CHANGE EMAIL ///
@@ -56,14 +55,9 @@ const addChangePhone = catchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler(ResponseMessages.PHONE_ALREADY_EXISTS, 400));
         }
 
-        // const isPhoneAvailable = await utility.checkPhoneAvailable(phone);
-
-        // if (!isPhoneAvailable) {
-        //     return next(new ErrorHandler(ResponseMessages.PHONE_ALREADY_USED, 400));
-        // }
-
         user.phone = phone;
         user.countryCode = countryCode;
+        user.phoneVerified = true;
 
         otpObj.isUsed = true;
 
