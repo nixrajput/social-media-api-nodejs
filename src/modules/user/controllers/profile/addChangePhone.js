@@ -56,11 +56,11 @@ const addChangePhone = catchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler(ResponseMessages.PHONE_ALREADY_EXISTS, 400));
         }
 
-        const isPhoneAvailable = await utility.checkPhoneAvailable(phone);
+        // const isPhoneAvailable = await utility.checkPhoneAvailable(phone);
 
-        if (!isPhoneAvailable) {
-            return next(new ErrorHandler(ResponseMessages.PHONE_ALREADY_USED, 400));
-        }
+        // if (!isPhoneAvailable) {
+        //     return next(new ErrorHandler(ResponseMessages.PHONE_ALREADY_USED, 400));
+        // }
 
         user.phone = phone;
         user.countryCode = countryCode;
