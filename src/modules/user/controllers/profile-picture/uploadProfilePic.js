@@ -1,77 +1,39 @@
-import cloudinary from "cloudinary";
-import fs from "fs";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import ResponseMessages from "../../../../contants/responseMessages.js";
 
 /// UPLOAD PROFILE PICTURE ///
 
 const uploadProfilePicture = catchAsyncError(async (req, res, next) => {
-  const avatar = req.file;
+    const { public_id, url } = req.body;
 
-  if (!avatar) {
-    return next(new ErrorHandler("please provide an avatar image", 400));
-  }
-
-  const fileSize = avatar.size / 1024;
-
-  if (fileSize > 2048) {
-    return next(new ErrorHandler("image size must be lower than 2mb", 413));
-  }
-
-  const user = await models.User.findById(req.user._id);
-
-  if (!user) {
-    return next(new ErrorHandler("user not found", 404));
-  }
-
-  const fileTempPath = avatar.path;
-
-  if (fileTempPath) {
-    if (user.avatar && user.avatar.public_id) {
-      const imageId = user.avatar.public_id;
-      await cloudinary.v2.uploader.destroy(imageId);
+    if (!public_id) {
+        return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
     }
 
-    await cloudinary.v2.uploader
-      .upload(fileTempPath, {
-        folder: "social_media_api/avatars",
-      })
-      .then(async (result) => {
-        user.avatar = {
-          public_id: result.public_id,
-          url: result.secure_url,
-        };
+    if (!url) {
+        return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
+    }
 
-        await user.save();
+    const user = await models.User.findById(req.user._id);
 
-        fs.unlink(fileTempPath, (err) => {
-          if (err) console.log(err);
-        });
+    if (!user) {
+        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+    }
 
-        res.status(200).json({
-          success: true,
-          message: "profile picture uploaded successfully",
-        });
-      })
-      .catch((err) => {
-        fs.unlink(fileTempPath, (fileErr) => {
-          if (fileErr) console.log(fileErr);
-        });
+    user.avatar = {
+        public_id: public_id,
+        url: url,
+    };
 
-        console.log(err);
+    await user.save();
 
-        res.status(400).json({
-          success: false,
-          message: "an error occurred in uploading image",
-        });
-      });
-  } else {
-    res.status(400).json({
-      success: false,
-      message: "image path is invalid",
+    res.status(200).json({
+        success: true,
+        message: ResponseMessages.PROFILE_PICTURE_UPLOAD_SUCCESS,
     });
-  }
+
 });
 
 export default uploadProfilePicture;

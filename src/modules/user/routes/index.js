@@ -30,8 +30,20 @@ userRouter
   .post(
     multerMiddleware.single("avatar"),
     isAuthenticatedUser,
-    userController.uploadProfilePicture
+    userController.uploadAvatar
   );
+
+userRouter
+  .route("/delete-avatar")
+  .delete(isAuthenticatedUser, userController.deleteAvatar);
+
+userRouter
+  .route("/upload-profile-picture")
+  .post(isAuthenticatedUser, userController.uploadProfilePicture);
+
+userRouter
+  .route("/remove-profile-picture")
+  .delete(isAuthenticatedUser, userController.removeProfilePicture);
 
 userRouter
   .route("/deactivate-account")
@@ -41,10 +53,6 @@ userRouter
   .route("/reactivate-account")
   .post(userController.reactivateAccountOtp)
   .put(userController.reactivateAccount);
-
-userRouter
-  .route("/delete-avatar")
-  .delete(isAuthenticatedUser, userController.removeProfilePicture);
 
 userRouter
   .route("/change-username")

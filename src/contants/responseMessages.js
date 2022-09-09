@@ -16,6 +16,8 @@ ResponseMessages.COUNTRY_CODE_REQUIRED = 'Country code is required';
 ResponseMessages.OTP_REQUIRED = 'OTP is required';
 ResponseMessages.ROLE_REQUIRED = 'Role is required';
 ResponseMessages.MESSAGE_REQUIRED = 'Message is required';
+ResponseMessages.PUBLIC_ID_REQUIRED = 'Public id is required';
+ResponseMessages.URL_REQUIRED = 'URL is required';
 
 
 /// Incorrect Response Messages
@@ -41,6 +43,8 @@ ResponseMessages.PHONE_CHANGE_SUCCESS = 'Phone changed successfully';
 ResponseMessages.ACCOUNT_VERIFY_SUCCESS = 'Account verified successfully';
 ResponseMessages.ACCOUNT_REACTIVATE_SUCCESS = 'Account reactivated successfully';
 ResponseMessages.ACCOUNT_DEACTIVATE_SUCCESS = 'Account deactivated successfully';
+ResponseMessages.PROFILE_PICTURE_UPLOAD_SUCCESS = 'Profile picture uploaded successfully';
+ResponseMessages.PROFILE_PICTURE_REMOVE_SUCCESS = 'Profile picture removed successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';

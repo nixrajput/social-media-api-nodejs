@@ -2,14 +2,15 @@ import cloudinary from "cloudinary";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import ResponseMessages from "../../../../contants/responseMessages.js";
 
-/// REMOVE PROFILE PICTURE ///
+/// REMOVE AVATAR ///
 
-const removeProfilePicture = catchAsyncError(async (req, res, next) => {
+const deleteAvatar = catchAsyncError(async (req, res, next) => {
   const user = await models.User.findById(req.user._id);
 
   if (!user) {
-    return next(new ErrorHandler("user not found", 404));
+    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
   }
 
   if (user.avatar && user.avatar.public_id) {
@@ -23,8 +24,8 @@ const removeProfilePicture = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "profile picture removed successfully",
+    message: ResponseMessages.PROFILE_PICTURE_REMOVE_SUCCESS,
   });
 });
 
-export default removeProfilePicture;
+export default deleteAvatar;
