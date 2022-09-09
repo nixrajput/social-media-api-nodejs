@@ -35,7 +35,12 @@ userRouter
 
 userRouter
   .route("/deactivate-account")
-  .get(isAuthenticatedUser, userController.deactivateAccount);
+  .post(isAuthenticatedUser, userController.deactivateAccount);
+
+userRouter
+  .route("/reactivate-account")
+  .post(userController.reactivateAccountOtp)
+  .put(userController.reactivateAccount);
 
 userRouter
   .route("/delete-avatar")

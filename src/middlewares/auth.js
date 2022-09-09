@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import ErrorHandler from "../helpers/errorHandler.js";
 import catchAsyncError from "../helpers/catchAsyncError.js";
 import models from "../models/index.js";
-import utility from "../utils/utility.js";
+import ResponseMessages from "../contants/responseMessages.js";
 
 const authMiddleware = {};
 
@@ -10,14 +10,14 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const bearerHeader = req.headers.authorization;
 
   if (!bearerHeader) {
-    return next(new ErrorHandler("auth parameter is missing in header", 400));
+    return next(new ErrorHandler(ResponseMessages.AUTH_PARAM_REQUIRED, 400));
   }
 
   const bearer = bearerHeader.split(" ");
   const token = bearer[1];
 
   if (!token) {
-    return next(new ErrorHandler("auth token not found in header", 404));
+    return next(new ErrorHandler(ResponseMessages.AUTH_TOKEN_REQUIRED, 404));
   }
 
 
@@ -30,15 +30,17 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const user = await models.User.findById(decodedData.id);
 
   if (token !== user.token) {
-    return next(new ErrorHandler("token is expired or invalid", 400));
+    return next(new ErrorHandler(ResponseMessages.INVALID_EXPIRED_TOKEN, 400));
   }
 
   req.user = user;
 
-  const message = await utility.checkUserAccountStatus(req.user.accountStatus);
-
-  if (message) {
-    return next(new ErrorHandler(message, 400));
+  if (req.user.accountStatus !== "active") {
+    return res.status(401).json({
+      success: false,
+      accountStatus: req.user.accountStatus,
+      message: ResponseMessages.ACCOUNT_NOT_ACTIVE,
+    });
   }
 
   next();

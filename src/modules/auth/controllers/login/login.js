@@ -3,7 +3,6 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import validators from "../../../../utils/validators.js";
-import utility from "../../../../utils/utility.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
 
 /// LOGIN USER ///
@@ -45,10 +44,12 @@ const login = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.INVALID_ACCOUNT_VALIDATION, 400));
   }
 
-  const message = await utility.checkUserAccountStatus(user.accountStatus);
-
-  if (message) {
-    return next(new ErrorHandler(message, 400));
+  if (user.accountStatus !== "active") {
+    return res.status(401).json({
+      success: false,
+      accountStatus: user.accountStatus,
+      message: ResponseMessages.ACCOUNT_NOT_ACTIVE,
+    });
   }
 
   let token = user.token;
@@ -71,6 +72,7 @@ const login = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: ResponseMessages.LOGIN_SUCCESS,
+    accountStatus: user.accountStatus,
     token: token,
     expiresAt: expiresAt,
   });

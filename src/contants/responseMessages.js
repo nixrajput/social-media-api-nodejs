@@ -39,6 +39,8 @@ ResponseMessages.PASSWORD_CHANGE_SUCCESS = 'Password changed successfully';
 ResponseMessages.PASSWORD_RESET_SUCCESS = 'Password reset successfully';
 ResponseMessages.PHONE_CHANGE_SUCCESS = 'Phone changed successfully';
 ResponseMessages.ACCOUNT_VERIFY_SUCCESS = 'Account verified successfully';
+ResponseMessages.ACCOUNT_REACTIVATE_SUCCESS = 'Account reactivated successfully';
+ResponseMessages.ACCOUNT_DEACTIVATE_SUCCESS = 'Account deactivated successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
@@ -52,6 +54,10 @@ ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 ResponseMessages.ACCOUNT_DELETED = 'Account deleted';
 
 /// Other Response Messages
+ResponseMessages.AUTH_TOKEN_REQUIRED = 'Auth token is required';
+ResponseMessages.AUTH_PARAM_REQUIRED = 'Auth param is required';
+ResponseMessages.ACCOUNT_ALREADY_DEACTIVATED = 'Account already deactivated';
+ResponseMessages.ACCOUNT_ALREADY_ACTIVE = 'Account already active';
 ResponseMessages.ACCOUNT_SUSPENDED = 'Account suspended';
 ResponseMessages.ACCOUNT_DEACTIVATED = 'Account deactivated';
 ResponseMessages.USERAME_NOT_AVAILABLE = 'Username not available';
@@ -83,6 +89,8 @@ ResponseMessages.VALID_TOKEN = 'Valid token';
 ResponseMessages.CORRECT_PASSWORD = 'Correct password';
 
 /// Invalid Response Messages
+ResponseMessages.ACCOUNT_NOT_ACTIVE = 'Account not active';
+ResponseMessages.INVALID_EXPIRED_TOKEN = 'Invalid or expired token';
 ResponseMessages.INVALID_PHONE = 'Invalid phone';
 ResponseMessages.INVALID_EMAIL = 'Invalid email';
 ResponseMessages.INVALID_USERNAME = 'Invalid username';
