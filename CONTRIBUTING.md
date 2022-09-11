@@ -268,7 +268,7 @@ https://www.contributor-covenant.org/translations.
 |
 ├── package.json
 |
-├── package-lock.yaml
+├── pnpm-lock.yaml
 |
 └── README.md
 ```

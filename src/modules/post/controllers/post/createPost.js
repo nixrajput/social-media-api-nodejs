@@ -1,3 +1,4 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
@@ -9,18 +10,21 @@ const createPost = catchAsyncError(async (req, res, next) => {
   let { mediaFiles, caption } = req.body;
 
   if (!mediaFiles || mediaFiles?.length <= 0) {
-    return next(new ErrorHandler("media file is required", 400));
+    return next(new ErrorHandler(ResponseMessages.MEDIA_FILES_REQUIRED, 400));
   }
 
   for (let i = 0; i < mediaFiles.length; i++) {
     if (!mediaFiles[i].public_id) {
-      return next(new ErrorHandler("media file public_id is required", 400));
+      return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
     }
     if (!mediaFiles[i].url) {
-      return next(new ErrorHandler("media file url is required", 400));
+      return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
     }
     if (!mediaFiles[i].mediaType) {
-      return next(new ErrorHandler("media file type is required", 400));
+      return next(new ErrorHandler(ResponseMessages.MEDIA_TYPE_REQUIRED, 400));
+    }
+    if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail) {
+      return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_REQUIRED, 400));
     }
   }
 
@@ -56,7 +60,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    message: "post created successfully",
+    message: ResponseMessages.POST_CREATE_SUCCESS,
     post: postData,
   });
 });

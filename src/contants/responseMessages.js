@@ -18,6 +18,12 @@ ResponseMessages.ROLE_REQUIRED = 'Role is required';
 ResponseMessages.MESSAGE_REQUIRED = 'Message is required';
 ResponseMessages.PUBLIC_ID_REQUIRED = 'Public id is required';
 ResponseMessages.URL_REQUIRED = 'URL is required';
+ResponseMessages.MEDIA_TYPE_REQUIRED = 'Media type is required';
+ResponseMessages.THUMBNAIL_REQUIRED = 'Thumbnail is required';
+ResponseMessages.VIDEO_THUMBNAIL_REQUIRED = 'Video thumbnail is required';
+ResponseMessages.CAPTION_REQUIRED = 'Caption is required';
+ResponseMessages.MEDIA_FILES_REQUIRED = 'Media files is required';
+ResponseMessages.POST_ID_REQUIRED = 'Post id is required';
 
 
 /// Incorrect Response Messages
@@ -45,6 +51,8 @@ ResponseMessages.ACCOUNT_REACTIVATE_SUCCESS = 'Account reactivated successfully'
 ResponseMessages.ACCOUNT_DEACTIVATE_SUCCESS = 'Account deactivated successfully';
 ResponseMessages.PROFILE_PICTURE_UPLOAD_SUCCESS = 'Profile picture uploaded successfully';
 ResponseMessages.PROFILE_PICTURE_REMOVE_SUCCESS = 'Profile picture removed successfully';
+ResponseMessages.PROFILE_UPDATE_SUCCESS = 'Profile updated successfully';
+ResponseMessages.POST_CREATE_SUCCESS = 'Post created successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
