@@ -24,6 +24,8 @@ ResponseMessages.VIDEO_THUMBNAIL_REQUIRED = 'Video thumbnail is required';
 ResponseMessages.CAPTION_REQUIRED = 'Caption is required';
 ResponseMessages.MEDIA_FILES_REQUIRED = 'Media files is required';
 ResponseMessages.POST_ID_REQUIRED = 'Post id is required';
+ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED = 'Video thumbnail public id is required';
+ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED = 'Video thumbnail url is required';
 
 
 /// Incorrect Response Messages

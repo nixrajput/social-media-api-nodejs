@@ -7,7 +7,10 @@ const postSchema = new mongoose.Schema({
     {
       public_id: String,
       url: String,
-      thumbnail: String,
+      thumbnail: {
+        public_id: String,
+        url: String,
+      },
       mediaType: String,
     }
   ],

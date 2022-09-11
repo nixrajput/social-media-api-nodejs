@@ -26,6 +26,14 @@ const createPost = catchAsyncError(async (req, res, next) => {
     if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail) {
       return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_REQUIRED, 400));
     }
+
+    if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.public_id) {
+      return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED, 400));
+    }
+
+    if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.url) {
+      return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED, 400));
+    }
   }
 
   const newPost = {
