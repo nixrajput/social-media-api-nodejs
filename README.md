@@ -8,6 +8,18 @@
 
 We are open to suggestions and contributions. Feel free to open an issue or a pull request. If you like the project, please consider giving it a star.
 
+Due to server limitations, the API is currently hosted on a free tier of Cyclic. So, it may take a few seconds to respond to your request. Please be patient.
+
+Due to the same reason, the API may be down for a few minutes every day. We are working on a solution to this problem.
+
+Due to database limitations, the API is currently hosted on a free tier of MongoDB Atlas. So, it may take a few seconds to respond to your request. Please be patient.
+
+This API is currently in development. So, after releasing the production version, we will be adding more features to it. You can check the progress of the project here. If you have any suggestions, feel free to open an issue.
+
+For the production version, we are planning to host the API on a paid tier of Cyclic and MongoDB Atlas. So, it will be more reliable and faster.
+
+After releasing the production version, we may delete some of the data in the database for better and faster performance. Data will be deleted only if it is not required for the project or it may cause any issues or conflicts.
+
 If you would like to contribute, please read the [contribution guidelines](CONTRIBUTING.md).
 
 ## Documentation
