@@ -1,27 +1,26 @@
-import ResponseMessages from "../../../../contants/responseMessages.js";
-import catchAsyncError from "../../../../helpers/catchAsyncError.js";
-import ErrorHandler from "../../../../helpers/errorHandler.js";
-import models from "../../../../models/index.js";
-import utility from "../../../../utils/utility.js";
+import catchAsyncError from "../../../helpers/catchAsyncError.js";
+import ErrorHandler from "../../../helpers/errorHandler.js";
+import models from "../../../models/index.js";
+import ResponseMessages from "../../../contants/responseMessages.js";
+import utility from "../../../utils/utility.js";
 
-const getLikedUsers = catchAsyncError(async (req, res, next) => {
-    if (!req.query.id) {
+/// SEARCH TAG ///
+
+const getPostsByTag = catchAsyncError(async (req, res, next) => {
+    if (!req.query.q) {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
 
-    const post = await models.Post.findById(req.query.id).select("_id likes");
+    const searchText = req.query.q;
 
-    if (!post) {
-        return next(new ErrorHandler(ResponseMessages.POST_NOT_FOUND, 404));
-    }
-
-    const postLikes = post.likes;
+    const tag = await models.Tag.findOne({ name: new RegExp(searchText, "gi") })
+        .select("_id postsCount posts");
 
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
 
-    let totalLikes = postLikes.length;
-    let totalPages = Math.ceil(totalLikes / limit);
+    let totalPosts = tag.postsCount;
+    let totalPages = Math.ceil(totalPosts / limit);
 
     if (currentPage < 1) {
         currentPage = 1;
@@ -61,24 +60,19 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
         nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
     }
 
-    const slicedPostLikers = postLikes.slice(skip, skip + limit);
-
-    slicedPostLikers.sort((a, b) => {
-        return new Date(b.likedAt) - new Date(a.likedAt);
-    });
+    const slicedPosts = tag.posts.slice(skip, skip + limit);
 
     const results = [];
 
-    for (let i = 0; i < slicedPostLikers.length; i++) {
-        const postLiker = slicedPostLikers[i];
-        const postLikerData = await utility.getUserData(postLiker.likedBy, req.user);
+    for (let postId of slicedPosts) {
+        const postData = await utility.getPostData(postId, req.user);
 
-        results.push({
-            _id: postLiker._id,
-            likedBy: postLikerData,
-            likedAt: postLiker.likedAt,
-        });
+        results.push(postData);
     }
+
+    results.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    });
 
     res.status(200).json({
         success: true,
@@ -93,4 +87,4 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
     });
 });
 
-export default getLikedUsers;
+export default getPostsByTag;

@@ -102,6 +102,15 @@ ResponseMessages.PHONE_ALREADY_USED = 'This phone number is already used';
 ResponseMessages.VALID_TOKEN = 'Valid token';
 ResponseMessages.CORRECT_PASSWORD = 'Correct password';
 
+ResponseMessages.PROFILE_PICTURE_NOT_FOUND = 'Profile picture not found';
+
+ResponseMessages.POST_NOT_FOUND = 'Post not found';
+ResponseMessages.POST_LIKED = 'Post liked';
+ResponseMessages.POST_UNLIKED = 'Post unliked';
+ResponseMessages.POST_DELETED = 'Post deleted';
+ResponseMessages.POST_ALREADY_DELETED = 'Post already deleted';
+
+
 /// Invalid Response Messages
 ResponseMessages.ACCOUNT_NOT_ACTIVE = 'Account not active';
 ResponseMessages.INVALID_EXPIRED_TOKEN = 'Invalid or expired token';
@@ -141,7 +150,6 @@ ResponseMessages.SIGNUP_EMAIL_VERIFICATION_FAILURE_INVALID = 'Signup email verif
 ResponseMessages.SIGNUP_EMAIL_VERIFICATION_FAILURE_NOT_FOUND = 'Signup email verification failure - not found';
 ResponseMessages.USER_NOT_FOUND = 'User not found';
 ResponseMessages.USER_CREATION_FAILURE = 'User creation failure';
-ResponseMessages.POST_NOT_FOUND = 'Post not found';
 ResponseMessages.NOTIFICATION_NOT_FOUND = 'Notification not found';
 ResponseMessages.NOTIFICATION_MARKED_READ = 'Notification marked read';
 

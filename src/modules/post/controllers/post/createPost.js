@@ -45,21 +45,70 @@ const createPost = catchAsyncError(async (req, res, next) => {
   const post = await models.Post.create(newPost);
 
   const user = await models.User.findById(req.user._id);
-
   user.posts.push(post._id);
   user.postsCount++;
-
   await user.save();
+
+  let hashtags = [];
+  let mentions = [];
+
+  if (caption) {
+    hashtags = utility.getHashTags(caption);
+    mentions = utility.getMentions(caption);
+
+    for (let i = 0; i < mentions.length; i++) {
+      const user = await models.User.findOne({ username: mentions[i] })
+        .select(["_id", "username"]);
+
+      const notification = await models.Notification.findOne({
+        user: req.user._id,
+        refId: post._id,
+      });
+
+      const isPostOwner = await utility.checkIfPostOwner(post._id, req.user);
+
+      if (user && (!notification && !isPostOwner)) {
+        await models.Notification.create({
+          owner: user._id,
+          user: req.user._id,
+          refId: post._id,
+          body: `mentioned you in a post`,
+          type: "mention"
+        });
+      }
+    }
+
+    for (let i = 0; i < hashtags.length; i++) {
+      const tag = await models.Tag.findOne({ name: hashtags[i] });
+
+      if (tag) {
+        tag.posts.push(post._id);
+        tag.postsCount++;
+        await tag.save();
+      } else {
+        await models.Tag.create({
+          name: hashtags[i],
+          posts: [post._id],
+          postsCount: 1,
+        });
+      }
+    }
+
+  }
+
+  const postData = {};
 
   const ownerData = await utility.getOwnerData(post.owner, req.user);
 
   const isLiked = await utility.checkIfPostLiked(post._id, req.user);
 
-  const postData = {};
   postData._id = post._id;
   postData.caption = post.caption;
   postData.mediaFiles = post.mediaFiles;
   postData.owner = ownerData;
+  postData.hashtags = hashtags;
+  postData.mentions = mentions;
+  postData.postType = post.postType;
   postData.likesCount = post.likesCount;
   postData.commentsCount = post.commentsCount;
   postData.isLiked = isLiked;

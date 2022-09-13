@@ -1,3 +1,4 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
@@ -7,16 +8,14 @@ import utility from "../../../../utils/utility.js";
 
 const getComments = catchAsyncError(async (req, res, next) => {
   if (!req.query.postId) {
-    return next(new ErrorHandler("please enter post id in query params", 400));
+    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
 
   const comments = await models.Comment.find({ post: req.query.postId })
-    .sort({
-      createdAt: -1,
-    });
+    .select("_id").sort({ createdAt: -1 });
 
   let totalComments = comments.length;
   let totalPages = Math.ceil(totalComments / limit);
@@ -66,16 +65,7 @@ const getComments = catchAsyncError(async (req, res, next) => {
   for (let i = 0; i < slicedComments.length; i++) {
     const comment = slicedComments[i];
 
-    const ownerData = await utility.getOwnerData(comment.user, req.user);
-
-    const commentData = {};
-    commentData._id = comment._id;
-    commentData.comment = comment.comment;
-    commentData.post = comment.post;
-    commentData.user = ownerData;
-    commentData.likesCount = comment.likesCount;
-    commentData.commentStatus = comment.commentStatus;
-    commentData.createdAt = comment.createdAt;
+    const commentData = await utility.getCommentData(comment._id, req.user);
 
     results.push(commentData);
   }

@@ -1,3 +1,4 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
@@ -5,14 +6,14 @@ import utility from "../../../../utils/utility.js";
 
 const getFollowings = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
-    return next(new ErrorHandler("please enter user id in query params", 400));
+    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
   const user = await models.User.findById(req.query.id)
     .select("following followingCount");
 
   if (!user) {
-    return next(new ErrorHandler("user not found", 404));
+    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
   }
 
   let currentPage = parseInt(req.query.page) || 1;
@@ -61,34 +62,18 @@ const getFollowings = catchAsyncError(async (req, res, next) => {
 
   const slicedFollowings = user.following.slice(skip, skip + limit);
 
+  slicedFollowings.sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+
   const results = [];
 
-  for (let i = 0; i < slicedFollowings.length; i++) {
-    const following = slicedFollowings[i];
-    const followingData = await models.User.findById(following.user)
-      .select([
-        "_id", "fname", "lname", "email", "uname", "avatar", "profession",
-        "accountPrivacy", "accountStatus", "isVerified", "createdAt",
-      ]);
-
-    const followingStatus = await utility.getFollowingStatus(req.user, followingData._id);
+  for (let following of slicedFollowings) {
+    const followingData = await utility.getUserData(following.user, req.user);
 
     results.push({
       _id: following._id,
-      user: {
-        _id: followingData._id,
-        fname: followingData.fname,
-        lname: followingData.lname,
-        email: followingData.email,
-        uname: followingData.uname,
-        avatar: followingData.avatar,
-        followingStatus: followingStatus,
-        profession: followingData.profession,
-        accountPrivacy: followingData.accountPrivacy,
-        accountStatus: followingData.accountStatus,
-        isVerified: followingData.isVerified,
-        createdAt: followingData.createdAt,
-      },
+      user: followingData,
       createdAt: following.createdAt,
     });
   }

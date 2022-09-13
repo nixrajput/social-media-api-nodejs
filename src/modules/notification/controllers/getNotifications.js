@@ -1,3 +1,4 @@
+import ResponseMessages from "../../../contants/responseMessages.js";
 import catchAsyncError from "../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
@@ -7,35 +8,14 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
   const userId = req.user._id;
 
   if (!userId) {
-    return next(new ErrorHandler("user not found", 404));
+    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
   }
 
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
 
   const notifications = await models.Notification.find({ owner: userId })
-    .sort({ createdAt: -1 });
-
-  const notificationResults = [];
-
-  for (let i = 0; i < notifications.length; i++) {
-    const notification = notifications[i];
-
-    const ownerData = await utility.getOwnerData(notification.owner, req.user);
-    const userData = await utility.getOwnerData(notification.user, req.user);
-
-    const notificationData = {};
-    notificationData._id = notification._id;
-    notificationData.owner = ownerData;
-    notificationData.user = userData;
-    notificationData.refId = notification.refId;
-    notificationData.body = notification.body;
-    notificationData.type = notification.type;
-    notificationData.isRead = notification.isRead;
-    notificationData.createdAt = notification.createdAt;
-
-    notificationResults.push(notificationData);
-  }
+    .select("_id").sort({ createdAt: -1 });
 
   let totalNotifications = notifications.length;
   let totalPages = Math.ceil(totalNotifications / limit);
@@ -78,7 +58,17 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const results = notificationResults.slice(skip, skip + limit);
+  const slicedNotifications = notifications.slice(skip, skip + limit);
+
+  const results = [];
+
+  for (let i = 0; i < slicedNotifications.length; i++) {
+    const notification = slicedNotifications[i];
+
+    const notificationData = await utility.getNotificationData(notification._id, req.user);
+
+    results.push(notificationData);
+  }
 
   res.status(200).json({
     success: true,

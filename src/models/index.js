@@ -4,6 +4,7 @@ import Notification from "./notification/notification.js";
 import Post from "./post/post.js";
 import Comment from "./comment/comment.js";
 import OTP from "./otp/otp.js";
+import Tag from "./hashtag/tag.js";
 
 const models = {};
 
@@ -13,5 +14,6 @@ models.Notification = Notification;
 models.Post = Post;
 models.Comment = Comment;
 models.OTP = OTP;
+models.Tag = Tag;
 
 export default models;

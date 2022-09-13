@@ -1,3 +1,4 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
@@ -7,16 +8,14 @@ import utility from "../../../../utils/utility.js";
 
 const likeUnlikePost = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
-    return next(new ErrorHandler("please enter post id in query params", 400));
+    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
   const post = await models.Post.findById(req.query.id)
-    .select([
-      "_id", "owner", "likesCount", "likes",
-    ]);
+    .select(["_id", "owner", "likesCount", "likes"]);
 
   if (!post) {
-    return next(new ErrorHandler("post not found", 404));
+    return next(new ErrorHandler(ResponseMessages.POST_NOT_FOUND, 404));
   }
 
   const isLiked = await utility.checkIfPostLiked(post._id, req.user);
@@ -31,7 +30,7 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: "post unliked",
+      message: ResponseMessages.POST_UNLIKED,
     });
   } else {
     post.likes.push({
@@ -60,7 +59,7 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: "post liked",
+      message: ResponseMessages.POST_LIKED,
     });
   }
 });

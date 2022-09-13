@@ -2,6 +2,7 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
+import ResponseMessages from "../../../../contants/responseMessages.js";
 
 /// GET POSTS ///
 
@@ -10,11 +11,8 @@ const getPosts = catchAsyncError(async (req, res, next) => {
     .select("_id following");
 
   if (!user) {
-    return next(new ErrorHandler("user not found", 404));
+    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
   }
-
-  let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 10;
 
   const followingIds = user.following.map((follow) => follow.user);
 
@@ -22,32 +20,10 @@ const getPosts = catchAsyncError(async (req, res, next) => {
     owner: {
       $in: [...followingIds, user._id],
     },
-  }).sort({
-    createdAt: -1,
-  });
+  }).select("_id").sort({ createdAt: -1 });
 
-  const postsResults = [];
-
-  for (let i = 0; i < posts.length; i++) {
-    const post = posts[i];
-
-    const ownerData = await utility.getOwnerData(post.owner, req.user);
-
-    const isLiked = await utility.checkIfPostLiked(post._id, req.user);
-
-    const postData = {};
-    postData._id = post._id;
-    postData.caption = post.caption;
-    postData.mediaFiles = post.mediaFiles;
-    postData.owner = ownerData;
-    postData.likesCount = post.likesCount;
-    postData.commentsCount = post.commentsCount;
-    postData.isLiked = isLiked;
-    postData.postStatus = post.postStatus;
-    postData.createdAt = post.createdAt;
-
-    postsResults.push(postData);
-  }
+  let currentPage = parseInt(req.query.page) || 1;
+  let limit = parseInt(req.query.limit) || 10;
 
   let totalPosts = posts.length;
   let totalPages = Math.ceil(totalPosts / limit);
@@ -90,7 +66,15 @@ const getPosts = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const results = postsResults.slice(skip, skip + limit);
+  const slicedPosts = posts.slice(skip, skip + limit);
+
+  const results = [];
+
+  for (let i = 0; i < slicedPosts.length; i++) {
+    const postId = slicedPosts[i]._id;
+    const postData = await utility.getPostData(postId, req.user);
+    results.push(postData);
+  }
 
   res.status(200).json({
     success: true,

@@ -1,27 +1,25 @@
-import ResponseMessages from "../../../../contants/responseMessages.js";
-import catchAsyncError from "../../../../helpers/catchAsyncError.js";
-import ErrorHandler from "../../../../helpers/errorHandler.js";
-import models from "../../../../models/index.js";
-import utility from "../../../../utils/utility.js";
+import catchAsyncError from "../../../helpers/catchAsyncError.js";
+import ErrorHandler from "../../../helpers/errorHandler.js";
+import models from "../../../models/index.js";
+import ResponseMessages from "../../../contants/responseMessages.js";
 
-const getLikedUsers = catchAsyncError(async (req, res, next) => {
-    if (!req.query.id) {
+/// SEARCH TAG ///
+
+const searchTag = catchAsyncError(async (req, res, next) => {
+    if (!req.query.q) {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
 
-    const post = await models.Post.findById(req.query.id).select("_id likes");
+    const searchText = req.query.q;
 
-    if (!post) {
-        return next(new ErrorHandler(ResponseMessages.POST_NOT_FOUND, 404));
-    }
-
-    const postLikes = post.likes;
+    const tags = await models.Tag.find({ name: new RegExp(searchText, "gi") })
+        .select("_id name postsCount").sort({ postsCount: -1 });
 
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
 
-    let totalLikes = postLikes.length;
-    let totalPages = Math.ceil(totalLikes / limit);
+    let totalTags = tags.length;
+    let totalPages = Math.ceil(totalTags / limit);
 
     if (currentPage < 1) {
         currentPage = 1;
@@ -61,23 +59,18 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
         nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
     }
 
-    const slicedPostLikers = postLikes.slice(skip, skip + limit);
-
-    slicedPostLikers.sort((a, b) => {
-        return new Date(b.likedAt) - new Date(a.likedAt);
-    });
+    const slicedTags = tags.slice(skip, skip + limit);
 
     const results = [];
 
-    for (let i = 0; i < slicedPostLikers.length; i++) {
-        const postLiker = slicedPostLikers[i];
-        const postLikerData = await utility.getUserData(postLiker.likedBy, req.user);
+    for (let tag of slicedTags) {
+        const tagData = {};
 
-        results.push({
-            _id: postLiker._id,
-            likedBy: postLikerData,
-            likedAt: postLiker.likedAt,
-        });
+        tagData._id = tag._id;
+        tagData.name = tag.name;
+        tagData.postsCount = tag.postsCount;
+
+        results.push(tagData);
     }
 
     res.status(200).json({
@@ -93,4 +86,4 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
     });
 });
 
-export default getLikedUsers;
+export default searchTag;

@@ -166,23 +166,23 @@ utility.checkUserAccountType = async (type) => {
   }
 };
 
-utility.getFollowingStatus = async (user, followId) => {
+utility.getFollowingStatus = async (reqUser, followUser) => {
 
-  const isSameUser = await utility.checkIfSameUser(user, followId);
+  const isSameUser = await utility.checkIfSameUser(reqUser, followUser);
 
   if (isSameUser) {
     return "self";
   }
 
-  const isFollowing = user.following.find(
-    (following) => following.user.toString() === followId.toString()
+  const isFollowing = reqUser.following.find(
+    (following) => following.user.toString() === followUser.toString()
   );
 
   if (isFollowing) return "following";
 
   const followRequest = await models.Notification.findOne({
-    user: user._id,
-    owner: followId,
+    user: reqUser._id,
+    owner: followUser,
     type: "followRequest",
   });
 
@@ -247,5 +247,126 @@ utility.getOwnerData = async (ownerId, reqUser) => {
 
   return ownerData;
 };
+
+utility.getUserData = async (userId, reqUser) => {
+  const user = await models.User.findById(userId)
+    .select([
+      "_id", "fname", "lname", "email", "uname", "avatar", "profession",
+      "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+    ]);
+  const userData = {};
+
+  const followingStatus = await utility.getFollowingStatus(reqUser, user._id);
+
+  userData._id = user._id;
+  userData.fname = user.fname;
+  userData.lname = user.lname;
+  userData.email = user.email;
+  userData.uname = user.uname;
+  userData.avatar = user.avatar;
+  userData.profession = user.profession;
+  userData.accountPrivacy = user.accountPrivacy;
+  userData.accountStatus = user.accountStatus;
+  userData.isVerified = user.isVerified;
+  userData.createdAt = user.createdAt;
+  userData.followingStatus = followingStatus;
+
+  return userData;
+};
+
+utility.getHashTags = (caption) => {
+  const hashtags = caption.match(/#[a-zA-Z0-9]+/g);
+
+  if (hashtags) {
+    return hashtags.map((hashtag) => hashtag.replace("#", ""));
+  }
+
+  return [];
+};
+
+utility.getMentions = (caption) => {
+  const mentions = caption.match(/@[a-zA-Z0-9]+/g);
+
+  if (mentions) {
+    return mentions.map((mention) => mention.replace("@", ""));
+  }
+
+  return [];
+};
+
+utility.getPostData = async (postId, reqUser) => {
+  const post = await models.Post.findById(postId);
+  const postData = {};
+  const ownerData = await utility.getOwnerData(post.owner, reqUser);
+  const isLiked = await utility.checkIfPostLiked(post._id, reqUser);
+  const hashtags = await utility.getHashTags(post.caption);
+  const mentions = await utility.getMentions(post.caption);
+
+  postData._id = post._id;
+  postData.caption = post.caption;
+  postData.mediaFiles = post.mediaFiles;
+  postData.owner = ownerData;
+  postData.hashtags = hashtags;
+  postData.userMentions = mentions;
+  postData.postType = post.postType;
+  postData.likesCount = post.likesCount;
+  postData.commentsCount = post.commentsCount;
+  postData.isLiked = isLiked;
+  postData.postStatus = post.postStatus;
+  postData.createdAt = post.createdAt;
+
+  return postData;
+};
+
+utility.getCommentData = async (commentId, reqUser) => {
+  const comment = await models.Comment.findById(commentId);
+  const commentData = {};
+
+  const ownerData = await utility.getOwnerData(comment.user, reqUser);
+
+  commentData._id = comment._id;
+  commentData.comment = comment.comment;
+  commentData.post = comment.post;
+  commentData.user = ownerData;
+  commentData.likesCount = comment.likesCount;
+  commentData.commentStatus = comment.commentStatus;
+  commentData.createdAt = comment.createdAt;
+
+  return commentData;
+};
+
+utility.getNotificationData = async (notificationId, reqUser) => {
+  const notification = await models.Notification.findById(notificationId);
+
+  const notificationData = {};
+
+  const ownerData = await utility.getOwnerData(notification.owner, reqUser);
+  const userData = await utility.getUserData(notification.user, reqUser);
+
+  notificationData._id = notification._id;
+  notificationData.owner = ownerData;
+  notificationData.user = userData;
+  notificationData.refId = notification.refId;
+  notificationData.body = notification.body;
+  notificationData.type = notification.type;
+  notificationData.isRead = notification.isRead;
+  notificationData.createdAt = notification.createdAt;
+
+  return notificationData;
+};
+
+utility.getHashTagData = async (hashTagId) => {
+  const hashTag = await models.Tag.findById(hashTagId);
+  const hashTagData = {};
+
+  hashTagData._id = hashTag._id;
+  hashTagData.name = hashTag.name;
+  hashTagData.posts = hashTag.posts;
+  hashTagData.postsCount = hashTag.postsCount;
+  hashTagData.createdAt = hashTag.createdAt;
+
+  return hashTagData;
+};
+
 
 export default utility;
