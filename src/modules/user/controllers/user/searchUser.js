@@ -1,12 +1,14 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
 /// SEARCH USER ///
 
 const searchUser = catchAsyncError(async (req, res, next) => {
   if (!req.query.q) {
-    return next(new ErrorHandler("please provide a search query", 400));
+    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
   const searchText = req.query.q;
@@ -19,35 +21,74 @@ const searchUser = catchAsyncError(async (req, res, next) => {
         },
         {
           fname: new RegExp(searchText, "gi"),
-        },
-        {
-          lname: new RegExp(searchText, "gi"),
-        },
+        }
       ],
-    },
-    {
-      _id: 1,
-      fname: 1,
-      lname: 1,
-      email: 1,
-      uname: 1,
-      avatar: 1,
-      profession: 1,
-      accountType: 1,
-      accountStatus: 1,
-      isVerified: 1,
-      createdAt: 1,
-    }
-  );
+    }).select("_id uname").sort({ uname: 1 });
 
-  if (users.length <= 0) {
-    return next(new ErrorHandler("no user found", 404));
+  let currentPage = parseInt(req.query.page) || 1;
+  let limit = parseInt(req.query.limit) || 10;
+
+  let totalTags = users.length;
+  let totalPages = Math.ceil(totalTags / limit);
+
+  if (currentPage < 1) {
+    currentPage = 1;
+  }
+
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+
+  let skip = (currentPage - 1) * limit;
+
+  let prevPageIndex = null;
+  let hasPrevPage = false;
+  let prevPage = null;
+  let nextPageIndex = null;
+  let hasNextPage = false;
+  let nextPage = null;
+
+  if (currentPage < totalPages) {
+    nextPageIndex = currentPage + 1;
+    hasNextPage = true;
+  }
+
+  if (currentPage > 1) {
+    prevPageIndex = currentPage - 1;
+    hasPrevPage = true;
+  }
+
+  const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl
+    }`.split("?")[0];
+
+  if (hasPrevPage) {
+    prevPage = `${baseUrl}?page=${prevPageIndex}&limit=${limit}`;
+  }
+
+  if (hasNextPage) {
+    nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
+  }
+
+  const slicedUsers = users.slice(skip, skip + limit);
+
+  const results = [];
+
+  for (let user of slicedUsers) {
+    const userData = await utility.getUserData(user._id, req.user);
+
+    results.push(userData);
   }
 
   res.status(200).json({
     success: true,
-    count: users.length,
-    results: users,
+    currentPage,
+    totalPages,
+    limit,
+    hasPrevPage,
+    prevPage,
+    hasNextPage,
+    nextPage,
+    results,
   });
 });
 

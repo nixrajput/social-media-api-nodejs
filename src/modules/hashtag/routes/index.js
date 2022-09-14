@@ -16,4 +16,8 @@ tagRouter
     .route("/get-posts-by-tag")
     .get(isAuthenticatedUser, tagController.getPostsByTag);
 
+tagRouter
+    .route("/get-trending-tags")
+    .get(isAuthenticatedUser, tagController.getTrendingTags);
+
 export default tagRouter;

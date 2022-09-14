@@ -239,11 +239,11 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.uname = owner.uname;
   ownerData.avatar = owner.avatar;
   ownerData.profession = owner.profession;
+  ownerData.followingStatus = followingStatus;
   ownerData.accountPrivacy = owner.accountPrivacy;
   ownerData.accountStatus = owner.accountStatus;
   ownerData.isVerified = owner.isVerified;
   ownerData.createdAt = owner.createdAt;
-  ownerData.followingStatus = followingStatus;
 
   return ownerData;
 };
@@ -265,11 +265,11 @@ utility.getUserData = async (userId, reqUser) => {
   userData.uname = user.uname;
   userData.avatar = user.avatar;
   userData.profession = user.profession;
+  userData.followingStatus = followingStatus;
   userData.accountPrivacy = user.accountPrivacy;
   userData.accountStatus = user.accountStatus;
   userData.isVerified = user.isVerified;
   userData.createdAt = user.createdAt;
-  userData.followingStatus = followingStatus;
 
   return userData;
 };
