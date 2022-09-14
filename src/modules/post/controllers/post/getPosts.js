@@ -73,6 +73,7 @@ const getPosts = catchAsyncError(async (req, res, next) => {
   for (let i = 0; i < slicedPosts.length; i++) {
     const postId = slicedPosts[i]._id;
     const postData = await utility.getPostData(postId, req.user);
+
     results.push(postData);
   }
 

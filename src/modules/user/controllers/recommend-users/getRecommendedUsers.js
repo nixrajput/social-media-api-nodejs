@@ -5,15 +5,14 @@ import utility from "../../../../utils/utility.js";
 /// GET RECOMMENDED USERS ///
 
 const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
-  const userId = req.user._id;
 
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 15;
+  let limit = parseInt(req.query.limit) || 20;
 
   const users = await models.User.find(
     {
       _id: {
-        $nin: [userId],
+        $nin: [req.user._id],
       },
     },
   ).select("_id").sort({ createdAt: -1 });
@@ -63,30 +62,10 @@ const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
 
   const results = [];
 
-  for (let i = 0; i < slicedUsers.length; i++) {
-    const user = slicedUsers[i];
-    const userData = await models.User.findById(user._id)
-      .select([
-        "_id", "fname", "lname", "email", "uname", "avatar", "profession",
-        "accountPrivacy", "accountStatus", "isVerified", "createdAt",
-      ]);
+  for (let user of slicedUsers) {
+    const userData = await utility.getUserData(user._id, req.user);
 
-    const followingStatus = await utility.getFollowingStatus(req.user, userData._id);
-
-    results.push({
-      _id: userData._id,
-      fname: userData.fname,
-      lname: userData.lname,
-      email: userData.email,
-      uname: userData.uname,
-      avatar: userData.avatar,
-      followingStatus: followingStatus,
-      profession: userData.profession,
-      accountPrivacy: userData.accountPrivacy,
-      accountStatus: userData.accountStatus,
-      isVerified: userData.isVerified,
-      createdAt: userData.createdAt,
-    });
+    results.push(userData);
   }
 
   res.status(200).json({
