@@ -34,7 +34,7 @@ export const runApp = () => {
   });
 
   // (async () => {
-  //   const users = await models.Follower.find();
+  //   const users = await models.Post.find();
   //   console.log(users.length);
   //   for (let user of users) {
   //     // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
@@ -63,6 +63,7 @@ export const runApp = () => {
 
   //     // console.log(user.accountPrivacy);
 
+  //     // console.log(user.isPrivate);
   //     // await user.save();
 
   //     // const followers = await models.Follower.find({ user: user._id })
