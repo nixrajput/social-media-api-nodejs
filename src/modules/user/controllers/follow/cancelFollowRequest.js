@@ -11,10 +11,10 @@ const cancelFollowRequest = catchAsyncError(async (req, res, next) => {
     }
 
     const userToFollow = await models.User.findById(req.query.id)
-        .select("_id followersCount followingCount");
+        .select("_id followersCount followingCount isPrivate");
 
     const user = await models.User.findById(req.user._id)
-        .select("_id followersCount followingCount");
+        .select("_id followersCount followingCount isPrivate");
 
     const isRequested = await models.FollowRequest.findOne({
         from: user._id,

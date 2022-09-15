@@ -3,7 +3,7 @@ import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
 
-/// FOLLOW USER ///
+/// FOLLOW/UNFOLLOW USER ///
 
 const followUnfollowUser = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
@@ -15,10 +15,10 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
   }
 
   const userToFollow = await models.User.findById(req.query.id)
-    .select("_id followersCount followingCount");
+    .select("_id followersCount followingCount isPrivate");
 
   const user = await models.User.findById(req.user._id)
-    .select("_id followersCount followingCount");
+    .select("_id followersCount followingCount isPrivate");
 
   if (!userToFollow) {
     return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
@@ -41,7 +41,6 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
       message: ResponseMessages.UNFOLLOWED_USER,
     });
   } else {
-
     if (userToFollow.isPrivate) {
       const followRequest = await models.FollowRequest
         .findOne({ from: user._id, to: userToFollow._id }).select("_id");

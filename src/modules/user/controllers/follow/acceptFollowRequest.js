@@ -17,10 +17,10 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
     }
 
     const user = await models.User.findById(req.user._id)
-        .select("_id followersCount followingCount");
+        .select("_id followersCount followingCount isPrivate");
 
     const userRequested = await models.User.findById(followRequest.from)
-        .select("_id followersCount followingCount");
+        .select("_id followersCount followingCount isPrivate");
 
     if (followRequest.to.toString() !== user._id.toString()) {
         return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 404));
