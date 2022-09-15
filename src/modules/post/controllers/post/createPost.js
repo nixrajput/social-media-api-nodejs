@@ -44,8 +44,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
 
   const post = await models.Post.create(newPost);
 
-  const user = await models.User.findById(req.user._id);
-  user.posts.push(post._id);
+  const user = await models.User.findById(req.user._id).select("_id postsCount");
   user.postsCount++;
   await user.save();
 
@@ -112,8 +111,17 @@ const createPost = catchAsyncError(async (req, res, next) => {
   postData.likesCount = post.likesCount;
   postData.commentsCount = post.commentsCount;
   postData.isLiked = isLiked;
+  postData.isArchived = post.isArchived;
+  postData.visibility = post.visibility;
+  postData.allowComments = post.allowComments;
+  postData.allowLikes = post.allowLikes;
+  postData.allowReposts = post.allowReposts;
+  postData.allowShare = post.allowShare;
+  postData.allowSave = post.allowSave;
+  postData.allowDownload = post.allowDownload;
   postData.postStatus = post.postStatus;
   postData.createdAt = post.createdAt;
+  postData.updatedAt = post.updatedAt;
 
   res.status(201).json({
     success: true,

@@ -76,7 +76,9 @@ const searchUser = catchAsyncError(async (req, res, next) => {
   for (let user of slicedUsers) {
     const userData = await utility.getUserData(user._id, req.user);
 
-    results.push(userData);
+    if (userData) {
+      results.push(userData);
+    }
   }
 
   res.status(200).json({

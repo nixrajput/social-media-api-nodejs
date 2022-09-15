@@ -72,4 +72,14 @@ adminRouter
     adminController.getAllPosts
   );
 
+
+/// COMMENTS
+adminRouter
+  .route("/admin/get-comments")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getAllComments
+  );
+
 export default adminRouter;

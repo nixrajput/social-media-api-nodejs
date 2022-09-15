@@ -6,6 +6,7 @@ import updateUserRole from "./user/updateUserRole.js";
 import getUserDetails from "./user/getUserDetails.js";
 import getAllPosts from "./post/getAllPosts.js";
 import updateVerificationStatus from "./user/updateVerificationStatus.js";
+import getAllComments from "./comment/getAllComments.js";
 
 const adminController = {};
 
@@ -17,5 +18,6 @@ adminController.updateUserRole = updateUserRole;
 adminController.getUserDetails = getUserDetails;
 adminController.getAllPosts = getAllPosts;
 adminController.updateVerificationStatus = updateVerificationStatus;
+adminController.getAllComments = getAllComments;
 
 export default adminController;

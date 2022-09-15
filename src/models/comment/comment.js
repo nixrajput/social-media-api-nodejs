@@ -16,13 +16,6 @@ const commentSchema = new mongoose.Schema({
     ref: "Post",
   },
 
-  likes: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
-
   likesCount: {
     type: Number,
     default: 0,
@@ -44,8 +37,17 @@ const commentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
+commentSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
+});
 
 const Comment = mongoose.model("Comment", commentSchema);
 

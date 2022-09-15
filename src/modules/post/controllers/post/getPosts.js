@@ -17,9 +17,8 @@ const getPosts = catchAsyncError(async (req, res, next) => {
   const followingIds = user.following.map((follow) => follow.user);
 
   const posts = await models.Post.find({
-    owner: {
-      $in: [...followingIds, user._id],
-    },
+    owner: { $in: [...followingIds, user._id], },
+    isArchived: false,
   }).select("_id").sort({ createdAt: -1 });
 
   let currentPage = parseInt(req.query.page) || 1;
@@ -70,11 +69,12 @@ const getPosts = catchAsyncError(async (req, res, next) => {
 
   const results = [];
 
-  for (let i = 0; i < slicedPosts.length; i++) {
-    const postId = slicedPosts[i]._id;
-    const postData = await utility.getPostData(postId, req.user);
+  for (let post of slicedPosts) {
+    const postData = await utility.getPostData(post._id, req.user);
 
-    results.push(postData);
+    if (postData) {
+      results.push(postData);
+    }
   }
 
   res.status(200).json({

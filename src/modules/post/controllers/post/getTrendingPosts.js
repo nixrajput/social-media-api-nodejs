@@ -1,22 +1,24 @@
-import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
-import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 
-const getLikedUsers = catchAsyncError(async (req, res, next) => {
-    if (!req.query.id) {
-        return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
-    }
+/// GET TRENDING POSTS ///
 
-    const postLikes = await models.PostLike.find({ post: req.query.id })
-        .sort({ createdAt: -1 });
+const getTrendingPosts = catchAsyncError(async (req, res, next) => {
+    const currentTimestamp = new Date().getTime();
+    const posts = await models.Post.find({
+        visibility: "public",
+        isArchived: false,
+        createdAt: {
+            $gte: currentTimestamp - 24 * 60 * 60 * 1000,
+        },
+    }).select("_id").sort({ createdAt: -1 });
 
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
 
-    let totalLikes = postLikes.length;
-    let totalPages = Math.ceil(totalLikes / limit);
+    let totalPosts = posts.length;
+    let totalPages = Math.ceil(totalPosts / limit);
 
     if (currentPage < 1) {
         currentPage = 1;
@@ -56,14 +58,16 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
         nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
     }
 
-    const slicedPostLikes = postLikes.slice(skip, skip + limit);
+    const slicedPosts = posts.slice(skip, skip + limit);
 
     const results = [];
 
-    for (let like of slicedPostLikes) {
-        const postLikeData = await utility.getPostLikeData(like._id, req.user);
+    for (let post of slicedPosts) {
+        const postData = await utility.getPostData(post._id, req.user);
 
-        results.push(postLikeData);
+        if (postData) {
+            results.push(postData);
+        }
     }
 
     res.status(200).json({
@@ -79,4 +83,4 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
     });
 });
 
-export default getLikedUsers;
+export default getTrendingPosts;

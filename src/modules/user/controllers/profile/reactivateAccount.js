@@ -53,6 +53,8 @@ const reactivateAccount = catchAsyncError(async (req, res, next) => {
 
         user.accountStatus = "active";
 
+        await models.Post.updateMany({ owner: user._id }, { isArchived: false });
+
         await user.save();
 
         const htmlMessage = `<p>Hi ${user.fname},</p>

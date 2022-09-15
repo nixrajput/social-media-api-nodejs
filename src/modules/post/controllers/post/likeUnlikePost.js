@@ -12,7 +12,7 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
   }
 
   const post = await models.Post.findById(req.query.id)
-    .select(["_id", "owner", "likesCount", "likes"]);
+    .select(["_id", "owner", "likesCount"]);
 
   if (!post) {
     return next(new ErrorHandler(ResponseMessages.POST_NOT_FOUND, 404));
@@ -21,9 +21,7 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
   const isLiked = await utility.checkIfPostLiked(post._id, req.user);
 
   if (isLiked) {
-    const index = post.likes.indexOf(isLiked);
-
-    post.likes.splice(index, 1);
+    await models.PostLike.findOneAndDelete({ post: post._id, user: req.user._id });
     post.likesCount--;
 
     await post.save();
@@ -33,9 +31,7 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
       message: ResponseMessages.POST_UNLIKED,
     });
   } else {
-    post.likes.push({
-      likedBy: req.user._id,
-    });
+    await models.PostLike.create({ post: post._id, user: req.user._id });
     post.likesCount++;
 
     const notification = await models.Notification.findOne({

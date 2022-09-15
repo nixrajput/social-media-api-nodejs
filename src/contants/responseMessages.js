@@ -26,6 +26,7 @@ ResponseMessages.MEDIA_FILES_REQUIRED = 'Media files is required';
 ResponseMessages.POST_ID_REQUIRED = 'Post id is required';
 ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED = 'Video thumbnail public id is required';
 ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED = 'Video thumbnail url is required';
+ResponseMessages.COMMENT_REQUIRED = 'Comment is required';
 
 
 /// Incorrect Response Messages
@@ -55,6 +56,11 @@ ResponseMessages.PROFILE_PICTURE_UPLOAD_SUCCESS = 'Profile picture uploaded succ
 ResponseMessages.PROFILE_PICTURE_REMOVE_SUCCESS = 'Profile picture removed successfully';
 ResponseMessages.PROFILE_UPDATE_SUCCESS = 'Profile updated successfully';
 ResponseMessages.POST_CREATE_SUCCESS = 'Post created successfully';
+ResponseMessages.POST_UPDATE_SUCCESS = 'Post updated successfully';
+ResponseMessages.POST_DELETE_SUCCESS = 'Post deleted successfully';
+ResponseMessages.COMMENT_ADD_SUCCESS = 'Comment added successfully';
+ResponseMessages.COMMENT_UPDATE_SUCCESS = 'Comment updated successfully';
+ResponseMessages.COMMENT_DELETE_SUCCESS = 'Comment deleted successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
@@ -109,6 +115,10 @@ ResponseMessages.POST_LIKED = 'Post liked';
 ResponseMessages.POST_UNLIKED = 'Post unliked';
 ResponseMessages.POST_DELETED = 'Post deleted';
 ResponseMessages.POST_ALREADY_DELETED = 'Post already deleted';
+
+ResponseMessages.COMMENT_NOT_FOUND = 'Comment not found';
+ResponseMessages.COMMENT_LIKED = 'Comment liked';
+ResponseMessages.COMMENT_UNLIKED = 'Comment unliked';
 
 
 /// Invalid Response Messages

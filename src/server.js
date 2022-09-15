@@ -101,5 +101,24 @@ const app = runApp();
     );
   };
 
-  connectToDatabase();
+  if (process.env.SERVER_MAINTENANCE === "true") {
+    app.listen(port, (err) => {
+      if (err) {
+        console.log(
+          `[server] could not start http server on port: ${port}`
+        );
+        return;
+      }
+      console.log(`[server] running on port: ${port}`);
+    });
+
+    app.use("*", (req, res, next) => {
+      res.status(500).json({
+        success: false,
+        message: "[server] offline for maintenance",
+      });
+    });
+  } else {
+    connectToDatabase();
+  }
 })();

@@ -33,6 +33,8 @@ const deactivateAccount = catchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler(ResponseMessages.ACCOUNT_ALREADY_DEACTIVATED, 400));
         }
 
+        await models.Post.updateMany({ owner: user._id }, { isArchived: true });
+
         user.accountStatus = "deactivated";
         await user.save();
 

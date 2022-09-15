@@ -29,6 +29,10 @@ postRouter
   .get(isAuthenticatedUser, postController.getPosts);
 
 postRouter
+  .route("/get-trending-posts")
+  .get(isAuthenticatedUser, postController.getTrendingPosts);
+
+postRouter
   .route("/like-post")
   .get(isAuthenticatedUser, postController.likeUnlikePost);
 

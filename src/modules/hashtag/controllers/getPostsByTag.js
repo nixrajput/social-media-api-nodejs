@@ -67,7 +67,9 @@ const getPostsByTag = catchAsyncError(async (req, res, next) => {
     for (let postId of slicedPosts) {
         const postData = await utility.getPostData(postId, req.user);
 
-        results.push(postData);
+        if (postData) {
+            results.push(postData);
+        }
     }
 
     results.sort((a, b) => {

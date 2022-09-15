@@ -174,9 +174,8 @@ utility.getFollowingStatus = async (reqUser, followUser) => {
     return "self";
   }
 
-  const isFollowing = reqUser.following.find(
-    (following) => following.user.toString() === followUser.toString()
-  );
+  const isFollowing = await models.Follower
+    .findOne({ user: followUser, follower: reqUser }).select("_id");
 
   if (isFollowing) return "following";
 
@@ -209,11 +208,20 @@ utility.checkIfPostOwner = async (postId, user) => {
   return false;
 };
 
+utility.checkIfCommentOwner = async (commentId, user) => {
+  const comment = await models.Comment.findById(commentId).
+    select("user");
+
+  if (comment.user.toString() === user._id.toString()) {
+    return true;
+  }
+
+  return false;
+
+};
+
 utility.checkIfPostLiked = async (postId, user) => {
-  const post = await models.Post.findById(postId).select("likes");
-  const isLiked = post.likes.find(
-    (like) => like.likedBy.toString() === user._id.toString()
-  );
+  const isLiked = await models.PostLike.findOne({ post: postId, user: user._id });
 
   if (isLiked) {
     return true;
@@ -222,12 +230,25 @@ utility.checkIfPostLiked = async (postId, user) => {
   return false;
 };
 
+utility.checkIfCommentLiked = async (commentId, user) => {
+  const isLiked = await models.CommentLike.findOne({ comment: commentId, user: user._id });
+
+  if (isLiked) {
+    return true;
+  }
+
+  return false;
+};
+
+
 utility.getOwnerData = async (ownerId, reqUser) => {
   const owner = await models.User.findById(ownerId)
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+      "updatedAt",
     ]);
+
   const ownerData = {};
 
   const followingStatus = await utility.getFollowingStatus(reqUser, owner._id);
@@ -244,6 +265,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.accountStatus = owner.accountStatus;
   ownerData.isVerified = owner.isVerified;
   ownerData.createdAt = owner.createdAt;
+  ownerData.updatedAt = owner.updatedAt;
 
   return ownerData;
 };
@@ -253,7 +275,9 @@ utility.getUserData = async (userId, reqUser) => {
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+      "updatedAt",
     ]);
+
   const userData = {};
 
   const followingStatus = await utility.getFollowingStatus(reqUser, user._id);
@@ -270,6 +294,7 @@ utility.getUserData = async (userId, reqUser) => {
   userData.accountStatus = user.accountStatus;
   userData.isVerified = user.isVerified;
   userData.createdAt = user.createdAt;
+  userData.updatedAt = user.updatedAt;
 
   return userData;
 };
@@ -294,8 +319,28 @@ utility.getMentions = (caption) => {
   return [];
 };
 
+utility.getPostLikeData = async (postLikeId, reqUser) => {
+  const postLike = await models.PostLike.findById(postLikeId);
+
+  const postLikeData = {};
+
+  const user = await utility.getUserData(postLike.user, reqUser);
+
+  postLikeData._id = postLike._id;
+  postLikeData.likedBy = user;
+  postLikeData.likedAt = postLike.createdAt;
+
+  return postLikeData;
+};
+
 utility.getPostData = async (postId, reqUser) => {
-  const post = await models.Post.findById(postId);
+  const post = await models.Post
+    .findOne({ _id: postId, isArchived: false });
+
+  if (!post) {
+    return null;
+  }
+
   const postData = {};
   const ownerData = await utility.getOwnerData(post.owner, reqUser);
   const isLiked = await utility.checkIfPostLiked(post._id, reqUser);
@@ -312,8 +357,17 @@ utility.getPostData = async (postId, reqUser) => {
   postData.likesCount = post.likesCount;
   postData.commentsCount = post.commentsCount;
   postData.isLiked = isLiked;
+  postData.isArchived = post.isArchived;
+  postData.visibility = post.visibility;
+  postData.allowComments = post.allowComments;
+  postData.allowLikes = post.allowLikes;
+  postData.allowReposts = post.allowReposts;
+  postData.allowShare = post.allowShare;
+  postData.allowSave = post.allowSave;
+  postData.allowDownload = post.allowDownload;
   postData.postStatus = post.postStatus;
   postData.createdAt = post.createdAt;
+  postData.updatedAt = post.updatedAt;
 
   return postData;
 };
@@ -331,6 +385,7 @@ utility.getCommentData = async (commentId, reqUser) => {
   commentData.likesCount = comment.likesCount;
   commentData.commentStatus = comment.commentStatus;
   commentData.createdAt = comment.createdAt;
+  commentData.updatedAt = comment.updatedAt;
 
   return commentData;
 };
@@ -351,6 +406,7 @@ utility.getNotificationData = async (notificationId, reqUser) => {
   notificationData.type = notification.type;
   notificationData.isRead = notification.isRead;
   notificationData.createdAt = notification.createdAt;
+  notificationData.updatedAt = notification.updatedAt;
 
   return notificationData;
 };
@@ -361,11 +417,40 @@ utility.getHashTagData = async (hashTagId) => {
 
   hashTagData._id = hashTag._id;
   hashTagData.name = hashTag.name;
-  hashTagData.posts = hashTag.posts;
   hashTagData.postsCount = hashTag.postsCount;
   hashTagData.createdAt = hashTag.createdAt;
+  hashTagData.updatedAt = hashTag.updatedAt;
 
   return hashTagData;
+};
+
+utility.getFollowerData = async (followerId, reqUser) => {
+  const follower = await models.Follower.findById(followerId);
+  const followerData = {};
+
+  const userData = await utility.getUserData(follower.follower, reqUser);
+
+  followerData._id = follower._id;
+  followerData.user = userData;
+  followerData.createdAt = follower.createdAt;
+  followerData.updatedAt = follower.updatedAt;
+
+  return followerData;
+};
+
+utility.getFollowingData = async (followingId, reqUser) => {
+  const following = await models.Follower.findById(followingId);
+
+  const followingData = {};
+
+  const userData = await utility.getUserData(following.user, reqUser);
+
+  followingData._id = following._id;
+  followingData.user = userData;
+  followingData.createdAt = following.createdAt;
+  followingData.updatedAt = following.updatedAt;
+
+  return followingData;
 };
 
 

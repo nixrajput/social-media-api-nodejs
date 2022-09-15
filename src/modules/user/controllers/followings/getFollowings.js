@@ -9,17 +9,13 @@ const getFollowings = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
-  const user = await models.User.findById(req.query.id)
-    .select("following followingCount");
-
-  if (!user) {
-    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
-  }
+  const followings = await models.Follower.find({ follower: req.query.id })
+    .select("_id").sort({ createdAt: -1 });
 
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
 
-  let totalFollowings = user.followingCount;
+  let totalFollowings = followings.length;
   let totalPages = Math.ceil(totalFollowings / limit);
 
   if (currentPage < 1) {
@@ -60,22 +56,16 @@ const getFollowings = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const slicedFollowings = user.following.slice(skip, skip + limit);
-
-  slicedFollowings.sort((a, b) => {
-    return new Date(b.createdAt) - new Date(a.createdAt);
-  });
+  const slicedFollowings = followings.slice(skip, skip + limit);
 
   const results = [];
 
   for (let following of slicedFollowings) {
-    const followingData = await utility.getUserData(following.user, req.user);
+    const followingData = await utility.getFollowingData(following._id, req.user);
 
-    results.push({
-      _id: following._id,
-      user: followingData,
-      createdAt: following.createdAt,
-    });
+    if (followingData) {
+      results.push(followingData);
+    }
   }
 
   res.status(200).json({

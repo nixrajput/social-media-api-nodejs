@@ -67,7 +67,9 @@ const getComments = catchAsyncError(async (req, res, next) => {
 
     const commentData = await utility.getCommentData(comment._id, req.user);
 
-    results.push(commentData);
+    if (commentData) {
+      results.push(commentData);
+    }
   }
 
   res.status(200).json({

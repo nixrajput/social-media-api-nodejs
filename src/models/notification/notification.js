@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema({
-  owner: {
-    type: mongoose.Types.ObjectId,
+  from: {
+    type: mongoose.Schema.ObjectId,
     ref: "User",
+    required: true,
   },
 
-  user: {
-    type: mongoose.Types.ObjectId,
+  to: {
+    type: mongoose.Schema.ObjectId,
     ref: "User",
+    required: true,
   },
 
   body: {
@@ -20,10 +22,10 @@ const notificationSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: [
-      "normal", "post", "story", "security", "follow",
-      "comment", "like", "mention", "message",
-      "reply", "followRequest", "followRequestAccepted",
-      "followRequestRejected", "followRequestRemoved",
+      "normal", "postLike", "postComment", "postMention", "postShare",
+      "story", "security", "commentLike", "commentReply", "commentMention",
+      "commentReplyLike", "follow", "followRequest", "followRequestAccepted",
+      "followRequestRemoved",
     ],
     default: "normal",
   },
@@ -37,6 +39,16 @@ const notificationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  }
+});
+
+notificationSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
 });
 
 const Notification = mongoose.model("Notification", notificationSchema);

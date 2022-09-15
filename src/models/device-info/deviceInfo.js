@@ -26,6 +26,16 @@ const deviceInfoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+deviceInfoSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
 });
 
 const DeviceInfo = mongoose.model("DeviceInfo", deviceInfoSchema);

@@ -37,8 +37,10 @@ const deletePost = catchAsyncError(async (req, res, next) => {
     }
   }
 
-  if (post.comments.length > 0) {
-    await models.Comment.deleteMany({ _id: { $in: post.comments } });
+  const comments = await models.Comment.find({ post: post._id }).select("_id");
+
+  if (comments.length > 0) {
+    await models.Comment.deleteMany({ _id: { $in: comments } });
   }
 
   if (post.caption) {
@@ -59,10 +61,6 @@ const deletePost = catchAsyncError(async (req, res, next) => {
   await post.remove();
 
   const user = await models.User.findById(req.user._id);
-
-  const index = user.posts.indexOf(req.query.id);
-
-  user.posts.splice(index, 1);
   user.postsCount--;
 
   await user.save();

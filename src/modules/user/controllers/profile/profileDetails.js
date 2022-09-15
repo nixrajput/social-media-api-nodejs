@@ -11,7 +11,7 @@ const getProfileDetails = catchAsyncError(async (req, res, next) => {
       "postsCount", "followersCount", "followingCount", "isValid",
       "accountPrivacy", "accountStatus", "isVerified", "verificationStatus",
       "role", "createdAt", "emailVerified", "phone", "countryCode",
-      "phoneVerified",
+      "phoneVerified", "updatedAt",
     ]);
 
   const profileDetails = {};
@@ -42,6 +42,7 @@ const getProfileDetails = catchAsyncError(async (req, res, next) => {
   profileDetails.verificationStatus = user.verificationStatus;
   profileDetails.role = user.role;
   profileDetails.createdAt = user.createdAt;
+  profileDetails.updatedAt = user.updatedAt;
 
   res.status(200).json({
     success: true,

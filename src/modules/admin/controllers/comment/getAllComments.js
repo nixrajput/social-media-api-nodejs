@@ -1,22 +1,18 @@
-import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
-import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 
-const getFollowers = catchAsyncError(async (req, res, next) => {
-  if (!req.query.id) {
-    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
-  }
+/// GET ALL COMMENTS ///
 
-  const followers = await models.Follower.find({ user: req.query.id })
-    .select("_id").sort({ createdAt: -1 });
+const getAllComments = catchAsyncError(async (req, res, next) => {
 
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 10;
+  let limit = parseInt(req.query.limit) || 50;
 
-  let totalFollowers = followers.length;
-  let totalPages = Math.ceil(totalFollowers / limit);
+  const comments = await models.Comment.find().select("_id").sort({ createdAt: -1 });
+
+  let totalComments = comments.length;
+  let totalPages = Math.ceil(totalComments / limit);
 
   if (currentPage < 1) {
     currentPage = 1;
@@ -56,19 +52,15 @@ const getFollowers = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const slicedFollowers = followers.slice(skip, skip + limit);
-
-  // slicedFollowers.sort((a, b) => {
-  //   return new Date(b.createdAt) - new Date(a.createdAt);
-  // });
+  const slicedComments = comments.slice(skip, skip + limit);
 
   const results = [];
 
-  for (let follower of slicedFollowers) {
-    const followerData = await utility.getFollowerData(follower._id, req.user);
+  for (let comment of slicedComments) {
+    const commentData = await utility.getCommentData(comment._id, req.user);
 
-    if (followerData) {
-      results.push(followerData);
+    if (commentData) {
+      results.push(commentData);
     }
   }
 
@@ -85,4 +77,4 @@ const getFollowers = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export default getFollowers;
+export default getAllComments;

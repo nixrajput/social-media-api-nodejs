@@ -11,7 +11,8 @@ const getPostDetails = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
-  const post = await models.Post.findById(req.query.id).select("_id");
+  const post = await models.Post.findOne({ _id: req.query.id, isArchived: false })
+    .select("_id");
 
   if (!post) {
     return next(new ErrorHandler(ResponseMessages.POST_NOT_FOUND, 404));

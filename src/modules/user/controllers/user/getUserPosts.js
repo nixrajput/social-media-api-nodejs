@@ -8,7 +8,7 @@ import utility from "../../../../utils/utility.js";
 
 const getUserPosts = catchAsyncError(async (req, res, next) => {
     const user = await models.User.findById(req.query.id)
-        .select("_id accountPrivacy posts postsCount");
+        .select("_id accountPrivacy");
 
     if (!user) {
         return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
@@ -21,7 +21,9 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
         const followingStatus = await utility.getFollowingStatus(req.user, user._id);
         const isSameUser = await utility.checkIfSameUser(req.user, user._id);
         if (followingStatus === "following" || isSameUser) {
-            const posts = user.posts;
+
+            const posts = await models.Post.find({ owner: user._id, isArchived: false })
+                .select("_id").sort({ createdAt: -1 });
 
             let totalPosts = posts.length;
             let totalPages = Math.ceil(totalPosts / limit);
@@ -71,12 +73,10 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
             for (let postId of slicedPosts) {
                 const postData = await utility.getPostData(postId, req.user);
 
-                results.push(postData);
+                if (postData) {
+                    results.push(postData);
+                }
             }
-
-            results.sort((a, b) => {
-                return new Date(b.createdAt) - new Date(a.createdAt);
-            });
 
             res.status(200).json({
                 success: true,
@@ -104,7 +104,8 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
             });
         }
     } else {
-        const posts = user.posts;
+        const posts = await models.Post.find({ owner: user._id, isArchived: false })
+            .select("_id").sort({ createdAt: -1 });
 
         let totalPosts = posts.length;
         let totalPages = Math.ceil(totalPosts / limit);
@@ -154,12 +155,10 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
         for (let postId of slicedPosts) {
             const postData = await utility.getPostData(postId, req.user);
 
-            results.push(postData);
+            if (postData) {
+                results.push(postData);
+            }
         }
-
-        results.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
 
         res.status(200).json({
             success: true,

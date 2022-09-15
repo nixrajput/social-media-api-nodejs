@@ -1,42 +1,64 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
 /// LIKE/UNLIKE COMMENT ///
 
 const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
     return next(
-      new ErrorHandler("please enter comment id in query params", 400)
+      new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400)
     );
   }
 
   const comment = await models.Comment.findById(req.query.id);
 
   if (!comment) {
-    return next(new ErrorHandler("comment not found", 404));
+    return next(new ErrorHandler(ResponseMessages.COMMENT_NOT_FOUND, 404));
   }
 
-  if (comment.likes.includes(req.user._id)) {
-    const index = comment.likes.indexOf(req.user._id);
+  const isLiked = await utility.checkIfCommentLiked(comment._id, req.user);
 
-    comment.likes.splice(index, 1);
+  if (isLiked) {
+    await models.CommentLike.findOneAndDelete({ comment: comment._id, user: req.user._id });
     comment.likesCount--;
+
     await comment.save();
 
     res.status(200).json({
       success: true,
-      message: "comment unliked",
+      message: ResponseMessages.COMMENT_UNLIKED,
     });
   } else {
-    comment.likes.push(req.user._id);
+    await models.CommentLike.create({ comment: comment._id, user: req.user._id });
     comment.likesCount++;
-    await comment.save();
 
-    res.status(200).json({
-      success: true,
-      message: "comment liked",
+    const notification = await models.Notification.findOne({
+      user: req.user._id,
+      refId: comment._id,
     });
+
+    const isCommentOwner = await utility.checkIfCommentOwner(comment._id, req.user);
+
+    if (!notification && !isCommentOwner) {
+      await models.Notification.create({
+        owner: comment.owner,
+        user: req.user._id,
+        body: "liked your comment",
+        refId: comment._id,
+        type: "commentLike",
+      });
+
+      await comment.save();
+
+      res.status(200).json({
+        success: true,
+        message: ResponseMessages.COMMENT_LIKED,
+      });
+
+    }
   }
 });
 

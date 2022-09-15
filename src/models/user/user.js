@@ -71,43 +71,10 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 
-  posts: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Post",
-    },
-  ],
-
   postsCount: {
     type: Number,
     default: 0,
   },
-
-  followers: [
-    {
-      user: {
-        type: mongoose.Schema.ObjectId,
-        ref: "User",
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-  ],
-
-  following: [
-    {
-      user: {
-        type: mongoose.Schema.ObjectId,
-        ref: "User",
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-  ],
 
   followersCount: {
     type: Number,
@@ -172,9 +139,20 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-// Hash Password
+// Update UpdatedAt
+userSchema.pre("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
+});
+
+// Encrypt Password
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -183,7 +161,7 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 16);
 });
 
-// JWT Token
+// Generate JWT Token
 userSchema.methods.generateToken = async function () {
   const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -200,6 +178,7 @@ userSchema.methods.generateToken = async function () {
 userSchema.methods.matchPassword = async function (userPassword) {
   return await bcrypt.compare(userPassword, this.password);
 };
+
 
 userSchema.index({ uname: "text", fname: "text", lname: "text" });
 const User = mongoose.model("User", userSchema);

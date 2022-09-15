@@ -47,6 +47,7 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
       accountStatus: 1,
       isVerified: 1,
       createdAt: 1,
+      updatedAt: 1,
     });
 
   if (!user) {
@@ -77,6 +78,7 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
   userDetails.accountStatus = user.accountStatus;
   userDetails.isVerified = user.isVerified;
   userDetails.createdAt = user.createdAt;
+  userDetails.updatedAt = user.updatedAt;
 
   res.status(200).json({
     success: true,
