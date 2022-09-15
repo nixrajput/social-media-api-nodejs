@@ -14,7 +14,7 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
 
-  const notifications = await models.Notification.find({ owner: userId })
+  const notifications = await models.Notification.find({ to: userId })
     .select("_id").sort({ createdAt: -1 });
 
   let totalNotifications = notifications.length;
@@ -62,8 +62,7 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
 
   const results = [];
 
-  for (let i = 0; i < slicedNotifications.length; i++) {
-    const notification = slicedNotifications[i];
+  for (let notification of slicedNotifications) {
 
     const notificationData = await utility.getNotificationData(notification._id, req.user);
 

@@ -43,11 +43,11 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
 
     if (!notification && !isPostOwner) {
       await models.Notification.create({
-        owner: post.owner,
-        user: req.user._id,
+        to: post.owner,
+        from: req.user._id,
         body: "liked your post",
         refId: post._id,
-        type: "like",
+        type: "postLike",
       });
     }
 

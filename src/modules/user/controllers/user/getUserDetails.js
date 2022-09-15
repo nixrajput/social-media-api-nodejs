@@ -42,7 +42,8 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
       gender: 1,
       profession: 1,
       website: 1,
-      accountPrivacy: 1,
+      isPrivate: 1,
+      isValid: 1,
       role: 1,
       accountStatus: 1,
       isVerified: 1,
@@ -73,10 +74,11 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
   userDetails.gender = user.gender;
   userDetails.profession = user.profession;
   userDetails.website = user.website;
-  userDetails.accountPrivacy = user.accountPrivacy;
-  userDetails.role = user.role;
   userDetails.accountStatus = user.accountStatus;
+  userDetails.isPrivate = user.isPrivate;
+  userDetails.isValid = user.isValid;
   userDetails.isVerified = user.isVerified;
+  userDetails.role = user.role;
   userDetails.createdAt = user.createdAt;
   userDetails.updatedAt = user.updatedAt;
 

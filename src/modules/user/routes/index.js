@@ -77,7 +77,7 @@ userRouter
 
 userRouter
   .route("/follow-user")
-  .get(isAuthenticatedUser, userController.followUser);
+  .get(isAuthenticatedUser, userController.followUnfollowUser);
 
 userRouter
   .route("/get-follow-requests")

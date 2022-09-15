@@ -16,7 +16,7 @@ const markReadNotification = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.NOTIFICATION_NOT_FOUND, 404));
     }
 
-    if (notification.owner.toString() === req.user._id.toString()) {
+    if (notification.to.toString() === req.user._id.toString()) {
         notification.isRead = true;
         await notification.save();
         return res.status(200).json({

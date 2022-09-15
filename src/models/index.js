@@ -8,18 +8,20 @@ import OTP from "./otp/otp.js";
 import Tag from "./hashtag/tag.js";
 import PostLike from "./post/postLike.js";
 import Follower from "./user/follower.js";
+import FollowRequest from "./notification/followRequest.js";
 
 const models = {};
 
 models.DeviceInfo = DeviceInfo;
 models.User = User;
-models.Notification = Notification;
-models.Post = Post;
 models.Comment = Comment;
 models.CommentLike = CommentLike;
 models.OTP = OTP;
 models.Tag = Tag;
+models.Post = Post;
 models.PostLike = PostLike;
 models.Follower = Follower;
+models.Notification = Notification;
+models.FollowRequest = FollowRequest;
 
 export default models;

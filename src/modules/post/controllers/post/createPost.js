@@ -68,11 +68,11 @@ const createPost = catchAsyncError(async (req, res, next) => {
 
       if (user && (!notification && !isPostOwner)) {
         await models.Notification.create({
-          owner: user._id,
-          user: req.user._id,
+          to: user._id,
+          from: req.user._id,
           refId: post._id,
           body: `mentioned you in a post`,
-          type: "mention"
+          type: "postMention"
         });
       }
     }

@@ -25,7 +25,7 @@ const notificationSchema = new mongoose.Schema({
       "normal", "postLike", "postComment", "postMention", "postShare",
       "story", "security", "commentLike", "commentReply", "commentMention",
       "commentReplyLike", "follow", "followRequest", "followRequestAccepted",
-      "followRequestRemoved",
+      "followRequestRemoved", "followRequestApproved", "followRequestDeclined",
     ],
     default: "normal",
   },

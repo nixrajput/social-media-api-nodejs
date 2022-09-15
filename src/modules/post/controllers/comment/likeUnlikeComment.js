@@ -44,8 +44,8 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
 
     if (!notification && !isCommentOwner) {
       await models.Notification.create({
-        owner: comment.owner,
-        user: req.user._id,
+        to: comment.owner,
+        from: req.user._id,
         body: "liked your comment",
         refId: comment._id,
         type: "commentLike",

@@ -6,7 +6,7 @@ import cors from "cors";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errors.js";
 import utility from "./utils/utility.js";
-import models from "./models/index.js";
+// import models from "./models/index.js";
 
 export const runApp = () => {
   const app = express();
@@ -33,124 +33,130 @@ export const runApp = () => {
     utility.deleteExpiredOTPs();
   });
 
-  (async () => {
-    const users = await models.User.find();
-    console.log(users.length);
-    for (let user of users) {
-      // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
-      // console.log("done");
+  // (async () => {
+  //   const users = await models.Follower.find();
+  //   console.log(users.length);
+  //   for (let user of users) {
+  //     // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
+  //     // console.log("done");
 
-      // user.accountPrivacy = user.accountType;
-      // await user.save();
+  //     // user.accountPrivacy = user.accountType;
+  //     // await user.save();
 
-      // await models.User.updateOne({ _id: user._id }, {
-      //   $unset: {
-      //     followers: [],
-      //     following: [],
-      //   }
-      // });
+  //     // await models.User.updateOne({ _id: user._id }, {
+  //     //   $unset: {
+  //     //     followers: [],
+  //     //     following: [],
+  //     //   }
+  //     // });
 
-      // const posts = await models.Post.find({ owner: user._id })
-      //   .select("_id").sort({ createdAt: -1 });
+  //     // const posts = await models.Post.find({ owner: user._id })
+  //     //   .select("_id").sort({ createdAt: -1 });
 
-      // console.log(posts.length);
+  //     // console.log(posts.length);
 
-      // user.postsCount = posts.length;
+  //     // user.postsCount = posts.length;
 
-      // await user.save();
+  //     // if (user.accountPrivacy === "private") {
+  //     //   user.isPrivate = true;
+  //     // }
 
-      // const followers = await models.Follower.find({ user: user._id })
-      //   .select("_id").sort({ createdAt: -1 });
+  //     // console.log(user.accountPrivacy);
 
-      // const followings = await models.Follower.find({ follower: user._id })
-      //   .select("_id").sort({ createdAt: -1 });
+  //     // await user.save();
 
-      // const followersCount = followers.length;
-      // const followingCount = followings.length;
+  //     // const followers = await models.Follower.find({ user: user._id })
+  //     //   .select("_id").sort({ createdAt: -1 });
 
-      // user.followersCount = followersCount;
-      // user.followingCount = followingCount;
+  //     // const followings = await models.Follower.find({ follower: user._id })
+  //     //   .select("_id").sort({ createdAt: -1 });
 
-      // await user.save();
+  //     // const followersCount = followers.length;
+  //     // const followingCount = followings.length;
 
-      // await models.Follower.deleteOne({ _id: post._id });
+  //     // user.followersCount = followersCount;
+  //     // user.followingCount = followingCount;
 
-      //console.log(post.updatedAt);
+  //     // await user.save();
 
-      //console.log(post.likes);
+  //     // await models.Follower.deleteOne({ _id: post._id });
 
-      // if (post.followers.length > 0) {
-      //   for (let like of post.followers) {
-      //     await models.Follower.create({
-      //       user: post._id,
-      //       follower: like.user,
-      //       createdAt: like.createdAt,
-      //     });
-      //   }
-      // }
+  //     //console.log(post.updatedAt);
 
-      //await post.save();
+  //     //console.log(post.likes);
 
-      //let postLikes = post.newLikes;
-      // console.log(postLikes);
-      // let postComments = post.comments;
-      // let postLikesCount = postLikes.length;
-      // let postCommentsCount = postComments.length;
+  //     // if (post.followers.length > 0) {
+  //     //   for (let like of post.followers) {
+  //     //     await models.Follower.create({
+  //     //       user: post._id,
+  //     //       follower: like.user,
+  //     //       createdAt: like.createdAt,
+  //     //     });
+  //     //   }
+  //     // }
 
-      // let newFollowers = user.followers;
-      // let newFollowing = user.following;
+  //     //await post.save();
 
-      // if (newFollowers.length > 0) {
-      //   for (let newFollower of newFollowers) {
-      //     user.newFollowers.push({
-      //       user: newFollower,
-      //     });
-      //   }
-      // }
+  //     //let postLikes = post.newLikes;
+  //     // console.log(postLikes);
+  //     // let postComments = post.comments;
+  //     // let postLikesCount = postLikes.length;
+  //     // let postCommentsCount = postComments.length;
 
-      // if (newFollowing.length > 0) {
-      //   for (let item of newFollowing) {
-      //     user.newFollowings.push({
-      //       user: item,
-      //     });
-      //   }
-      // }
+  //     // let newFollowers = user.followers;
+  //     // let newFollowing = user.following;
 
-      // user.followers = user.newFollowers;
-      // user.following = user.newFollowings;
+  //     // if (newFollowers.length > 0) {
+  //     //   for (let newFollower of newFollowers) {
+  //     //     user.newFollowers.push({
+  //     //       user: newFollower,
+  //     //     });
+  //     //   }
+  //     // }
 
-      // let postsCount = user.posts.length;
-      // user.postsCount = postsCount;
+  //     // if (newFollowing.length > 0) {
+  //     //   for (let item of newFollowing) {
+  //     //     user.newFollowings.push({
+  //     //       user: item,
+  //     //     });
+  //     //   }
+  //     // }
 
-      //await user.save();
+  //     // user.followers = user.newFollowers;
+  //     // user.following = user.newFollowings;
 
-      //console.log(newFollowers)
+  //     // let postsCount = user.posts.length;
+  //     // user.postsCount = postsCount;
+
+  //     //await user.save();
+
+  //     //console.log(newFollowers)
 
 
-      // user.followersCount = followersCount;
-      // user.newF = followingCount;
+  //     // user.followersCount = followersCount;
+  //     // user.newF = followingCount;
 
-      // await user.save();
+  //     // await user.save();
 
-      // for (let like of postLikes) {
-      //   console.log(like);
-      //   post.newLikes1.push({
-      //     likedBy: like.likedBy,
-      //     likedAt: like.likedAt,
-      //   });
-      // }
-      // let user = await models.User.findById(like.likedBy);
-      // user.likes.push(post._id);
-      // let postNewLikes = post.newLikes1;
-      // post.likes = postNewLikes;
-      // await post.save();
+  //     // for (let like of postLikes) {
+  //     //   console.log(like);
+  //     //   post.newLikes1.push({
+  //     //     likedBy: like.likedBy,
+  //     //     likedAt: like.likedAt,
+  //     //   });
+  //     // }
+  //     // let user = await models.User.findById(like.likedBy);
+  //     // user.likes.push(post._id);
+  //     // let postNewLikes = post.newLikes1;
+  //     // post.likes = postNewLikes;
+  //     // await post.save();
 
-      // post.likesCount = postLikesCount;
-      // post.commentsCount = postCommentsCount;
-      // await post.save();
-    }
-    console.log("operation done");
-  })();
+  //     // post.likesCount = postLikesCount;
+  //     // post.commentsCount = postCommentsCount;
+  //     // await post.save();
+  //   }
+  //   console.log("operation done");
+  // })();
 
   // Index Route
   app.route("/").get(function (req, res) {

@@ -34,11 +34,11 @@ const addComment = catchAsyncError(async (req, res, next) => {
 
   if (post.owner.toString() !== req.user._id.toString()) {
     await models.Notification.create({
-      owner: post.owner,
-      user: req.user._id,
+      to: post.owner,
+      from: req.user._id,
       body: "commented on your post.",
       refId: post._id,
-      type: "comment",
+      type: "postComment",
     });
   }
 

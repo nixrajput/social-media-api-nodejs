@@ -6,33 +6,34 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 /// CANCEL FOLLOW REQUEST ///
 
 const cancelFollowRequest = catchAsyncError(async (req, res, next) => {
-
     if (!req.query.id) {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
 
-    const userToFollow = await models.User.findById(req.query.id);
-    const user = await models.User.findById(req.user._id);
+    const userToFollow = await models.User.findById(req.query.id)
+        .select("_id followersCount followingCount");
 
-    const isRequested = await models.Notification.findOne({
-        owner: userToFollow._id,
-        user: user._id,
-        type: "followRequest",
+    const user = await models.User.findById(req.user._id)
+        .select("_id followersCount followingCount");
+
+    const isRequested = await models.FollowRequest.findOne({
+        from: user._id,
+        to: userToFollow._id,
     });
 
     if (!isRequested) {
-        return next(new ErrorHandler("follow request not found", 404));
+        return next(new ErrorHandler(ResponseMessages.FOLLOW_REQUEST_NOT_FOUND, 404));
     }
 
-    if (req.user._id.toString() !== isRequested.user.toString()) {
-        return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 403));
+    if (user._id.toString() !== isRequested.from.toString()) {
+        return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 401));
     }
 
     await isRequested.remove();
 
     res.status(200).json({
         success: true,
-        message: "follow request canceled",
+        message: ResponseMessages.FOLLOW_REQUEST_CANCELLED,
     });
 });
 

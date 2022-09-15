@@ -120,6 +120,20 @@ ResponseMessages.COMMENT_NOT_FOUND = 'Comment not found';
 ResponseMessages.COMMENT_LIKED = 'Comment liked';
 ResponseMessages.COMMENT_UNLIKED = 'Comment unliked';
 
+ResponseMessages.FOLLOWING = 'Following';
+ResponseMessages.UNFOLLOWING = 'Unfollowing';
+ResponseMessages.ALREADY_FOLLOWING = 'Already following';
+ResponseMessages.ALREADY_UNFOLLOWING = 'Already unfollowing';
+ResponseMessages.UNFOLLOWED_USER = 'Unfollowed user';
+ResponseMessages.FOLLOWED_USER = 'Followed user';
+ResponseMessages.FOLLOW_REQUEST_ALREADY_SENT = 'Follow request already sent';
+ResponseMessages.FOLLOW_REQUEST_SENT = 'Follow request sent';
+ResponseMessages.FOLLOW_REQUEST_ACCEPTED = 'Follow request accepted';
+ResponseMessages.FOLLOW_REQUEST_REMOVED = 'Follow request removed';
+ResponseMessages.FOLLOW_REQUEST_CANCELLED = 'Follow request cancelled';
+ResponseMessages.FOLLOW_REQUEST_NOT_FOUND = 'Follow request not found';
+
+
 
 /// Invalid Response Messages
 ResponseMessages.ACCOUNT_NOT_ACTIVE = 'Account not active';
@@ -130,6 +144,7 @@ ResponseMessages.INVALID_USERNAME = 'Invalid username';
 ResponseMessages.INVALID_PASSWORD = 'Invalid password';
 ResponseMessages.INVALID_OTP = 'Invalid OTP';
 ResponseMessages.INVALID_FIRST_NAME_LENGTH = 'First name must be at least 3 characters';
+ResponseMessages.INVALID_LAST_NAME_LENGTH = 'Last name must be at least 1 characters';
 ResponseMessages.INVALID_USERNAME_LENGTH = 'Username must be between 3-15 characters';
 ResponseMessages.INVALID_CREDENTIALS = 'Invalid credentials';
 ResponseMessages.INVALID_TOKEN = 'Invalid token';

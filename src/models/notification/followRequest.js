@@ -21,13 +21,7 @@ const FollowRequestSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now,
-    },
-
-    status: {
-        type: String,
-        enum: ["pending", "accepted", "rejected"],
-        default: "pending",
-    },
+    }
 });
 
 FollowRequestSchema.pre("save", function (next) {

@@ -245,7 +245,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   const owner = await models.User.findById(ownerId)
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
-      "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+      "isPrivate", "accountStatus", "isVerified", "createdAt",
       "updatedAt",
     ]);
 
@@ -261,8 +261,9 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.avatar = owner.avatar;
   ownerData.profession = owner.profession;
   ownerData.followingStatus = followingStatus;
-  ownerData.accountPrivacy = owner.accountPrivacy;
   ownerData.accountStatus = owner.accountStatus;
+  ownerData.isPrivate = owner.isPrivate;
+  ownerData.isValid = owner.isValid;
   ownerData.isVerified = owner.isVerified;
   ownerData.createdAt = owner.createdAt;
   ownerData.updatedAt = owner.updatedAt;
@@ -274,7 +275,7 @@ utility.getUserData = async (userId, reqUser) => {
   const user = await models.User.findById(userId)
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
-      "accountPrivacy", "accountStatus", "isVerified", "createdAt",
+      "isPrivate", "accountStatus", "isVerified", "createdAt",
       "updatedAt",
     ]);
 
@@ -290,8 +291,9 @@ utility.getUserData = async (userId, reqUser) => {
   userData.avatar = user.avatar;
   userData.profession = user.profession;
   userData.followingStatus = followingStatus;
-  userData.accountPrivacy = user.accountPrivacy;
   userData.accountStatus = user.accountStatus;
+  userData.isPrivate = user.isPrivate;
+  userData.isValid = user.isValid;
   userData.isVerified = user.isVerified;
   userData.createdAt = user.createdAt;
   userData.updatedAt = user.updatedAt;
@@ -395,12 +397,12 @@ utility.getNotificationData = async (notificationId, reqUser) => {
 
   const notificationData = {};
 
-  const ownerData = await utility.getOwnerData(notification.owner, reqUser);
-  const userData = await utility.getUserData(notification.user, reqUser);
+  const ownerData = await utility.getOwnerData(notification.to, reqUser);
+  const userData = await utility.getUserData(notification.from, reqUser);
 
   notificationData._id = notification._id;
-  notificationData.owner = ownerData;
-  notificationData.user = userData;
+  notificationData.to = ownerData;
+  notificationData.from = userData;
   notificationData.refId = notification.refId;
   notificationData.body = notification.body;
   notificationData.type = notification.type;
@@ -453,5 +455,21 @@ utility.getFollowingData = async (followingId, reqUser) => {
   return followingData;
 };
 
+utility.getFollowRequestData = async (followRequestId, reqUser) => {
+  const followRequest = await models.FollowRequest.findById(followRequestId);
+
+  const followRequestData = {};
+
+  const toData = await utility.getUserData(followRequest.to, reqUser);
+  const fromData = await utility.getUserData(followRequest.from, reqUser);
+
+  followRequestData._id = followRequest._id;
+  followRequestData.to = toData;
+  followRequestData.from = fromData;
+  followRequestData.createdAt = followRequest.createdAt;
+  followRequestData.updatedAt = followRequest.updatedAt;
+
+  return followRequestData;
+};
 
 export default utility;
