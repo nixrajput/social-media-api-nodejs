@@ -55,25 +55,29 @@ const createPost = catchAsyncError(async (req, res, next) => {
     hashtags = utility.getHashTags(caption);
     mentions = utility.getMentions(caption);
 
-    for (let i = 0; i < mentions.length; i++) {
-      const user = await models.User.findOne({ username: mentions[i] })
-        .select(["_id", "username"]);
+    if (mentions.length > 0) {
+      for (let i = 0; i < mentions.length; i++) {
+        const mentionedUser = await models.User.findOne({ uname: mentions[i] })
+          .select(["_id", "uname"]);
 
-      const notification = await models.Notification.findOne({
-        user: req.user._id,
-        refId: post._id,
-      });
-
-      const isPostOwner = await utility.checkIfPostOwner(post._id, req.user);
-
-      if (user && (!notification && !isPostOwner)) {
-        await models.Notification.create({
-          to: user._id,
+        const notification = await models.Notification.findOne({
+          to: mentionedUser._id,
           from: req.user._id,
           refId: post._id,
-          body: `mentioned you in a post`,
           type: "postMention"
         });
+
+        const isPostOwner = await utility.checkIfPostOwner(post._id, mentionedUser);
+
+        if (mentionedUser && (!notification && !isPostOwner)) {
+          await models.Notification.create({
+            to: mentionedUser._id,
+            from: req.user._id,
+            refId: post._id,
+            body: `mentioned you in a post`,
+            type: "postMention"
+          });
+        }
       }
     }
 

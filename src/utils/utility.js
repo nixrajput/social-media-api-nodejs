@@ -311,7 +311,7 @@ utility.getHashTags = (caption) => {
 };
 
 utility.getMentions = (caption) => {
-  const mentions = caption.match(/@[a-zA-Z0-9]+/g);
+  const mentions = caption.match(/@[a-zA-Z0-9_]+/g);
 
   if (mentions) {
     return mentions.map((mention) => mention.replace("@", ""));
