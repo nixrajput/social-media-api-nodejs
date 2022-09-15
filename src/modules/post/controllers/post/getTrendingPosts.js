@@ -9,8 +9,9 @@ const getTrendingPosts = catchAsyncError(async (req, res, next) => {
     const posts = await models.Post.find({
         visibility: "public",
         isArchived: false,
+        owner: { $ne: req.user._id },
         createdAt: {
-            $gte: currentTimestamp - 24 * 60 * 60 * 1000,
+            $gte: currentTimestamp - 7 * 24 * 60 * 60 * 1000,
         },
     }).select("_id").sort({ createdAt: -1 });
 

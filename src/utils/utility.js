@@ -179,10 +179,9 @@ utility.getFollowingStatus = async (reqUser, followUser) => {
 
   if (isFollowing) return "following";
 
-  const followRequest = await models.Notification.findOne({
-    user: reqUser._id,
-    owner: followUser,
-    type: "followRequest",
+  const followRequest = await models.FollowRequest.findOne({
+    from: reqUser._id,
+    to: followUser,
   });
 
   if (followRequest) return "requested";

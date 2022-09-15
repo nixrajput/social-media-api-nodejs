@@ -1,23 +1,19 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
-import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
-import ResponseMessages from "../../../../contants/responseMessages.js";
 
 /// GET POSTS ///
 
 const getPosts = catchAsyncError(async (req, res, next) => {
-  const user = await models.User.findById(req.user._id)
-    .select("_id following");
+  const followings = await models.Follower.find({ follower: req.user._id })
+    .select("_id user");
 
-  if (!user) {
-    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
-  }
+  const followingIds = followings.map((u) => u.user);
 
-  const followingIds = user.following.map((follow) => follow.user);
+  followingIds.push(req.user._id);
 
   const posts = await models.Post.find({
-    owner: { $in: [...followingIds, user._id], },
+    owner: { $in: followingIds },
     isArchived: false,
   }).select("_id").sort({ createdAt: -1 });
 
