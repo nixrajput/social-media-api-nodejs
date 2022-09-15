@@ -95,33 +95,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
 
   }
 
-  const postData = {};
-
-  const ownerData = await utility.getOwnerData(post.owner, req.user);
-
-  const isLiked = await utility.checkIfPostLiked(post._id, req.user);
-
-  postData._id = post._id;
-  postData.caption = post.caption;
-  postData.mediaFiles = post.mediaFiles;
-  postData.owner = ownerData;
-  postData.hashtags = hashtags;
-  postData.mentions = mentions;
-  postData.postType = post.postType;
-  postData.likesCount = post.likesCount;
-  postData.commentsCount = post.commentsCount;
-  postData.isLiked = isLiked;
-  postData.isArchived = post.isArchived;
-  postData.visibility = post.visibility;
-  postData.allowComments = post.allowComments;
-  postData.allowLikes = post.allowLikes;
-  postData.allowReposts = post.allowReposts;
-  postData.allowShare = post.allowShare;
-  postData.allowSave = post.allowSave;
-  postData.allowDownload = post.allowDownload;
-  postData.postStatus = post.postStatus;
-  postData.createdAt = post.createdAt;
-  postData.updatedAt = post.updatedAt;
+  const postData = await utility.getPostData(post._id, req.user);
 
   res.status(201).json({
     success: true,
