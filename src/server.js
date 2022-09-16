@@ -37,6 +37,23 @@ const app = runApp();
       },
       function (err) {
         if (err) {
+          // Health Route
+          app.route("/api/v1/health").get(function (req, res) {
+            res.status(200).json({
+              success: true,
+              server: "offline",
+              message: "server is down due to database connection error",
+            });
+          });
+
+          app.use("*", (req, res, next) => {
+            res.status(500).json({
+              success: false,
+              server: "offline",
+              message: "[server] offline due to database error",
+            });
+          });
+
           console.log(`[database]: could not connect due to [${err.message}]`);
           app.listen(port, (err) => {
             if (err) {
@@ -48,20 +65,21 @@ const app = runApp();
             console.log(`[server] running on port: ${port}`);
           });
 
-          app.use("*", (req, res, next) => {
-            res.status(500).json({
-              success: false,
-              server: "offline",
-              message: "[server] offline due to database error",
-            });
-          });
-
           //setTimeout(connectDatabase, 10000);
         } else {
           console.log(`[database]: connected successfully to MongoDB`);
 
           // Init Modules
           initModules(app);
+
+          // Health Route
+          app.route("/api/v1/health").get(function (req, res) {
+            res.status(200).json({
+              success: true,
+              server: "online",
+              message: "server is up and running",
+            });
+          });
 
           // Error Handler
           closeApp(app);
@@ -103,14 +121,13 @@ const app = runApp();
   };
 
   if (process.env.SERVER_MAINTENANCE === "true") {
-    app.listen(port, (err) => {
-      if (err) {
-        console.log(
-          `[server] could not start http server on port: ${port}`
-        );
-        return;
-      }
-      console.log(`[server] running on port: ${port}`);
+    // Health Route
+    app.route("/api/v1/health").get(function (req, res) {
+      return res.status(200).json({
+        success: false,
+        server: "maintenance",
+        message: "Server is under maintenance",
+      });
     });
 
     app.use("*", (req, res, next) => {
@@ -119,6 +136,16 @@ const app = runApp();
         server: "maintenance",
         message: "[server] offline for maintenance",
       });
+    });
+
+    app.listen(port, (err) => {
+      if (err) {
+        console.log(
+          `[server] could not start http server on port: ${port}`
+        );
+        return;
+      }
+      console.log(`[server] running on port: ${port}`);
     });
   } else {
     connectToDatabase();
