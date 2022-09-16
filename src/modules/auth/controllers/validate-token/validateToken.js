@@ -6,7 +6,7 @@ import models from "../../../../models/index.js";
 /// VALIDATE TOKEN ///
 
 const validateToken = catchAsyncError(async (req, res, next) => {
-    const token = req.query.token;
+    const { token } = req.query;
 
     if (!token) {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));

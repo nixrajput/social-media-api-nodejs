@@ -163,6 +163,7 @@ export const runApp = () => {
   app.route("/").get(function (req, res) {
     res.status(200).json({
       success: true,
+      server: "online",
       message: "server is up and running",
     });
   });
@@ -176,6 +177,7 @@ export const closeApp = (app) => {
   app.use("*", (req, res, next) => {
     res.status(404).json({
       success: false,
+      server: "online",
       message: "api endpoint not found",
     });
   });

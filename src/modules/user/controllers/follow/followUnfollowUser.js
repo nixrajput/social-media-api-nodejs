@@ -54,12 +54,25 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
         from: user._id,
       });
 
-      await models.Notification.create({
+      const currentTimestamp = new Date().getTime();
+
+      const notification = await models.Notification.findOne({
         to: userToFollow._id,
         from: user._id,
-        body: "sent you a follow request",
         type: "followRequest",
+        createdAt: {
+          $gte: currentTimestamp - 24 * 60 * 60 * 1000,
+        },
       });
+
+      if (!notification) {
+        await models.Notification.create({
+          to: userToFollow._id,
+          from: user._id,
+          body: "sent you a follow request",
+          type: "followRequest",
+        });
+      }
 
       res.status(200).json({
         success: true,

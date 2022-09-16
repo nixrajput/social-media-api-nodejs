@@ -51,6 +51,7 @@ const app = runApp();
           app.use("*", (req, res, next) => {
             res.status(500).json({
               success: false,
+              server: "offline",
               message: "[server] offline due to database error",
             });
           });
@@ -113,8 +114,9 @@ const app = runApp();
     });
 
     app.use("*", (req, res, next) => {
-      res.status(500).json({
+      res.status(503).json({
         success: false,
+        server: "maintainance",
         message: "[server] offline for maintenance",
       });
     });
