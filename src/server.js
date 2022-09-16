@@ -116,7 +116,7 @@ const app = runApp();
     app.use("*", (req, res, next) => {
       res.status(503).json({
         success: false,
-        server: "maintainance",
+        server: "maintenance",
         message: "[server] offline for maintenance",
       });
     });
