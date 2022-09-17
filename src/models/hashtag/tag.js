@@ -9,13 +9,6 @@ const tagSchema = new mongoose.Schema({
         maxlength: [50, "A tag name cannot be more than 50 characters"],
     },
 
-    posts: [
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: "Post",
-        },
-    ],
-
     postsCount: {
         type: Number,
         default: 0,

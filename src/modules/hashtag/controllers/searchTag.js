@@ -2,6 +2,7 @@ import catchAsyncError from "../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
 import ResponseMessages from "../../../contants/responseMessages.js";
+import utility from "../../../utils/utility.js";
 
 /// SEARCH TAG ///
 
@@ -13,7 +14,7 @@ const searchTag = catchAsyncError(async (req, res, next) => {
     const searchText = req.query.q;
 
     const tags = await models.Tag.find({ name: new RegExp(searchText, "gi") })
-        .select("_id name postsCount").sort({ postsCount: -1 });
+        .select("_id").sort({ postsCount: -1 });
 
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
@@ -64,13 +65,11 @@ const searchTag = catchAsyncError(async (req, res, next) => {
     const results = [];
 
     for (let tag of slicedTags) {
-        const tagData = {};
+        const tagData = await utility.getHashTagData(tag._id);
 
-        tagData._id = tag._id;
-        tagData.name = tag.name;
-        tagData.postsCount = tag.postsCount;
-
-        results.push(tagData);
+        if (tagData) {
+            results.push(tagData);
+        }
     }
 
     res.status(200).json({

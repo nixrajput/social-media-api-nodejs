@@ -96,6 +96,10 @@ userRouter
   .delete(isAuthenticatedUser, userController.removeFollowRequest);
 
 userRouter
+  .route("/remove-follower")
+  .delete(isAuthenticatedUser, userController.removeFollower);
+
+userRouter
   .route("/user-details")
   .get(isAuthenticatedUser, userController.getUserDetails);
 

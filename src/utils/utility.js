@@ -20,17 +20,35 @@ utility.checkUsernameAvailable = async (uname) => {
 
 // Delete All expired OTPs
 utility.deleteExpiredOTPs = async () => {
-  const otps = await models.OTP.find();
+  console.log("[cron] task to delete expired OTPs has started.");
+  const otps = await models.OTP.find({ isUsed: true });
 
-  for (let i = 0; i < otps.length; i++) {
-    if (dates.compare(otps[i].expiresAt, new Date()) === -1) {
-      await otps[i].remove();
+  if (otps.length > 0) {
+    for (let i = 0; i < otps.length; i++) {
+      if (otps[i].expiresAt < Date.now()) {
+        await otps[i].remove();
+      }
     }
+  } else {
+    console.log("[cron] No OTPs found.");
   }
-
-  console.log("[cron] task has deleted expired OTPs.");
 };
 
+utility.deleteOldNotifications = async () => {
+  console.log("[cron] task to delete old notifications has started.");
+  const notifications = await models.Notification.find({
+    createdAt: { $lte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
+    isRead: true,
+  });
+
+  if (notifications.length > 0) {
+    for (let i = 0; i < notifications.length; i++) {
+      await notifications[i].remove();
+    }
+  } else {
+    console.log("No Notifications to delete");
+  }
+};
 
 /// SEND SMS USING TWILIO
 utility.sendSMS = async (options) => {

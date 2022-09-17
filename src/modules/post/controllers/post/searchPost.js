@@ -4,23 +4,29 @@ import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 
-/// GET FOLLOW REQUESTS ///
+/// SEARCH POSTS ///
 
-const getFollowRequests = catchAsyncError(async (req, res, next) => {
-    const userId = req.user._id;
-
-    if (!userId) {
-        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+const searchPosts = catchAsyncError(async (req, res, next) => {
+    if (!req.query.q) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
+
+    const searchText = req.query.q;
 
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 20;
 
-    const followRequests = await models.FollowRequest.find({ to: userId })
-        .select("_id").sort({ createdAt: -1 });
+    const posts = await models.Post.find(
+        {
+            $or: [
+                {
+                    caption: new RegExp(searchText, "gi"),
+                }
+            ],
+        }).select("_id").sort({ createdAt: -1 });
 
-    let totalRequests = followRequests.length;
-    let totalPages = Math.ceil(totalRequests / limit);
+    let totalTags = posts.length;
+    let totalPages = Math.ceil(totalTags / limit);
 
     if (currentPage < 1) {
         currentPage = 1;
@@ -60,15 +66,15 @@ const getFollowRequests = catchAsyncError(async (req, res, next) => {
         nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
     }
 
-    const slicedFollowRequests = followRequests.slice(skip, skip + limit);
+    const slicedPosts = posts.slice(skip, skip + limit);
 
     const results = [];
 
-    for (let followRequest of slicedFollowRequests) {
-        const followRequestData = await utility.getFollowRequestData(followRequest._id, req.user);
+    for (let post of slicedPosts) {
+        const postData = await utility.getPostData(post._id, req.user);
 
-        if (followRequestData) {
-            results.push(followRequestData);
+        if (postData) {
+            results.push(postData);
         }
     }
 
@@ -85,4 +91,4 @@ const getFollowRequests = catchAsyncError(async (req, res, next) => {
     });
 });
 
-export default getFollowRequests;
+export default searchPosts;

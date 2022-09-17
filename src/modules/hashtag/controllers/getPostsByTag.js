@@ -14,7 +14,7 @@ const getPostsByTag = catchAsyncError(async (req, res, next) => {
     const searchText = req.query.q;
 
     const tag = await models.Tag.findOne({ name: new RegExp(searchText, "gi") })
-        .select("_id postsCount posts");
+        .select("_id postsCount");
 
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;

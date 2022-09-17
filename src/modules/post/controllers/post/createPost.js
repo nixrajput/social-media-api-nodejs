@@ -85,13 +85,11 @@ const createPost = catchAsyncError(async (req, res, next) => {
       const tag = await models.Tag.findOne({ name: hashtags[i] });
 
       if (tag) {
-        tag.posts.push(post._id);
         tag.postsCount++;
         await tag.save();
       } else {
         await models.Tag.create({
           name: hashtags[i],
-          posts: [post._id],
           postsCount: 1,
         });
       }

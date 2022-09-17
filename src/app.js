@@ -31,12 +31,13 @@ export const runApp = () => {
   cron.schedule("59 23 * * *", () => {
     console.log("[cron]: task running every day at 11:59 PM");
     utility.deleteExpiredOTPs();
+    utility.deleteOldNotifications();
   });
 
   // (async () => {
-  //   const users = await models.Post.find();
-  //   console.log(users.length);
-  //   for (let user of users) {
+  //   const posts = await models.Post.find();
+  //   console.log(posts.length);
+  //   for (let post of posts) {
   //     // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
   //     // console.log("done");
 
@@ -59,6 +60,28 @@ export const runApp = () => {
 
   //     // if (user.accountPrivacy === "private") {
   //     //   user.isPrivate = true;
+  //     // }
+
+  //     // if (post.caption) {
+  //     //   const hashtags = utility.getHashTags(post.caption);
+
+  //     //   if (hashtags.length > 0) {
+  //     //     for (let i = 0; i < hashtags.length; i++) {
+  //     //       const tag = await models.Tag.findOne({ name: hashtags[i] });
+
+  //     //       if (tag) {
+  //     //         tag.postsCount++;
+  //     //         await tag.save();
+  //     //       } else {
+  //     //         await models.Tag.create({
+  //     //           name: hashtags[i],
+  //     //           postsCount: 1,
+  //     //         });
+  //     //       }
+  //     //     }
+  //     //   }
+
+  //     //   //await post.save();
   //     // }
 
   //     // console.log(user.accountPrivacy);

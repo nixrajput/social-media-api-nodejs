@@ -46,6 +46,10 @@ postRouter
   .delete(isAuthenticatedUser, postController.deletePost);
 // .put(isAuthenticatedUser, updatePost)
 
+postRouter
+  .route("/search-posts")
+  .get(isAuthenticatedUser, postController.searchPosts);
+
 /// COMMENTS ///
 
 postRouter

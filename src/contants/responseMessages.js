@@ -132,6 +132,8 @@ ResponseMessages.FOLLOW_REQUEST_ACCEPTED = 'Follow request accepted';
 ResponseMessages.FOLLOW_REQUEST_REMOVED = 'Follow request removed';
 ResponseMessages.FOLLOW_REQUEST_CANCELLED = 'Follow request cancelled';
 ResponseMessages.FOLLOW_REQUEST_NOT_FOUND = 'Follow request not found';
+ResponseMessages.USER_IS_NOT_FOLLOWER = 'User is not follower';
+ResponseMessages.REMOVED_FOLLOWER = 'Removed follower';
 
 /// Invalid Response Messages
 ResponseMessages.ACCOUNT_NOT_ACTIVE = 'Account not active';

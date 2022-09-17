@@ -1,13 +1,12 @@
 import catchAsyncError from "../../../helpers/catchAsyncError.js";
-import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
-import ResponseMessages from "../../../contants/responseMessages.js";
+import utility from "../../../utils/utility.js";
 
 /// GET TRENDING TAGS ///
 
 const getTrendingTags = catchAsyncError(async (req, res, next) => {
 
-    const tags = await models.Tag.find().select("_id name postsCount")
+    const tags = await models.Tag.find().select("_id")
         .sort({ postsCount: -1 });
 
     let currentPage = parseInt(req.query.page) || 1;
@@ -59,13 +58,11 @@ const getTrendingTags = catchAsyncError(async (req, res, next) => {
     const results = [];
 
     for (let tag of slicedTags) {
-        const tagData = {};
+        const tagData = await utility.getHashTagData(tag._id);
 
-        tagData._id = tag._id;
-        tagData.name = tag.name;
-        tagData.postsCount = tag.postsCount;
-
-        results.push(tagData);
+        if (tagData) {
+            results.push(tagData);
+        }
     }
 
     res.status(200).json({

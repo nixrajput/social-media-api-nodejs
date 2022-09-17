@@ -28,7 +28,6 @@ const deletePost = catchAsyncError(async (req, res, next) => {
 
     if (mediaType === "video") {
       let thumbnailPublicId = post.mediaFiles[i].thumbnail.public_id;
-      console.log(thumbnailPublicId);
       if (thumbnailPublicId) {
         await cloudinary.v2.uploader.destroy(thumbnailPublicId);
       }
@@ -49,12 +48,8 @@ const deletePost = catchAsyncError(async (req, res, next) => {
     for (let i = 0; i < hashtags.length; i++) {
       const hashtag = await models.Tag.findOne({ name: hashtags[i] });
       if (hashtag) {
-        const index = hashtag.posts.indexOf(post._id);
-        if (index > -1) {
-          hashtag.posts.splice(index, 1);
-          hashtag.postsCount--;
-          await hashtag.save();
-        }
+        hashtag.postsCount--;
+        await hashtag.save();
       }
     }
   }
@@ -63,7 +58,6 @@ const deletePost = catchAsyncError(async (req, res, next) => {
 
   const user = await models.User.findById(req.user._id);
   user.postsCount--;
-
   await user.save();
 
   res.status(200).json({

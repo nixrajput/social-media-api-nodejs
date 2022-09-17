@@ -10,6 +10,7 @@ import deleteComment from "./comment/deleteComment.js";
 import createUploadPost from "./post/createUploadPost.js";
 import getLikedUsers from "./post/getLikedUsers.js";
 import getTrendingPosts from "./post/getTrendingPosts.js";
+import searchPosts from "./post/searchPost.js";
 
 const postController = {};
 
@@ -25,5 +26,6 @@ postController.deleteComment = deleteComment;
 postController.createUploadPost = createUploadPost;
 postController.getLikedUsers = getLikedUsers;
 postController.getTrendingPosts = getTrendingPosts;
+postController.searchPosts = searchPosts;
 
 export default postController;

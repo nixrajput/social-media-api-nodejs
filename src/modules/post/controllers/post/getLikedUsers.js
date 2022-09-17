@@ -13,7 +13,7 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
         .sort({ createdAt: -1 });
 
     let currentPage = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 10;
+    let limit = parseInt(req.query.limit) || 20;
 
     let totalLikes = postLikes.length;
     let totalPages = Math.ceil(totalLikes / limit);

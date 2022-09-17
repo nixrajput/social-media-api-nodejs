@@ -30,6 +30,7 @@ import reactivateAccount from "./profile/reactivateAccount.js";
 import addChangePhoneOtp from "./profile/addChangePhoneOtp.js";
 import addChangePhone from "./profile/addChangePhone.js";
 import verifyPassword from "./verify-password/verifyPassword.js";
+import removeFollower from "./follow/removeFollower.js";
 
 const userController = {};
 
@@ -65,5 +66,6 @@ userController.reactivateAccount = reactivateAccount;
 userController.addChangePhoneOtp = addChangePhoneOtp;
 userController.addChangePhone = addChangePhone;
 userController.verifyPassword = verifyPassword;
+userController.removeFollower = removeFollower;
 
 export default userController;

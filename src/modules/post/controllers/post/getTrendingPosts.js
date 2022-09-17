@@ -16,7 +16,7 @@ const getTrendingPosts = catchAsyncError(async (req, res, next) => {
     }).select("_id").sort({ createdAt: -1 });
 
     let currentPage = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 10;
+    let limit = parseInt(req.query.limit) || 20;
 
     let totalPosts = posts.length;
     let totalPages = Math.ceil(totalPosts / limit);
