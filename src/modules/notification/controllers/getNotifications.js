@@ -12,7 +12,7 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
   }
 
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 10;
+  let limit = parseInt(req.query.limit) || 20;
 
   const notifications = await models.Notification.find({ to: userId })
     .select("_id").sort({ createdAt: -1 });

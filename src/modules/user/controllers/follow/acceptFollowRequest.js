@@ -39,19 +39,45 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
 
     await models.FollowRequest.findByIdAndDelete(followRequest._id);
 
-    await models.Notification.create({
+    const sentToReqUserNotification = await models.Notification.findOne({
         to: userRequested._id,
         from: user._id,
-        body: "accepted your follow request",
         type: "followRequestAccepted",
     });
 
-    await models.Notification.create({
+    if (sentToReqUserNotification) {
+        sentToReqUserNotification.isRead = false;
+        await sentToReqUserNotification.save();
+    }
+    else {
+        await models.Notification.create({
+            to: userRequested._id,
+            from: user._id,
+            body: "accepted your follow request",
+            type: "followRequestAccepted",
+        });
+    }
+
+    const sentToUserNotification = await models.Notification.findOne({
         to: user._id,
         from: userRequested._id,
-        body: "started following you",
-        type: "followRequestApproved",
+        type: "followRequest",
     });
+
+    if (sentToUserNotification) {
+        sentToUserNotification.isRead = false;
+        sentToUserNotification.type = "followRequestApproved";
+        sentToUserNotification.body = "started following you";
+        await sentToUserNotification.save();
+    }
+    else {
+        await models.Notification.create({
+            to: user._id,
+            from: userRequested._id,
+            body: "started following you",
+            type: "followRequestApproved",
+        });
+    }
 
     res.status(200).json({
         success: true,

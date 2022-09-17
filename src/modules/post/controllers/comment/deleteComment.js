@@ -30,8 +30,8 @@ const deleteComment = catchAsyncError(async (req, res, next) => {
   }
 
   await comment.remove();
-  post.commentsCount--;
 
+  post.commentsCount--;
   await post.save();
 
   return res.status(200).json({

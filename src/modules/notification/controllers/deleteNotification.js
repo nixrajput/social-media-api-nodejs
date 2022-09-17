@@ -3,9 +3,9 @@ import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
 import ResponseMessages from "../../../contants/responseMessages.js";
 
-/// MARK READ NOTIFICATION ///
+/// DELETE NOTIFICATION ///
 
-const markReadNotification = catchAsyncError(async (req, res, next) => {
+const deleteNotification = catchAsyncError(async (req, res, next) => {
     if (!req.query.id) {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
@@ -20,19 +20,12 @@ const markReadNotification = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 401));
     }
 
-    if (notification.isRead) {
-        return res.status(200).json({
-            success: true,
-            message: ResponseMessages.NOTIFICATION_ALREADY_READ
-        });
-    }
+    await notification.remove();
 
-    notification.isRead = true;
-    await notification.save();
-    return res.status(200).json({
+    res.status(200).json({
         success: true,
-        message: ResponseMessages.NOTIFICATION_MARKED_READ
+        message: ResponseMessages.NOTIFICATION_DELETED,
     });
 });
 
-export default markReadNotification;
+export default deleteNotification;

@@ -31,6 +31,28 @@ const addComment = catchAsyncError(async (req, res, next) => {
   });
 
   post.commentsCount++;
+  await post.save();
+
+  let mentions = utility.getMentions(caption);
+
+  if (mentions.length > 0) {
+    for (let i = 0; i < mentions.length; i++) {
+      const mentionedUser = await models.User.findOne({ uname: mentions[i] })
+        .select(["_id", "uname"]);
+
+      const isPostOwner = await utility.checkIfPostOwner(post._id, mentionedUser);
+
+      if (mentionedUser && !isPostOwner) {
+        await models.Notification.create({
+          to: mentionedUser._id,
+          from: req.user._id,
+          refId: newComment._id,
+          body: `mentioned you in a comment`,
+          type: "commentMention"
+        });
+      }
+    }
+  }
 
   if (post.owner.toString() !== req.user._id.toString()) {
     await models.Notification.create({
@@ -42,18 +64,7 @@ const addComment = catchAsyncError(async (req, res, next) => {
     });
   }
 
-  await post.save();
-
-  const ownerData = await utility.getOwnerData(newComment.user, req.user);
-
-  const commentData = {};
-  commentData._id = newComment._id;
-  commentData.comment = newComment.comment;
-  commentData.post = newComment.post;
-  commentData.user = ownerData;
-  commentData.likesCount = newComment.likesCount;
-  commentData.commentStatus = newComment.commentStatus;
-  commentData.createdAt = newComment.createdAt;
+  const commentData = await utility.getCommentData(newComment._id, req.user);
 
   res.status(200).json({
     success: true,

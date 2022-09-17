@@ -133,8 +133,6 @@ ResponseMessages.FOLLOW_REQUEST_REMOVED = 'Follow request removed';
 ResponseMessages.FOLLOW_REQUEST_CANCELLED = 'Follow request cancelled';
 ResponseMessages.FOLLOW_REQUEST_NOT_FOUND = 'Follow request not found';
 
-
-
 /// Invalid Response Messages
 ResponseMessages.ACCOUNT_NOT_ACTIVE = 'Account not active';
 ResponseMessages.INVALID_EXPIRED_TOKEN = 'Invalid or expired token';
@@ -177,5 +175,7 @@ ResponseMessages.USER_NOT_FOUND = 'User not found';
 ResponseMessages.USER_CREATION_FAILURE = 'User creation failure';
 ResponseMessages.NOTIFICATION_NOT_FOUND = 'Notification not found';
 ResponseMessages.NOTIFICATION_MARKED_READ = 'Notification marked read';
+ResponseMessages.NOTIFICATION_ALREADY_READ = 'Notification already read';
+ResponseMessages.NOTIFICATION_DELETED = 'Notification deleted';
 
 export default ResponseMessages;

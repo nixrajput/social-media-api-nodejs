@@ -14,4 +14,8 @@ notificationRouter
   .route("/mark-read-notification")
   .get(isAuthenticatedUser, notificationController.markReadNotification);
 
+notificationRouter
+  .route("/delete-notification")
+  .get(isAuthenticatedUser, notificationController.deleteNotification);
+
 export default notificationRouter;

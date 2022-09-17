@@ -35,8 +35,10 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
     post.likesCount++;
 
     const notification = await models.Notification.findOne({
-      user: req.user._id,
+      to: post.owner,
+      from: req.user._id,
       refId: post._id,
+      type: "postLike",
     });
 
     const isPostOwner = await utility.checkIfPostOwner(post._id, req.user);

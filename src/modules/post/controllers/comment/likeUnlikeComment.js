@@ -36,7 +36,8 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
     comment.likesCount++;
 
     const notification = await models.Notification.findOne({
-      user: req.user._id,
+      to: comment.owner,
+      from: req.user._id,
       refId: comment._id,
     });
 

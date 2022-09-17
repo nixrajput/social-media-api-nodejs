@@ -25,10 +25,8 @@ const commentSchema = new mongoose.Schema({
     type: String,
     enum: [
       "active", "deleted", "reported", "archived",
-      "unarhived", "withheld", "pending", "published",
-      "unpublished", "rejected", "approved", "blocked",
-      "banned", "muted", "verified", "unverified",
-      "flagged", "hidden", "removed",
+      "unarhived", "withheld", "flagged", "hidden",
+      "removed",
     ],
     default: "active",
   },

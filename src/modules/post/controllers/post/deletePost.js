@@ -27,9 +27,10 @@ const deletePost = catchAsyncError(async (req, res, next) => {
     let mediaType = post.mediaFiles[i].mediaType;
 
     if (mediaType === "video") {
-      let thumbnail = post.mediaFiles[i].thumbnail;
-      if (thumbnail) {
-        await cloudinary.v2.uploader.destroy(thumbnail.public_id);
+      let thumbnailPublicId = post.mediaFiles[i].thumbnail.public_id;
+      console.log(thumbnailPublicId);
+      if (thumbnailPublicId) {
+        await cloudinary.v2.uploader.destroy(thumbnailPublicId);
       }
       await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
     } else {
