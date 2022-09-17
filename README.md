@@ -1,26 +1,25 @@
 # Social Media API - By NixLab
 
-*An open-source RESTful API developed using NodeJS, ExpressJS and MongoDB helps you to integrate User Authentication and Social Media Post Management in your application with ease.*
+An open-source RESTful API developed using NodeJS, ExpressJS and MongoDB helps you to integrate User Authentication and Social Media Post Management in your application with ease.
 
-**Note: Due to significant updates and changes in database and API structure, the API is no longer compatible with the previous version. Please refer to the documentation for more details.**
+* We are open to suggestions and contributions. Feel free to open an [issue](https://github.com/nixrajput/social-media-api-nodejs/issues) or a [pull request](https://github.com/nixrajput/social-media-api-nodejs/pulls). If you like the project, please consider giving it a star.
 
-**It is possible that your old version of the API may not work with the new version. In that case, you can refer to the documentation for the new version.**
+* Due to server limitations, the API is currently hosted on a free tier of Cyclic. So, it may take a few seconds to respond to your request. Please be patient.
 
-We are open to suggestions and contributions. Feel free to open an issue or a pull request. If you like the project, please consider giving it a star.
+* Due to the same reason, the API may be down for a few minutes every day. We are working on a solution to this problem.
 
-Due to server limitations, the API is currently hosted on a free tier of Cyclic. So, it may take a few seconds to respond to your request. Please be patient.
+* Due to database limitations, the API is currently hosted on a free tier of MongoDB Atlas. So, it may take a few seconds to respond to your request. Please be patient.
 
-Due to the same reason, the API may be down for a few minutes every day. We are working on a solution to this problem.
+* This API is currently in development. So, after releasing the production version, we will be adding more features to it. You can check the progress of the project here. If you have any suggestions, feel free to open an issue.
 
-Due to database limitations, the API is currently hosted on a free tier of MongoDB Atlas. So, it may take a few seconds to respond to your request. Please be patient.
+* For the production version, we are planning to host the API on a paid tier of Cyclic and MongoDB Atlas. So, it will be more reliable and faster.
 
-This API is currently in development. So, after releasing the production version, we will be adding more features to it. You can check the progress of the project here. If you have any suggestions, feel free to open an issue.
-
-For the production version, we are planning to host the API on a paid tier of Cyclic and MongoDB Atlas. So, it will be more reliable and faster.
-
-After releasing the production version, we may delete some of the data in the database for better and faster performance. Data will be deleted only if it is not required for the project or it may cause any issues or conflicts.
+* After releasing the production version, we may delete some of the data in the database for better and faster performance. Data will be deleted only if it is not required for the project or it may cause any issues or conflicts.
 
 If you would like to contribute, please read the [contribution guidelines](CONTRIBUTING.md).
+
+>Note: Due to significant updates and changes in database and API structure, the API is no longer compatible with the previous version. Please refer to the documentation for more details.
+> It is possible that your old version of the API may not work with the new version. In that case, you can refer to the documentation for the new version.
 
 ## Documentation
 
@@ -74,10 +73,11 @@ This project is licensed under the GPL-3.0 License - see the
 
 ## Usage
 
+* Star and Fork the repository
 * Clone the repository
 
 ```bash
-git clone https://github.com/nixrajput/social-media-api-nodejs.git
+git clone https://github.com/<your-github-username>/social-media-api-nodejs.git
 ```
 
 * Install required modules
