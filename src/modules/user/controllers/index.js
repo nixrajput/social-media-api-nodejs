@@ -31,6 +31,8 @@ import addChangePhoneOtp from "./profile/addChangePhoneOtp.js";
 import addChangePhone from "./profile/addChangePhone.js";
 import verifyPassword from "./verify-password/verifyPassword.js";
 import removeFollower from "./follow/removeFollower.js";
+import searchFollowers from "./follow/searchFollowers.js";
+import searchFollowings from "./follow/searchFollowings.js";
 
 const userController = {};
 
@@ -67,5 +69,7 @@ userController.addChangePhoneOtp = addChangePhoneOtp;
 userController.addChangePhone = addChangePhone;
 userController.verifyPassword = verifyPassword;
 userController.removeFollower = removeFollower;
+userController.searchFollowers = searchFollowers;
+userController.searchFollowings = searchFollowings;
 
 export default userController;

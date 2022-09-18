@@ -100,6 +100,14 @@ userRouter
   .delete(isAuthenticatedUser, userController.removeFollower);
 
 userRouter
+  .route("/search-followers")
+  .get(isAuthenticatedUser, userController.searchFollowers);
+
+userRouter
+  .route("/search-followings")
+  .get(isAuthenticatedUser, userController.searchFollowings);
+
+userRouter
   .route("/user-details")
   .get(isAuthenticatedUser, userController.getUserDetails);
 

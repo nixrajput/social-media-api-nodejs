@@ -4,6 +4,8 @@ import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 
+/// GET FOLLOWINGS ///
+
 const getFollowings = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
     return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));

@@ -489,4 +489,16 @@ utility.getFollowRequestData = async (followRequestId, reqUser) => {
   return followRequestData;
 };
 
+utility.checkIfMututalFollow = async (user, reqUser) => {
+  const user1Followers = await models.Follower.find({ follower: user });
+  const user2Followers = await models.Follower.find({ follower: reqUser });
+
+  const user1FollowersIds = user1Followers.map((follower) => follower.user);
+  const user2FollowersIds = user2Followers.map((follower) => follower.user);
+
+  const isMutual = user1FollowersIds.includes(reqUser) && user2FollowersIds.includes(user);
+
+  return isMutual;
+};
+
 export default utility;
