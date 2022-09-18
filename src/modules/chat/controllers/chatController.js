@@ -1,6 +1,7 @@
 import ResponseMessages from "../../../contants/responseMessages.js";
 import models from "../../../models/index.js";
 import utility from "../../../utils/utility.js";
+import eventTypes from "../constants/eventTypes.js";
 
 const chatController = async (ws, message, wssClients) => {
     const { action, payload } = JSON.parse(message);
@@ -18,99 +19,168 @@ const chatController = async (ws, message, wssClients) => {
         return;
     }
 
-    if (action === "send") {
+    switch (action) {
+        case eventTypes.SEND_MESSAGE:
+            try {
+                const { message, type, receiverId } = payload;
 
-        const { message, type, receiver } = payload;
+                if (!message || !type || !receiverId) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
 
-        if (!message || !type || !receiver) {
-            return ws.send(JSON.stringify({
-                success: false,
-                message: ResponseMessages.INVALID_DATA
-            }));
-        }
+                const chatMessage = await models.ChatMessage.create({
+                    message,
+                    type,
+                    sender: ws.userId,
+                    receiver: receiverId,
+                });
 
-        const sender = ws.userId;
+                const chatMessageData = await utility.getChatData(chatMessage._id);
 
-        const chatMessage = await models.ChatMessage.create({
-            message,
-            type,
-            sender,
-            receiver,
-        });
+                const receiver = wssClients.find(
+                    (client) => client.userId === receiverId
+                );
 
-        if (chatMessage) {
-            const chatMessageData = await utility.getChatData(chatMessage._id);
+                if (receiver) {
+                    receiver.send(JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
+                        data: chatMessageData
+                    }));
 
-            const receiverClient = wssClients.find(
-                (client) => client.userId === receiver
-            );
+                    chatMessage.delivered = true;
+                    chatMessage.deliveredAt = Date.now();
+                    await chatMessage.save();
+                }
 
-            if (receiverClient) {
-                receiverClient.send(JSON.stringify({
-                    success: true,
-                    message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
-                    data: chatMessageData
-                }));
-            }
-
-            return client.send(
-                JSON.stringify({
-                    success: true,
-                    message: ResponseMessages.CHAT_MESSAGE_SENT_SUCCESS,
-                    data: chatMessageData,
-                })
-            );
-        } else {
-            return client.send(
-                JSON.stringify({
-                    success: false,
-                    message: ResponseMessages.CHAT_MESSAGE_NOT_SENT,
-                })
-            );
-        }
-    }
-
-    if (action === "read") {
-        const { messageId, sender, receiver } = JSON.parse(payload);
-
-        const chatMessage = await models.ChatMessage.findOne({
-            _id: messageId,
-            sender: receiver,
-            receiver: sender,
-        });
-
-        if (chatMessage.read) {
-            return client.send(
-                JSON.stringify({
-                    success: false,
-                    message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ,
-                })
-            );
-        } else {
-            chatMessage.read = true;
-            chatMessage.readAt = Date.now();
-
-            const updatedChatMessage = await chatMessage.save();
-
-            if (updatedChatMessage) {
-                const chatMessageData = await utility.getChatData(updatedChatMessage._id);
-
-                return client.send(
+                client.send(
                     JSON.stringify({
                         success: true,
-                        message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
+                        message: ResponseMessages.CHAT_MESSAGE_SENT_SUCCESS,
                         data: chatMessageData,
                     })
                 );
-            } else {
-                return client.send(
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CHAT_MESSAGE_NOT_SENT,
+                    })
+                );
+            }
+            break;
+
+        case eventTypes.GET_MESSAGES:
+            try {
+                const receiverId = ws.userId;
+
+                if (!receiverId) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
+
+                const messages = await models.ChatMessage.find({
+                    receiver: receiverId,
+                    delivered: false,
+                });
+
+                const chatMessages = await Promise.all(
+                    messages.map(async (message) => {
+                        return await utility.getChatData(message._id);
+                    })
+                );
+
+                client.send(
+                    JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.CHAT_MESSAGES_RECEIVED,
+                        count: chatMessages.length,
+                        data: chatMessages,
+                    })
+                );
+
+                messages.forEach(async (message) => {
+                    message.delivered = true;
+                    message.deliveredAt = Date.now();
+                    await message.save();
+                });
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CHAT_MESSAGES_NOT_RECEIVED,
+                    })
+                );
+            }
+            break;
+
+        case eventTypes.MESSAGE_READ:
+            try {
+                const { messageId } = payload;
+
+                if (!messageId) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
+
+                const message = await models.ChatMessage.findById(messageId);
+
+                if (!message) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
+                    }));
+                }
+
+                if (message.receiver.toString() !== ws.userId.toString()) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.UNAUTHORIZED
+                    }));
+                }
+
+                if (message.read) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ
+                    }));
+                }
+
+                message.read = true;
+                message.readAt = Date.now();
+                await message.save();
+
+                client.send(
+                    JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
+                    })
+                );
+            } catch (err) {
+                ws.send(
                     JSON.stringify({
                         success: false,
                         message: ResponseMessages.CHAT_MESSAGE_READ_FAILURE,
                     })
                 );
             }
-        }
+            break;
+
+        default:
+            ws.send(
+                JSON.stringify({
+                    success: false,
+                    message: ResponseMessages.INVALID_ACTION,
+                })
+            );
+            break;
     }
 };
 

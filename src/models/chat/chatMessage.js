@@ -25,6 +25,15 @@ const chatMessageSchema = new mongoose.Schema({
         required: true,
     },
 
+    delivered: {
+        type: Boolean,
+        default: false,
+    },
+
+    deliveredAt: {
+        type: Date,
+    },
+
     read: {
         type: Boolean,
         default: false,
@@ -41,7 +50,6 @@ const chatMessageSchema = new mongoose.Schema({
 
     deletedAt: {
         type: Date,
-        default: null,
     },
 
     createdAt: {

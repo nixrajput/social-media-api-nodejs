@@ -79,6 +79,8 @@ ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 ResponseMessages.ACCOUNT_DELETED = 'Account deleted';
 
 /// Other Response Messages
+ResponseMessages.CHAT_MESSAGES_RECEIVED = 'Chat messages received';
+ResponseMessages.CHAT_MESSAGES_NOT_RECEIVED = 'Chat messages not received';
 ResponseMessages.CLIENT_NOT_CONNECTED = 'Client not connected';
 ResponseMessages.CHAT_MESSAGE_RECEIVED = 'Chat message received';
 ResponseMessages.CHAT_MESSAGE_ALREADY_READ = 'Chat message already read';
@@ -145,6 +147,8 @@ ResponseMessages.USER_IS_NOT_FOLLOWER = 'User is not follower';
 ResponseMessages.REMOVED_FOLLOWER = 'Removed follower';
 
 /// Invalid Response Messages
+ResponseMessages.CHAT_MESSAGE_NOT_FOUND = 'Chat message not found';
+ResponseMessages.INVALID_ACTION = 'Invalid action';
 ResponseMessages.INVALID = 'Invalid';
 ResponseMessages.INVALID_DATA = 'Invalid data';
 ResponseMessages.ACCOUNT_NOT_ACTIVE = 'Account not active';

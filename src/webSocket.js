@@ -1,6 +1,7 @@
 import { WebSocketServer } from "ws";
 import jwt from "jsonwebtoken";
 import url from "url";
+import models from "./models/index.js";
 import chatController from "./modules/chat/controllers/chatController.js";
 
 const port = process.env.PORT || 4000;
@@ -9,6 +10,8 @@ var wssClients = [];
 
 const initWebSocket = (server) => {
     const wss = new WebSocketServer({ path: "/api/v1/ws", noServer: true });
+
+    console.log(`[webSocket]: running on port: ${port}`);
 
     server.on("upgrade", (request, socket, head) => {
         wss.handleUpgrade(request, socket, head, (ws) => {
@@ -41,6 +44,8 @@ const initWebSocket = (server) => {
                 const isConnectionExist = wssClients.find(
                     (client) => client.userId === ws.userId
                 );
+
+
 
                 if (isConnectionExist) {
                     ws.send(
@@ -94,10 +99,17 @@ const initWebSocket = (server) => {
             });
         });
 
-        ws.on("close", () => {
+        ws.on("close", async () => {
             wssClients = wssClients.filter((client) => client.userId !== ws.userId);
             console.log(`[websocket]: user ${ws.userId} disconnected`);
             console.log(`[websocket]: ${wssClients.length} clients connected`);
+
+            const user = await models.User.findById(ws.userId)
+                .select("_id lastActive ");
+
+            user.lastActive = Date.now();
+            await user.save();
+
             // for (let i = 0; i < wssClients.length; i++) {
             //     const clients = [];
             //     clients.push(wssClients[i].userId);
@@ -105,8 +117,6 @@ const initWebSocket = (server) => {
             // }
         });
     });
-
-    console.log(`[webSocket]: running on port: ${port}`);
 
     const interval = setInterval(() => {
         wss.clients.forEach((ws) => {
