@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
+import morgan from "morgan";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errors.js";
 import utility from "./utils/utility.js";
@@ -22,6 +23,7 @@ export const runApp = () => {
   );
   app.use(helmet());
   app.use(compression());
+  app.use(morgan("combined"));
   app.use(express.json({ limit: "100mb" }));
   app.use(express.urlencoded({ extended: true }));
   app.use(bodyParser.urlencoded({ extended: true }));

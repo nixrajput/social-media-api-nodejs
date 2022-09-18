@@ -61,12 +61,17 @@ ResponseMessages.POST_DELETE_SUCCESS = 'Post deleted successfully';
 ResponseMessages.COMMENT_ADD_SUCCESS = 'Comment added successfully';
 ResponseMessages.COMMENT_UPDATE_SUCCESS = 'Comment updated successfully';
 ResponseMessages.COMMENT_DELETE_SUCCESS = 'Comment deleted successfully';
+ResponseMessages.CHAT_MESSAGE_SENT_SUCCESS = 'Chat message sent successfully';
+ResponseMessages.CHAT_MESSAGE_READ_SUCCESS = 'Chat message read successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
 ResponseMessages.LOGIN_FAILURE = 'Login failure';
 ResponseMessages.SIGNUP_FAILURE = 'Signup failure';
 ResponseMessages.LOGOUT_FAILURE = 'Logout failure';
+ResponseMessages.OTP_SEND_FAILURE = 'OTP send failure';
+ResponseMessages.EMAIL_SEND_FAILURE = 'Email send failure';
+ResponseMessages.CHAT_MESSAGE_READ_FAILURE = 'Chat message read failure';
 
 ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 
@@ -74,6 +79,10 @@ ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 ResponseMessages.ACCOUNT_DELETED = 'Account deleted';
 
 /// Other Response Messages
+ResponseMessages.CLIENT_NOT_CONNECTED = 'Client not connected';
+ResponseMessages.CHAT_MESSAGE_RECEIVED = 'Chat message received';
+ResponseMessages.CHAT_MESSAGE_ALREADY_READ = 'Chat message already read';
+ResponseMessages.CHAT_MESSAGE_NOT_SENT = 'Chat message not sent';
 ResponseMessages.AUTH_TOKEN_REQUIRED = 'Auth token is required';
 ResponseMessages.AUTH_PARAM_REQUIRED = 'Auth param is required';
 ResponseMessages.ACCOUNT_ALREADY_DEACTIVATED = 'Account already deactivated';
@@ -136,6 +145,8 @@ ResponseMessages.USER_IS_NOT_FOLLOWER = 'User is not follower';
 ResponseMessages.REMOVED_FOLLOWER = 'Removed follower';
 
 /// Invalid Response Messages
+ResponseMessages.INVALID = 'Invalid';
+ResponseMessages.INVALID_DATA = 'Invalid data';
 ResponseMessages.ACCOUNT_NOT_ACTIVE = 'Account not active';
 ResponseMessages.INVALID_EXPIRED_TOKEN = 'Invalid or expired token';
 ResponseMessages.INVALID_PHONE = 'Invalid phone';

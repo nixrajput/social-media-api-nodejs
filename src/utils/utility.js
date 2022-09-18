@@ -501,4 +501,26 @@ utility.checkIfMututalFollow = async (user, reqUser) => {
   return isMutual;
 };
 
+utility.getChatData = async (chatId) => {
+  const chat = await models.ChatMessage.findById(chatId);
+
+  const chatData = {};
+
+  const senderData = await utility.getUserData(chat.sender, chat.sender);
+  const receiverData = await utility.getUserData(chat.receiver, chat.sender);
+
+  chatData._id = chat._id;
+  chatData.message = chat.message;
+  chatData.type = chat.type;
+  chatData.sender = senderData;
+  chatData.receiver = receiverData;
+  chatData.read = chat.read;
+  chatData.deleted = chat.deleted;
+  chatData.deletedAt = chat.deletedAt;
+  chatData.createdAt = chat.createdAt;
+  chatData.updatedAt = chat.updatedAt;
+
+  return chatData;
+};
+
 export default utility;
