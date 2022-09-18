@@ -14,9 +14,18 @@ const initWebSocket = (server) => {
     console.log(`[webSocket]: running on port: ${port}`);
 
     server.on("upgrade", (request, socket, head) => {
-        wss.handleUpgrade(request, socket, head, (ws) => {
-            wss.emit("connection", ws, request);
-        });
+
+        let parsedUrl = url.parse(request.url, true, true);
+
+        const pathname = parsedUrl.pathname;
+
+        if (pathname === "/api/v1/ws") {
+            wss.handleUpgrade(request, socket, head, (ws) => {
+                wss.emit("connection", ws, request);
+            });
+        } else {
+            socket.destroy();
+        }
     });
 
     wss.on("connection", async (ws, req, client) => {
@@ -61,7 +70,7 @@ const initWebSocket = (server) => {
                     ws.send(
                         JSON.stringify({
                             success: true,
-                            message: `user ${decoded.id} connected`,
+                            message: `connection established`,
                         })
                     );
                     console.log(`[websocket]: user ${decoded.id} connected`);
