@@ -15,8 +15,14 @@ const initWebSocket = (server) => {
 
     server.on("upgrade", (request, socket, head) => {
 
-        let parsedUrl = url.parse(request.url, true, true);
+        console.log(request.headers);
 
+        if (request.headers['upgrade'] !== 'websocket') {
+            socket.end('HTTP/1.1 400 Bad Request');
+            return;
+        }
+
+        let parsedUrl = url.parse(request.url, true, true);
         const pathname = parsedUrl.pathname;
 
         if (pathname === "/api/v1/ws") {
