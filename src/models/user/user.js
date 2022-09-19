@@ -109,6 +109,16 @@ const userSchema = new mongoose.Schema({
     default: "active",
   },
 
+  active: {
+    type: Boolean,
+    default: true,
+  },
+
+  lastActive: {
+    type: Date,
+    default: null,
+  },
+
   verificationStatus: {
     type: String,
     enum: ["verified", "unverified", "pending", "rejected"],
@@ -137,8 +147,6 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: String,
 
   resetPasswordExpire: Date,
-
-  lastActive: Date,
 
   createdAt: {
     type: Date,
