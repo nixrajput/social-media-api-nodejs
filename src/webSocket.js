@@ -15,8 +15,6 @@ const initWebSocket = (server) => {
 
     server.on("upgrade", (request, socket, head) => {
 
-        console.log(request.headers);
-
         if (request.headers['upgrade'] !== 'websocket') {
             socket.end('HTTP/1.1 400 Bad Request');
             return;
@@ -59,8 +57,6 @@ const initWebSocket = (server) => {
                 const isConnectionExist = wssClients.find(
                     (client) => client.userId === ws.userId
                 );
-
-
 
                 if (isConnectionExist) {
                     ws.send(
@@ -115,15 +111,16 @@ const initWebSocket = (server) => {
         });
 
         ws.on("close", async () => {
+            const user = await models.User.findById(ws.userId)
+                .select("_id lastActive ");
             wssClients = wssClients.filter((client) => client.userId !== ws.userId);
             console.log(`[websocket]: user ${ws.userId} disconnected`);
             console.log(`[websocket]: ${wssClients.length} clients connected`);
 
-            const user = await models.User.findById(ws.userId)
-                .select("_id lastActive ");
-
-            user.lastActive = Date.now();
-            await user.save();
+            if (user) {
+                user.lastActive = Date.now();
+                await user.save();
+            }
 
             // for (let i = 0; i < wssClients.length; i++) {
             //     const clients = [];
