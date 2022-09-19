@@ -34,12 +34,12 @@ const chatMessageSchema = new mongoose.Schema({
         type: Date,
     },
 
-    read: {
+    seen: {
         type: Boolean,
         default: false,
     },
 
-    readAt: {
+    seenAt: {
         type: Date,
     },
 

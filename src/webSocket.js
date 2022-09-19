@@ -105,7 +105,7 @@ const initWebSocket = (server) => {
                     );
                     client.close();
                 } else {
-                    chatController(ws, message, wssClients);
+                    chatController(ws, message, wssClients, req);
                 }
             });
         });

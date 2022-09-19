@@ -1,6 +1,7 @@
 const eventTypes = {
     SEND_MESSAGE: "send-message",
-    GET_MESSAGES: "get-messages",
+    GET_UNDELIVERED_MESSAGES: "get-undelivered-messages",
+    GET_ALL_MESSAGES: "get-all-messages",
     MESSAGE_SENT: "message-sent",
     MESSAGE_RECEIVED: "message-received",
     MESSAGE_DELIVERED: "message-delivered",

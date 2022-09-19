@@ -507,14 +507,15 @@ utility.getChatData = async (chatId) => {
   const chatData = {};
 
   const senderData = await utility.getUserData(chat.sender, chat.sender);
-  const receiverData = await utility.getUserData(chat.receiver, chat.sender);
 
   chatData._id = chat._id;
   chatData.message = chat.message;
   chatData.type = chat.type;
   chatData.sender = senderData;
-  chatData.receiver = receiverData;
-  chatData.read = chat.read;
+  chatData.delivered = chat.delivered;
+  chatData.deliveredAt = chat.deliveredAt;
+  chatData.seen = chat.seen;
+  chatData.seenAt = chat.seenAt;
   chatData.deleted = chat.deleted;
   chatData.deletedAt = chat.deletedAt;
   chatData.createdAt = chat.createdAt;
