@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
+import path from 'path';
 import morgan from "morgan";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errors.js";
@@ -28,6 +29,9 @@ export const runApp = () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "public")));
 
   // Schedule a task
   cron.schedule("59 23 * * *", () => {
@@ -184,14 +188,14 @@ export const runApp = () => {
   //   console.log("operation done");
   // })();
 
-  // Index Route
-  app.route("/").get(function (req, res) {
-    res.status(200).json({
-      success: true,
-      server: "online",
-      message: "server is up and running",
-    });
-  });
+  // // Index Route
+  // app.route("/").get(function (req, res) {
+  //   res.status(200).json({
+  //     success: true,
+  //     server: "online",
+  //     message: "server is up and running",
+  //   });
+  // });
 
   return app;
 };
