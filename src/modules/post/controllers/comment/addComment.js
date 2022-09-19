@@ -33,7 +33,7 @@ const addComment = catchAsyncError(async (req, res, next) => {
   post.commentsCount++;
   await post.save();
 
-  let mentions = utility.getMentions(caption);
+  let mentions = utility.getMentions(comment);
 
   if (mentions.length > 0) {
     for (let i = 0; i < mentions.length; i++) {
