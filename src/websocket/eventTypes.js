@@ -10,6 +10,12 @@ const eventTypes = {
     MESSAGE_UPDATED: "message-updated",
     MESSAGE_ERROR: "message-error",
 
+    GET_ALL_CONVERSATIONS: "get-all-conversations",
+
+    SAVE_PUBLIC_KEY: "save-public-key",
+    GET_PUBLIC_KEY: "get-public-key",
+
+
     /// CHAT EVENTS
     GET_CHATS: "get-chats",
     CHATS_RECEIVED: "chats-received",

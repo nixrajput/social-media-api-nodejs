@@ -2,7 +2,7 @@ import { WebSocketServer } from "ws";
 import jwt from "jsonwebtoken";
 import url from "url";
 import models from "./models/index.js";
-import chatController from "./modules/chat/controllers/chatController.js";
+import wsController from "./websocket/wsController.js";
 
 const port = process.env.PORT || 4000;
 
@@ -119,7 +119,7 @@ const initWebSocket = (server) => {
                     );
                     client.close();
                 } else {
-                    chatController(ws, message, wssClients, req);
+                    wsController(ws, message, wssClients, req);
                 }
             });
         });

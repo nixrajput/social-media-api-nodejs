@@ -1,9 +1,9 @@
-import ResponseMessages from "../../../contants/responseMessages.js";
-import models from "../../../models/index.js";
-import utility from "../../../utils/utility.js";
-import eventTypes from "../constants/eventTypes.js";
+import ResponseMessages from "../contants/responseMessages.js";
+import models from "../models/index.js";
+import utility from "../utils/utility.js";
+import eventTypes from "./eventTypes.js";
 
-const chatController = async (ws, message, wssClients, req) => {
+const wsController = async (ws, message, wssClients, req) => {
     const { type, payload } = JSON.parse(message);
 
     const client = wssClients.find((client) => client.userId === ws.userId);
@@ -301,6 +301,48 @@ const chatController = async (ws, message, wssClients, req) => {
             }
             break;
 
+        case eventTypes.SAVE_PUBLIC_KEY:
+            try {
+                const { publicKey } = payload;
+
+                if (!publicKey) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
+
+                const user = await models.User.findById(ws.userId);
+
+                if (!user) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.USER_NOT_FOUND
+                    }));
+                }
+
+                user.publicKey = publicKey;
+                await user.save();
+
+                client.send(
+                    JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.PUBLIC_KEY_SAVED,
+                    })
+                );
+
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.PUBLIC_KEY_NOT_SAVED,
+                    })
+                );
+
+                console.log(err);
+            }
+            break;
+
         default:
             ws.send(
                 JSON.stringify({
@@ -312,4 +354,4 @@ const chatController = async (ws, message, wssClients, req) => {
     }
 };
 
-export default chatController;
+export default wsController;

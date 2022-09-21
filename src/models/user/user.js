@@ -140,6 +140,11 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
+  publicKey: {
+    type: String,
+    default: null,
+  },
+
   token: String,
 
   expiresAt: Number,

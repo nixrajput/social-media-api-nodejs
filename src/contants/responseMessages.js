@@ -79,6 +79,8 @@ ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 ResponseMessages.ACCOUNT_DELETED = 'Account deleted';
 
 /// Other Response Messages
+ResponseMessages.PUBLIC_KEY_SAVED = 'Public key saved';
+ResponseMessages.PUBLIC_KEY_NOT_SAVED = 'Public key not saved';
 ResponseMessages.CHAT_MESSAGES_RECEIVED = 'Chat messages received';
 ResponseMessages.CHAT_MESSAGES_NOT_RECEIVED = 'Chat messages not received';
 ResponseMessages.CLIENT_NOT_CONNECTED = 'Client not connected';
