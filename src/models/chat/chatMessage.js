@@ -6,6 +6,12 @@ const chatMessageSchema = new mongoose.Schema({
         required: true,
     },
 
+    iv: {
+        type: String,
+        required: true,
+        default: "",
+    },
+
     type: {
         type: String,
         enum: ["text", "image", "video", "audio"],

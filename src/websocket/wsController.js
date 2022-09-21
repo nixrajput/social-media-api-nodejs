@@ -22,9 +22,9 @@ const wsController = async (ws, message, wssClients, req) => {
     switch (type) {
         case eventTypes.SEND_MESSAGE:
             try {
-                const { message, type, receiverId } = payload;
+                const { message, iv, type, receiverId } = payload;
 
-                if (!message || !type || !receiverId) {
+                if (!message || !iv || !type || !receiverId) {
                     return ws.send(JSON.stringify({
                         success: false,
                         message: ResponseMessages.INVALID_DATA
@@ -33,6 +33,7 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 const chatMessage = await models.ChatMessage.create({
                     message,
+                    iv,
                     type,
                     sender: ws.userId,
                     receiver: receiverId,
