@@ -1,3 +1,4 @@
+import cloudinary from "cloudinary";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
@@ -20,6 +21,11 @@ const uploadProfilePicture = catchAsyncError(async (req, res, next) => {
 
     if (!user) {
         return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+    }
+
+    if (user.avatar && user.avatar.public_id) {
+        const imageId = user.avatar.public_id;
+        await cloudinary.v2.uploader.destroy(imageId);
     }
 
     user.avatar = {
