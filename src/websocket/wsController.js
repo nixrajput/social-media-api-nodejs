@@ -304,9 +304,9 @@ const wsController = async (ws, message, wssClients, req) => {
 
         case eventTypes.SAVE_PUBLIC_KEY:
             try {
-                const { publicKey } = payload;
+                const { publicKeys } = payload;
 
-                if (!publicKey) {
+                if (!publicKeys) {
                     return ws.send(JSON.stringify({
                         success: false,
                         message: ResponseMessages.INVALID_DATA
@@ -322,7 +322,7 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
-                user.publicKey = publicKey;
+                user.publicKeys = publicKeys;
                 await user.save();
 
                 client.send(

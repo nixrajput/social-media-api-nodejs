@@ -109,9 +109,9 @@ const userSchema = new mongoose.Schema({
     default: "active",
   },
 
-  active: {
+  online: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 
   lastActive: {
@@ -140,9 +140,19 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
-  publicKey: {
-    type: String,
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+
+  deletedAt: {
+    type: Date,
     default: null,
+  },
+
+  publicKeys: {
+    type: Object,
+    default: {},
   },
 
   token: String,

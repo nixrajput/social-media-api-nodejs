@@ -47,7 +47,7 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
       role: 1,
       accountStatus: 1,
       isVerified: 1,
-      publicKey: 1,
+      publicKeys: 1,
       createdAt: 1,
       updatedAt: 1,
     });
@@ -80,7 +80,7 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
   userDetails.isValid = user.isValid;
   userDetails.isVerified = user.isVerified;
   userDetails.role = user.role;
-  userDetails.publicKey = user.publicKey;
+  userDetails.publicKeys = user.publicKeys;
   userDetails.createdAt = user.createdAt;
   userDetails.updatedAt = user.updatedAt;
 

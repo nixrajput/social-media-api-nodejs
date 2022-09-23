@@ -8,7 +8,7 @@ import morgan from "morgan";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errors.js";
 import utility from "./utils/utility.js";
-// import models from "./models/index.js";
+import models from "./models/index.js";
 
 export const runApp = () => {
   const app = express();
@@ -41,9 +41,9 @@ export const runApp = () => {
   });
 
   // (async () => {
-  //   const posts = await models.Post.find();
-  //   console.log(posts.length);
-  //   for (let post of posts) {
+  //   const users = await models.User.find();
+  //   console.log(users.length);
+  //   for (let user of users) {
   //     // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
   //     // console.log("done");
 
@@ -52,8 +52,8 @@ export const runApp = () => {
 
   //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     followers: [],
-  //     //     following: [],
+  //     //     active: 0,
+  //     //     publicKey: 0,
   //     //   }
   //     // });
 
@@ -187,15 +187,6 @@ export const runApp = () => {
   //   }
   //   console.log("operation done");
   // })();
-
-  // // Index Route
-  // app.route("/").get(function (req, res) {
-  //   res.status(200).json({
-  //     success: true,
-  //     server: "online",
-  //     message: "server is up and running",
-  //   });
-  // });
 
   return app;
 };
