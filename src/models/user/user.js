@@ -152,7 +152,6 @@ const userSchema = new mongoose.Schema({
 
   publicKeys: {
     type: Object,
-    default: {},
   },
 
   token: String,

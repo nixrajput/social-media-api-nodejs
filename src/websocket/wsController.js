@@ -22,9 +22,9 @@ const wsController = async (ws, message, wssClients, req) => {
     switch (type) {
         case eventTypes.SEND_MESSAGE:
             try {
-                const { message, iv, type, receiverId } = payload;
+                const { message, type, receiverId } = payload;
 
-                if (!message || !iv || !type || !receiverId) {
+                if (!message || !type || !receiverId) {
                     return ws.send(JSON.stringify({
                         success: false,
                         message: ResponseMessages.INVALID_DATA
@@ -33,7 +33,6 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 const chatMessage = await models.ChatMessage.create({
                     message,
-                    iv,
                     type,
                     sender: ws.userId,
                     receiver: receiverId,
@@ -82,7 +81,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 const receiverId = ws.userId;
 
                 let currentPage = parseInt(payload.page) || 1;
-                let limit = parseInt(payload.limit) || 2;
+                let limit = parseInt(payload.limit) || 10;
 
                 if (!receiverId) {
                     return ws.send(JSON.stringify({
@@ -169,7 +168,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 const receiverId = ws.userId;
 
                 let currentPage = parseInt(payload.page) || 1;
-                let limit = parseInt(payload.limit) || 2;
+                let limit = parseInt(payload.limit) || 10;
 
                 console.log(req.url);
 
