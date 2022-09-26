@@ -1,4 +1,4 @@
-import getProfileDetails from "./profile/profileDetails.js";
+import getProfileDetails from "./profile/getProfileDetails.js";
 import changePassword from "./profile/changePassword.js";
 import updateProfile from "./profile/updateProfile.js";
 import uploadAvatar from "./profile-picture/uploadAvatar.js";
@@ -33,6 +33,10 @@ import verifyPassword from "./verify-password/verifyPassword.js";
 import removeFollower from "./follow/removeFollower.js";
 import searchFollowers from "./follow/searchFollowers.js";
 import searchFollowings from "./follow/searchFollowings.js";
+import savePreKeyBundle from "./profile/savePreKeyBundle.js";
+import getPreKeyBundle from "./profile/getPreKeyBundle.js";
+import getDeviceId from "./profile/getDeviceId.js";
+import saveDeviceId from "./profile/saveDeviceId.js";
 
 const userController = {};
 
@@ -71,5 +75,9 @@ userController.verifyPassword = verifyPassword;
 userController.removeFollower = removeFollower;
 userController.searchFollowers = searchFollowers;
 userController.searchFollowings = searchFollowings;
+userController.savePreKeyBundle = savePreKeyBundle;
+userController.getPreKeyBundle = getPreKeyBundle;
+userController.getDeviceId = getDeviceId;
+userController.saveDeviceId = saveDeviceId;
 
 export default userController;

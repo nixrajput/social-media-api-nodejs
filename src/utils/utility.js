@@ -263,7 +263,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt", "publicKeys",
+      "updatedAt", "preKeyBundle",
     ]);
 
   const ownerData = {};
@@ -282,7 +282,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.isPrivate = owner.isPrivate;
   ownerData.isValid = owner.isValid;
   ownerData.isVerified = owner.isVerified;
-  ownerData.publicKeys = owner.publicKeys;
+  ownerData.preKeyBundle = owner.preKeyBundle;
   ownerData.createdAt = owner.createdAt;
   ownerData.updatedAt = owner.updatedAt;
 
@@ -294,7 +294,7 @@ utility.getUserData = async (userId, reqUser) => {
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt", "publicKeys",
+      "updatedAt", "preKeyBundle",
     ]);
 
   const userData = {};
@@ -313,7 +313,7 @@ utility.getUserData = async (userId, reqUser) => {
   userData.isPrivate = user.isPrivate;
   userData.isValid = user.isValid;
   userData.isVerified = user.isVerified;
-  userData.publicKeys = user.publicKeys;
+  userData.preKeyBundle = user.preKeyBundle;
   userData.createdAt = user.createdAt;
   userData.updatedAt = user.updatedAt;
 
@@ -509,12 +509,14 @@ utility.getChatData = async (chatId) => {
   const chatData = {};
 
   const senderData = await utility.getUserData(chat.sender, chat.sender);
+  const receiverData = await utility.getUserData(chat.receiver, chat.receiver);
 
   chatData._id = chat._id;
   chatData.message = chat.message;
-  chatData.iv = chat.iv;
   chatData.type = chat.type;
+  chatData.deviceId = chat.deviceId;
   chatData.sender = senderData;
+  chatData.receiver = receiverData;
   chatData.delivered = chat.delivered;
   chatData.deliveredAt = chat.deliveredAt;
   chatData.seen = chat.seen;

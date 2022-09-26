@@ -52,8 +52,10 @@ export const runApp = () => {
 
   //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     active: 0,
-  //     //     publicKey: 0,
+  //     //     publicKeys: {},
+  //     //     resetPasswordToken: "",
+  //     //     resetPasswordExpire: "",
+  //     //     //publicKey: 0,
   //     //   }
   //     // });
 

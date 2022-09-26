@@ -11,7 +11,7 @@ const getTrendingPosts = catchAsyncError(async (req, res, next) => {
         isArchived: false,
         owner: { $ne: req.user._id },
         createdAt: {
-            $gte: currentTimestamp - 7 * 24 * 60 * 60 * 1000,
+            $gte: currentTimestamp - 30 * 24 * 60 * 60 * 1000,
         },
     }).select("_id").sort({ createdAt: -1 });
 

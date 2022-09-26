@@ -63,6 +63,7 @@ ResponseMessages.COMMENT_UPDATE_SUCCESS = 'Comment updated successfully';
 ResponseMessages.COMMENT_DELETE_SUCCESS = 'Comment deleted successfully';
 ResponseMessages.CHAT_MESSAGE_SENT_SUCCESS = 'Chat message sent successfully';
 ResponseMessages.CHAT_MESSAGE_READ_SUCCESS = 'Chat message read successfully';
+ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS = 'Chat message deleted successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
@@ -72,6 +73,7 @@ ResponseMessages.LOGOUT_FAILURE = 'Logout failure';
 ResponseMessages.OTP_SEND_FAILURE = 'OTP send failure';
 ResponseMessages.EMAIL_SEND_FAILURE = 'Email send failure';
 ResponseMessages.CHAT_MESSAGE_READ_FAILURE = 'Chat message read failure';
+ResponseMessages.CHAT_MESSAGE_DELETE_FAILURE = 'Chat message delete failure';
 
 ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 
@@ -147,6 +149,21 @@ ResponseMessages.FOLLOW_REQUEST_CANCELLED = 'Follow request cancelled';
 ResponseMessages.FOLLOW_REQUEST_NOT_FOUND = 'Follow request not found';
 ResponseMessages.USER_IS_NOT_FOLLOWER = 'User is not follower';
 ResponseMessages.REMOVED_FOLLOWER = 'Removed follower';
+
+ResponseMessages.PREKEY_BUNDLE_SAVED = 'Prekey bundle saved';
+ResponseMessages.PREKEY_BUNDLE_NOT_SAVED = 'Prekey bundle not saved';
+ResponseMessages.PREKEY_BUNDLE_NOT_FOUND = 'Prekey bundle not found';
+ResponseMessages.PREKEY_BUNDLE_RECEIVED = 'Prekey bundle received';
+ResponseMessages.PREKEY_BUNDLE_NOT_RECEIVED = 'Prekey bundle not received';
+
+ResponseMessages.DEVICE_ID_NOT_FOUND = 'Device id not found';
+ResponseMessages.DEVICE_ID_ALREADY_EXISTS = 'Device id already exists';
+ResponseMessages.DEVICE_ID_SAVED = 'Device id saved';
+ResponseMessages.DEVICE_ID_NOT_SAVED = 'Device id not saved';
+ResponseMessages.DEVICE_ID_DELETED = 'Device id deleted';
+ResponseMessages.DEVICE_ID_RECEIVED = 'Device id received';
+
+ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 
 /// Invalid Response Messages
 ResponseMessages.CHAT_MESSAGE_NOT_FOUND = 'Chat message not found';

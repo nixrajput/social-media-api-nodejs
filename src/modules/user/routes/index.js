@@ -72,6 +72,16 @@ userRouter
   .route("/verify-password")
   .post(isAuthenticatedUser, userController.verifyPassword);
 
+userRouter
+  .route("/pre-key-bundle")
+  .get(isAuthenticatedUser, userController.getPreKeyBundle)
+  .post(isAuthenticatedUser, userController.savePreKeyBundle);
+
+userRouter
+  .route("/device-id")
+  .get(isAuthenticatedUser, userController.getDeviceId)
+  .post(isAuthenticatedUser, userController.saveDeviceId);
+
 
 /// Follow Operations
 

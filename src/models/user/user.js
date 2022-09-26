@@ -150,17 +150,17 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
 
-  publicKeys: {
+  preKeyBundle: {
     type: Object,
+  },
+
+  deviceId: {
+    type: String,
   },
 
   token: String,
 
   expiresAt: Number,
-
-  resetPasswordToken: String,
-
-  resetPasswordExpire: Date,
 
   createdAt: {
     type: Date,

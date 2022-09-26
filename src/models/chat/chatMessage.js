@@ -13,6 +13,11 @@ const chatMessageSchema = new mongoose.Schema({
         required: true,
     },
 
+    deviceId: {
+        type: String,
+        required: true,
+    },
+
     sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
