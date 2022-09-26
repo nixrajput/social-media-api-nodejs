@@ -263,7 +263,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt", "preKeyBundle",
+      "updatedAt", "preKeyBundle", "deviceId"
     ]);
 
   const ownerData = {};
@@ -283,6 +283,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.isValid = owner.isValid;
   ownerData.isVerified = owner.isVerified;
   ownerData.preKeyBundle = owner.preKeyBundle;
+  ownerData.deviceId = owner.deviceId;
   ownerData.createdAt = owner.createdAt;
   ownerData.updatedAt = owner.updatedAt;
 
@@ -294,7 +295,7 @@ utility.getUserData = async (userId, reqUser) => {
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt", "preKeyBundle",
+      "updatedAt", "preKeyBundle", "deviceId"
     ]);
 
   const userData = {};
@@ -314,6 +315,7 @@ utility.getUserData = async (userId, reqUser) => {
   userData.isValid = user.isValid;
   userData.isVerified = user.isVerified;
   userData.preKeyBundle = user.preKeyBundle;
+  userData.deviceId = user.deviceId;
   userData.createdAt = user.createdAt;
   userData.updatedAt = user.updatedAt;
 
