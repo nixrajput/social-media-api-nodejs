@@ -6,7 +6,13 @@ import models from "../../../../models/index.js";
 /// GET PREKEY BUNDLE ///
 
 const getPreKeyBundle = catchAsyncError(async (req, res, next) => {
-    const user = await models.User.findById(req.user._id).select("_id preKeyBundle");
+    const userId = req.query.id;
+
+    if (!userId) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
+    }
+
+    const user = await models.User.findById(userId).select("_id preKeyBundle");
 
     if (!user) {
         return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));

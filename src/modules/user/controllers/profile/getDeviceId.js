@@ -6,7 +6,13 @@ import models from "../../../../models/index.js";
 /// GET DEVICE ID ///
 
 const getDeviceId = catchAsyncError(async (req, res, next) => {
-    const user = await models.User.findById(req.user._id).select("_id deviceId");
+    const userId = req.query.id;
+
+    if (!userId) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
+    }
+
+    const user = await models.User.findById(userId).select("_id deviceId");
 
     if (!user) {
         return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
