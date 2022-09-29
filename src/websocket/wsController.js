@@ -124,21 +124,24 @@ const wsController = async (ws, message, wssClients, req) => {
 
         case eventTypes.GET_MESSAGE_BY_ID:
             try {
-                const receiverId = ws.userId;
-                const { senderId } = payload;
+                const loggedInUserId = ws.userId;
+                const { userId } = payload;
 
-                if (!receiverId) {
+                if (!loggedInUserId || !userId) {
                     return ws.send(JSON.stringify({
                         success: false,
                         message: ResponseMessages.INVALID_DATA
                     }));
                 }
 
-                let currentPage = parseInt(payload.page) || 1;
-                let limit = parseInt(payload.limit) || 10;
+                let currentPage = parseInt(payload?.page) || 1;
+                let limit = parseInt(payload?.limit) || 10;
 
                 let totalMessages = await models.ChatMessage.countDocuments({
-                    $or: [{ sender: senderId }, { receiver: receiverId }],
+                    $or: [
+                        { $and: [{ sender: userId }, { receiver: loggedInUserId }] },
+                        { $and: [{ sender: loggedInUserId }, { receiver: userId }] },
+                    ],
                 });
                 let totalPages = Math.ceil(totalMessages / limit);
 
@@ -169,8 +172,8 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 const messages = await models.ChatMessage.find({
                     $or: [
-                        { sender: receiverId },
-                        { receiver: receiverId },
+                        { $and: [{ sender: userId }, { receiver: loggedInUserId }] },
+                        { $and: [{ sender: loggedInUserId }, { receiver: userId }] },
                     ],
                 }).select("_id").sort({ createdAt: -1 })
                     .skip(skip).limit(limit);
@@ -320,7 +323,7 @@ const wsController = async (ws, message, wssClients, req) => {
             }
             break;
 
-        case eventTypes.GET_MESSAGE_SENDERS:
+        case eventTypes.GET_ALL_CONVERSATIONS:
             try {
                 const receiverId = ws.userId;
 
