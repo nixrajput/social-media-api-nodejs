@@ -43,150 +43,161 @@ export const runApp = () => {
   // (async () => {
   //   const users = await models.User.find();
   //   console.log(users.length);
-  //   for (let user of users) {
-  //     // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
-  //     // console.log("done");
 
-  //     // user.accountPrivacy = user.accountType;
-  //     // await user.save();
+  //   // for (let i = 0; i < 10; i++) {
+  //   //   if (users[i]._id.toString() !== "622cd2a8bf28bebb45f64b68") {
+  //   //     await models.ChatMessage.create({
+  //   //       receiver: users[i]._id,
+  //   //       sender: '622cd2a8bf28bebb45f64b68',
+  //   //       message: `Hello to ${users[i].fname} ${users[i].lname}`,
+  //   //     });
+  //   //   }
+  //   // }
 
-  //     // await models.User.updateOne({ _id: user._id }, {
-  //     //   $unset: {
-  //     //     publicKeys: {},
-  //     //     resetPasswordToken: "",
-  //     //     resetPasswordExpire: "",
-  //     //     //publicKey: 0,
-  //     //   }
-  //     // });
+  //   // for (let user of users) {
+  //   //   // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
+  //   //   // console.log("done");
 
-  //     // const posts = await models.Post.find({ owner: user._id })
-  //     //   .select("_id").sort({ createdAt: -1 });
+  //   //   // user.accountPrivacy = user.accountType;
+  //   //   // await user.save();
 
-  //     // console.log(posts.length);
+  //   //   // await models.User.updateOne({ _id: user._id }, {
+  //   //   //   $unset: {
+  //   //   //     publicKeys: {},
+  //   //   //     resetPasswordToken: "",
+  //   //   //     resetPasswordExpire: "",
+  //   //   //     //publicKey: 0,
+  //   //   //   }
+  //   //   // });
 
-  //     // user.postsCount = posts.length;
+  //   //   // const posts = await models.Post.find({ owner: user._id })
+  //   //   //   .select("_id").sort({ createdAt: -1 });
 
-  //     // if (user.accountPrivacy === "private") {
-  //     //   user.isPrivate = true;
-  //     // }
+  //   //   // console.log(posts.length);
 
-  //     // if (post.caption) {
-  //     //   const hashtags = utility.getHashTags(post.caption);
+  //   //   // user.postsCount = posts.length;
 
-  //     //   if (hashtags.length > 0) {
-  //     //     for (let i = 0; i < hashtags.length; i++) {
-  //     //       const tag = await models.Tag.findOne({ name: hashtags[i] });
+  //   //   // if (user.accountPrivacy === "private") {
+  //   //   //   user.isPrivate = true;
+  //   //   // }
 
-  //     //       if (tag) {
-  //     //         tag.postsCount++;
-  //     //         await tag.save();
-  //     //       } else {
-  //     //         await models.Tag.create({
-  //     //           name: hashtags[i],
-  //     //           postsCount: 1,
-  //     //         });
-  //     //       }
-  //     //     }
-  //     //   }
+  //   //   // if (post.caption) {
+  //   //   //   const hashtags = utility.getHashTags(post.caption);
 
-  //     //   //await post.save();
-  //     // }
+  //   //   //   if (hashtags.length > 0) {
+  //   //   //     for (let i = 0; i < hashtags.length; i++) {
+  //   //   //       const tag = await models.Tag.findOne({ name: hashtags[i] });
 
-  //     // console.log(user.accountPrivacy);
+  //   //   //       if (tag) {
+  //   //   //         tag.postsCount++;
+  //   //   //         await tag.save();
+  //   //   //       } else {
+  //   //   //         await models.Tag.create({
+  //   //   //           name: hashtags[i],
+  //   //   //           postsCount: 1,
+  //   //   //         });
+  //   //   //       }
+  //   //   //     }
+  //   //   //   }
 
-  //     // console.log(user.isPrivate);
-  //     // await user.save();
+  //   //   //   //await post.save();
+  //   //   // }
 
-  //     // const followers = await models.Follower.find({ user: user._id })
-  //     //   .select("_id").sort({ createdAt: -1 });
+  //   //   // console.log(user.accountPrivacy);
 
-  //     // const followings = await models.Follower.find({ follower: user._id })
-  //     //   .select("_id").sort({ createdAt: -1 });
+  //   //   // console.log(user.isPrivate);
+  //   //   // await user.save();
 
-  //     // const followersCount = followers.length;
-  //     // const followingCount = followings.length;
+  //   //   // const followers = await models.Follower.find({ user: user._id })
+  //   //   //   .select("_id").sort({ createdAt: -1 });
 
-  //     // user.followersCount = followersCount;
-  //     // user.followingCount = followingCount;
+  //   //   // const followings = await models.Follower.find({ follower: user._id })
+  //   //   //   .select("_id").sort({ createdAt: -1 });
 
-  //     // await user.save();
+  //   //   // const followersCount = followers.length;
+  //   //   // const followingCount = followings.length;
 
-  //     // await models.Follower.deleteOne({ _id: post._id });
+  //   //   // user.followersCount = followersCount;
+  //   //   // user.followingCount = followingCount;
 
-  //     //console.log(post.updatedAt);
+  //   //   // await user.save();
 
-  //     //console.log(post.likes);
+  //   //   // await models.Follower.deleteOne({ _id: post._id });
 
-  //     // if (post.followers.length > 0) {
-  //     //   for (let like of post.followers) {
-  //     //     await models.Follower.create({
-  //     //       user: post._id,
-  //     //       follower: like.user,
-  //     //       createdAt: like.createdAt,
-  //     //     });
-  //     //   }
-  //     // }
+  //   //   //console.log(post.updatedAt);
 
-  //     //await post.save();
+  //   //   //console.log(post.likes);
 
-  //     //let postLikes = post.newLikes;
-  //     // console.log(postLikes);
-  //     // let postComments = post.comments;
-  //     // let postLikesCount = postLikes.length;
-  //     // let postCommentsCount = postComments.length;
+  //   //   // if (post.followers.length > 0) {
+  //   //   //   for (let like of post.followers) {
+  //   //   //     await models.Follower.create({
+  //   //   //       user: post._id,
+  //   //   //       follower: like.user,
+  //   //   //       createdAt: like.createdAt,
+  //   //   //     });
+  //   //   //   }
+  //   //   // }
 
-  //     // let newFollowers = user.followers;
-  //     // let newFollowing = user.following;
+  //   //   //await post.save();
 
-  //     // if (newFollowers.length > 0) {
-  //     //   for (let newFollower of newFollowers) {
-  //     //     user.newFollowers.push({
-  //     //       user: newFollower,
-  //     //     });
-  //     //   }
-  //     // }
+  //   //   //let postLikes = post.newLikes;
+  //   //   // console.log(postLikes);
+  //   //   // let postComments = post.comments;
+  //   //   // let postLikesCount = postLikes.length;
+  //   //   // let postCommentsCount = postComments.length;
 
-  //     // if (newFollowing.length > 0) {
-  //     //   for (let item of newFollowing) {
-  //     //     user.newFollowings.push({
-  //     //       user: item,
-  //     //     });
-  //     //   }
-  //     // }
+  //   //   // let newFollowers = user.followers;
+  //   //   // let newFollowing = user.following;
 
-  //     // user.followers = user.newFollowers;
-  //     // user.following = user.newFollowings;
+  //   //   // if (newFollowers.length > 0) {
+  //   //   //   for (let newFollower of newFollowers) {
+  //   //   //     user.newFollowers.push({
+  //   //   //       user: newFollower,
+  //   //   //     });
+  //   //   //   }
+  //   //   // }
 
-  //     // let postsCount = user.posts.length;
-  //     // user.postsCount = postsCount;
+  //   //   // if (newFollowing.length > 0) {
+  //   //   //   for (let item of newFollowing) {
+  //   //   //     user.newFollowings.push({
+  //   //   //       user: item,
+  //   //   //     });
+  //   //   //   }
+  //   //   // }
 
-  //     //await user.save();
+  //   //   // user.followers = user.newFollowers;
+  //   //   // user.following = user.newFollowings;
 
-  //     //console.log(newFollowers)
+  //   //   // let postsCount = user.posts.length;
+  //   //   // user.postsCount = postsCount;
+
+  //   //   //await user.save();
+
+  //   //   //console.log(newFollowers)
 
 
-  //     // user.followersCount = followersCount;
-  //     // user.newF = followingCount;
+  //   //   // user.followersCount = followersCount;
+  //   //   // user.newF = followingCount;
 
-  //     // await user.save();
+  //   //   // await user.save();
 
-  //     // for (let like of postLikes) {
-  //     //   console.log(like);
-  //     //   post.newLikes1.push({
-  //     //     likedBy: like.likedBy,
-  //     //     likedAt: like.likedAt,
-  //     //   });
-  //     // }
-  //     // let user = await models.User.findById(like.likedBy);
-  //     // user.likes.push(post._id);
-  //     // let postNewLikes = post.newLikes1;
-  //     // post.likes = postNewLikes;
-  //     // await post.save();
+  //   //   // for (let like of postLikes) {
+  //   //   //   console.log(like);
+  //   //   //   post.newLikes1.push({
+  //   //   //     likedBy: like.likedBy,
+  //   //   //     likedAt: like.likedAt,
+  //   //   //   });
+  //   //   // }
+  //   //   // let user = await models.User.findById(like.likedBy);
+  //   //   // user.likes.push(post._id);
+  //   //   // let postNewLikes = post.newLikes1;
+  //   //   // post.likes = postNewLikes;
+  //   //   // await post.save();
 
-  //     // post.likesCount = postLikesCount;
-  //     // post.commentsCount = postCommentsCount;
-  //     // await post.save();
-  //   }
+  //   //   // post.likesCount = postLikesCount;
+  //   //   // post.commentsCount = postCommentsCount;
+  //   //   // await post.save();
+  //   // }
   //   console.log("operation done");
   // })();
 
