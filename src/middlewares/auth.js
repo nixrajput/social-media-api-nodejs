@@ -17,33 +17,48 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const token = bearer[1];
 
   if (!token) {
-    return next(new ErrorHandler(ResponseMessages.AUTH_TOKEN_REQUIRED, 404));
+    return next(new ErrorHandler(ResponseMessages.AUTH_TOKEN_REQUIRED, 400));
   }
 
+  try {
+    /// decodedData is an object that will be used to store 
+    /// the decoded data from the token
+    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
-  /// decodedData is an object that will be used to store 
-  /// the decoded data from the token
-  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log(decodedData);
 
-  // console.log(decodedData);
+    const user = await models.User.findById(decodedData.id);
 
-  const user = await models.User.findById(decodedData.id);
+    if (token !== user.token) {
+      return next(new ErrorHandler(ResponseMessages.INVALID_EXPIRED_TOKEN, 400));
+    }
 
-  if (token !== user.token) {
-    return next(new ErrorHandler(ResponseMessages.INVALID_EXPIRED_TOKEN, 400));
+    if (!user.isValid) {
+      return next(new ErrorHandler(ResponseMessages.INVALID_ACCOUNT_VALIDATION, 400));
+    }
+
+    if (user.accountStatus !== "active") {
+      return res.status(401).json({
+        success: false,
+        accountStatus: req.user.accountStatus,
+        message: ResponseMessages.ACCOUNT_NOT_ACTIVE,
+      });
+    }
+
+    req.user = user;
+
+    next();
   }
+  catch (err) {
 
-  req.user = user;
+    console.log(err);
 
-  if (req.user.accountStatus !== "active") {
     return res.status(401).json({
       success: false,
-      accountStatus: req.user.accountStatus,
-      message: ResponseMessages.ACCOUNT_NOT_ACTIVE,
+      message: ResponseMessages.INVALID_EXPIRED_TOKEN,
     });
   }
 
-  next();
 });
 
 // AUthorize Roles
