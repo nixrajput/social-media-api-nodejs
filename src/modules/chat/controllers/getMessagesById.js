@@ -17,7 +17,7 @@ const getMessagesById = catchAsyncError(async (req, res, next) => {
     }
 
     let currentPage = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 5;
+    let limit = parseInt(req.query.limit) || 25;
 
     let totalMessagesCount = await models.ChatMessage.countDocuments({
         $or: [

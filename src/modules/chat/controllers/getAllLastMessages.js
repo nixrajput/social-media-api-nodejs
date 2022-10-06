@@ -13,7 +13,7 @@ const getAllLastMessages = catchAsyncError(async (req, res, next) => {
     }
 
     let currentPage = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 5;
+    let limit = parseInt(req.query.limit) || 25;
 
     let totalMessages = await models.ChatMessage.aggregate([
         {
