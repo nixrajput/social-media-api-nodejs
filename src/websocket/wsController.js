@@ -39,24 +39,28 @@ const wsController = async (ws, message, wssClients, req) => {
                     receiver: receiverId,
                 });
 
+                const fcmToken = await models.User.findOne({ _id: receiverId }, { fcmToken: 1 });
+
+                if (fcmToken) {
+                    await sendNotification(
+                        fcmToken.fcmToken,
+                        "New Message",
+                        "You have received a new message",
+                        "chat",
+                        {
+                            chatMessageId: chatMessage._id,
+                            message,
+                            type: chatMessage.type,
+                        }
+                    );
+                }
+
                 const receiver = wssClients.find(
                     (client) => client.userId === receiverId
                 );
 
                 if (receiver) {
                     const chatMessageData = await utility.getChatData(chatMessage._id);
-                    const fcmToken = await models.User.findOne({ _id: receiverId }, { fcmToken: 1 });
-
-                    if (fcmToken) {
-                        sendNotification(
-                            fcmToken,
-                            "New Message",
-                            "You have received a new message",
-                            "chat",
-                            chatMessageData,
-                        );
-                    }
-
                     receiver.send(JSON.stringify({
                         success: true,
                         message: ResponseMessages.CHAT_MESSAGE_RECEIVED,

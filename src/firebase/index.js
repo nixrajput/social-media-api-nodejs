@@ -32,6 +32,7 @@ export const sendNotification = async (token, title, body, type, data) => {
 
     try {
         const response = await fcm.send(message);
+        console.log("Successfully sent message:", response);
         return response;
     } catch (err) {
         return err;
