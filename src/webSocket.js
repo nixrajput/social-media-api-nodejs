@@ -6,8 +6,6 @@ import wsController from "./websocket/wsController.js";
 
 const port = process.env.PORT || 4000;
 
-var wssClients = [];
-
 const initWebSocket = (server) => {
     const wss = new WebSocketServer({ path: "/api/v1/ws", noServer: true });
 
@@ -32,6 +30,8 @@ const initWebSocket = (server) => {
         }
     });
 
+    var wssClients = [];
+
     wss.on("connection", async (ws, req, client) => {
         ws.isAlive = true;
         ws.on("pong", () => {
@@ -55,11 +55,6 @@ const initWebSocket = (server) => {
                 ws.token = token;
 
                 const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-                // const user = await models.User.findOne({ where: { id: decoded.id } });
-                // if (user) {
-                //     await user.update({ ip: ip });
-                // }
-
                 ws.ip = ip;
 
                 const isConnectionExist = wssClients.find(
@@ -77,12 +72,14 @@ const initWebSocket = (server) => {
                     console.log("connection already exist");
                 } else {
                     wssClients.push(ws);
-                    const user = await models.User.findById(ws.userId)
-                        .select("_id lastActive active");
-                    if (user) {
-                        user.active = true;
-                        await user.save();
-                    }
+
+                    // const user = await models.User.findById(ws.userId)
+                    //     .select("_id lastActive active");
+                    // if (user) {
+                    //     user.active = true;
+                    //     await user.save();
+                    // }
+
                     ws.send(
                         JSON.stringify({
                             success: true,
@@ -91,6 +88,7 @@ const initWebSocket = (server) => {
                     );
                     console.log(`[websocket]: user ${decoded.id} connected from ${ip}`);
                 }
+
                 console.log(`[websocket]: ${wssClients.length} clients connected`);
                 // for (let i = 0; i < wssClients.length; i++) {
                 //     const clients = [];
@@ -125,13 +123,6 @@ const initWebSocket = (server) => {
         });
 
         ws.on("close", async () => {
-            const user = await models.User.findById(ws.userId)
-                .select("_id lastActive active");
-            if (user) {
-                user.active = false;
-                user.lastActive = Date.now();
-                await user.save();
-            }
             wssClients = wssClients.filter((client) => client.userId !== ws.userId);
             console.log(`[websocket]: user ${ws.userId} disconnected`);
             console.log(`[websocket]: ${wssClients.length} clients connected`);

@@ -158,6 +158,11 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 
+  fcmToken: {
+    type: String,
+    default: null,
+  },
+
   token: String,
 
   expiresAt: Number,

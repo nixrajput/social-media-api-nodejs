@@ -163,6 +163,12 @@ ResponseMessages.DEVICE_ID_NOT_SAVED = 'Device id not saved';
 ResponseMessages.DEVICE_ID_DELETED = 'Device id deleted';
 ResponseMessages.DEVICE_ID_RECEIVED = 'Device id received';
 
+ResponseMessages.FCM_TOKEN_SAVED = 'FCM token saved';
+ResponseMessages.FCM_TOKEN_NOT_SAVED = 'FCM token not saved';
+ResponseMessages.FCM_TOKEN_NOT_FOUND = 'FCM token not found';
+ResponseMessages.FCM_TOKEN_RECEIVED = 'FCM token received';
+ResponseMessages.FCM_TOKEN_NOT_RECEIVED = 'FCM token not received';
+
 ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 
 /// Invalid Response Messages

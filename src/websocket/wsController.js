@@ -2,7 +2,7 @@ import ResponseMessages from "../contants/responseMessages.js";
 import models from "../models/index.js";
 import utility from "../utils/utility.js";
 import eventTypes from "./eventTypes.js";
-import mongoose from 'mongoose';
+import { sendNotification } from "../firebase/index.js";
 
 const wsController = async (ws, message, wssClients, req) => {
     const { type, payload } = JSON.parse(message);
@@ -45,6 +45,18 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 if (receiver) {
                     const chatMessageData = await utility.getChatData(chatMessage._id);
+                    const fcmToken = await models.User.findOne({ _id: receiverId }, { fcmToken: 1 });
+
+                    if (fcmToken) {
+                        sendNotification(
+                            fcmToken,
+                            "New Message",
+                            "You have received a new message",
+                            "chat",
+                            chatMessageData,
+                        );
+                    }
+
                     receiver.send(JSON.stringify({
                         success: true,
                         message: ResponseMessages.CHAT_MESSAGE_RECEIVED,

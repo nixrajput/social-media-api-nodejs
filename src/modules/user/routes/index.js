@@ -82,6 +82,10 @@ userRouter
   .get(isAuthenticatedUser, userController.getDeviceId)
   .post(isAuthenticatedUser, userController.saveDeviceId);
 
+userRouter
+  .route("/fcm-token")
+  .post(isAuthenticatedUser, userController.saveFcmToken);
+
 
 /// Follow Operations
 

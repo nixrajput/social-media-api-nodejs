@@ -37,6 +37,7 @@ import savePreKeyBundle from "./profile/savePreKeyBundle.js";
 import getPreKeyBundle from "./profile/getPreKeyBundle.js";
 import getDeviceId from "./profile/getDeviceId.js";
 import saveDeviceId from "./profile/saveDeviceId.js";
+import saveFcmToken from "./profile/saveFcmToken.js";
 
 const userController = {};
 
@@ -79,5 +80,6 @@ userController.savePreKeyBundle = savePreKeyBundle;
 userController.getPreKeyBundle = getPreKeyBundle;
 userController.getDeviceId = getDeviceId;
 userController.saveDeviceId = saveDeviceId;
+userController.saveFcmToken = saveFcmToken;
 
 export default userController;
