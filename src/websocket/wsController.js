@@ -146,9 +146,9 @@ const wsController = async (ws, message, wssClients, req) => {
 
         case eventTypes.MESSAGE_READ:
             try {
-                const { messageId } = payload;
+                const { messageId, senderId } = payload;
 
-                if (!messageId) {
+                if (!messageId || !senderId) {
                     return ws.send(JSON.stringify({
                         success: false,
                         message: ResponseMessages.INVALID_DATA
@@ -182,10 +182,25 @@ const wsController = async (ws, message, wssClients, req) => {
                 message.seenAt = Date.now();
                 await message.save();
 
+                const chatMessageData = await utility.getChatData(message._id);
+
+                const sender = wssClients.find(
+                    (client) => client.userId === senderId
+                );
+
+                if (sender) {
+                    sender.send(JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
+                        data: chatMessageData
+                    }));
+                }
+
                 client.send(
                     JSON.stringify({
                         success: true,
                         message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
+                        data: chatMessageData,
                     })
                 );
             } catch (err) {
@@ -228,16 +243,18 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
-                if (message.deleted) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        message: ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED
-                    }));
-                }
+                await message.remove();
 
-                message.deleted = true;
-                message.deletedAt = Date.now();
-                await message.save();
+                // if (message.deleted) {
+                //     return ws.send(JSON.stringify({
+                //         success: false,
+                //         message: ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED
+                //     }));
+                // }
+
+                // message.deleted = true;
+                // message.deletedAt = Date.now();
+                // await message.save();
 
                 client.send(
                     JSON.stringify({

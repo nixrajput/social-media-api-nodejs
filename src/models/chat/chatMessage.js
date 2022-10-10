@@ -6,6 +6,26 @@ const chatMessageSchema = new mongoose.Schema({
         required: true,
     },
 
+    mediaFiles: [
+        {
+            public_id: String,
+            url: String,
+            thumbnail: {
+                public_id: String,
+                url: String,
+            },
+            mediaType: {
+                type: String,
+                enum: [
+                    "image", "video", "audio",
+                    "sticker", "file", "gif",
+                    "location"
+                ],
+                default: "image",
+            },
+        }
+    ],
+
     type: {
         type: String,
         enum: ["text", "image", "video", "audio"],
@@ -23,6 +43,16 @@ const chatMessageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
+    },
+
+    sent: {
+        type: Boolean,
+        default: true,
+    },
+
+    sentAt: {
+        type: Date,
+        default: Date.now,
     },
 
     delivered: {

@@ -41,7 +41,7 @@ export const runApp = () => {
   });
 
   // (async () => {
-  //   const users = await models.User.find();
+  //   const users = await models.ChatMessage.find();
   //   console.log(users.length);
 
   //   // for (let i = 0; i < 10; i++) {
