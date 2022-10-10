@@ -56,6 +56,7 @@ const wsController = async (ws, message, wssClients, req) => {
                             chatMessageId: chatMessageData._id,
                             message: chatMessageData.message,
                             messageType: chatMessageData.type,
+                            senderName: chatMessageData.sender.uname,
                             avatar: chatMessageData.sender.avatar.url,
                         }
                     );
