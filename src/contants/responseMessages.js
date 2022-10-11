@@ -169,6 +169,9 @@ ResponseMessages.FCM_TOKEN_NOT_FOUND = 'FCM token not found';
 ResponseMessages.FCM_TOKEN_RECEIVED = 'FCM token received';
 ResponseMessages.FCM_TOKEN_NOT_RECEIVED = 'FCM token not received';
 
+ResponseMessages.CANNOT_MESSAGE_YOURSELF = 'You cannot message yourself';
+
+
 ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 
 /// Invalid Response Messages

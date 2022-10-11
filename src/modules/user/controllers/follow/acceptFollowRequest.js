@@ -68,7 +68,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
         { fcmToken: 1 }
     );
 
-    if (fcmToken) {
+    if (fcmToken.fcmToken) {
         await sendNotification(
             fcmToken.fcmToken,
             {

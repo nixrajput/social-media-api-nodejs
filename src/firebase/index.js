@@ -33,7 +33,7 @@ export const sendNotification = async (token,
         token,
     };
 
-    console.log(message);
+    //console.log(message);
     try {
         const response = await fcm.send(message);
         console.log("[firebase] successfully sent message:", response);

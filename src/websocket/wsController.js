@@ -32,6 +32,13 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
+                if (receiverId === ws.userId) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CANNOT_MESSAGE_YOURSELF
+                    }));
+                }
+
                 const chatMessage = await models.ChatMessage.create({
                     message,
                     type,
@@ -46,12 +53,12 @@ const wsController = async (ws, message, wssClients, req) => {
                     { fcmToken: 1 }
                 );
 
-                if (fcmToken) {
+                if (fcmToken.fcmToken) {
                     await sendNotification(
                         fcmToken.fcmToken,
                         {
                             title: "New Message",
-                            body: chatMessageData.sender.uname + " sent you a message",
+                            body: chatMessageData.sender.uname + " sent you a message.",
                             type: "Chats",
                             image: chatMessageData.sender.avatar.url,
                         }
