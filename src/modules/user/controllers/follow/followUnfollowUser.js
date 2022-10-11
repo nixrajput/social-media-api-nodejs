@@ -2,6 +2,8 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
+import utility from "../../../../utils/utility.js";
+import { sendNotification } from "../../../../firebase/index.js";
 
 /// FOLLOW/UNFOLLOW USER ///
 
@@ -74,6 +76,25 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
         });
       }
 
+      const notificationData = await utility.getNotificationData(notification._id, req.user);
+
+      const fcmToken = await models.User.findOne(
+        { _id: userToFollow._id },
+        { fcmToken: 1 }
+      );
+
+      if (fcmToken) {
+        await sendNotification(
+          fcmToken.fcmToken,
+          {
+            title: "New Follow Request",
+            body: `${notificationData.from.uname} sent you a follow request.`,
+            type: "Follow Requests",
+            image: notificationData.from.avatar.url,
+          }
+        );
+      }
+
       res.status(200).json({
         success: true,
         message: ResponseMessages.FOLLOW_REQUEST_SENT,
@@ -108,6 +129,25 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
           body: "started following you",
           type: "follow",
         });
+      }
+
+      const notificationData = await utility.getNotificationData(notification._id, req.user);
+
+      const fcmToken = await models.User.findOne(
+        { _id: userToFollow._id },
+        { fcmToken: 1 }
+      );
+
+      if (fcmToken) {
+        await sendNotification(
+          fcmToken.fcmToken,
+          {
+            title: "New Follower",
+            body: `${notificationData.from.uname} started following you.`,
+            type: "Followers",
+            image: notificationData.from.avatar.url,
+          }
+        );
       }
 
       res.status(200).json({

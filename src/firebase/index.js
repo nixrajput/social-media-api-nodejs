@@ -15,17 +15,25 @@ export const verifyToken = async (token) => {
     }
 };
 
-export const sendNotification = async (token, title, body, type, data) => {
+export const sendNotification = async (token,
+    {
+        title = "",
+        body = "",
+        type = "",
+        image = "",
+    }
+) => {
     const message = {
         data: {
             title,
             body,
             type,
-            extra: JSON.stringify(data),
+            image,
         },
         token,
     };
 
+    console.log(message);
     try {
         const response = await fcm.send(message);
         console.log("[firebase] successfully sent message:", response);

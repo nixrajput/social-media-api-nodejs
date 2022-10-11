@@ -3,6 +3,7 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
+import { sendNotification } from "../../../../firebase/index.js";
 
 /// ADD NEW COMMENT ///
 
@@ -18,7 +19,7 @@ const addComment = catchAsyncError(async (req, res, next) => {
   }
 
   const post = await models.Post.findById(req.query.postId)
-    .select("_id owner commentsCount");
+    .select("_id owner commentsCount mediaFiles");
 
   if (!post) {
     return next(new ErrorHandler(ResponseMessages.POST_NOT_FOUND, 404));
@@ -55,13 +56,34 @@ const addComment = catchAsyncError(async (req, res, next) => {
   }
 
   if (post.owner.toString() !== req.user._id.toString()) {
-    await models.Notification.create({
+    const noti = await models.Notification.create({
       to: post.owner,
       from: req.user._id,
       body: "commented on your post.",
       refId: post._id,
       type: "postComment",
     });
+
+    const notificationData = await utility.getNotificationData(noti._id, req.user);
+
+    const fcmToken = await models.User.findOne(
+      { _id: post.owner },
+      { fcmToken: 1 }
+    );
+
+    if (fcmToken) {
+      await sendNotification(
+        fcmToken.fcmToken,
+        {
+          title: "New Comment",
+          body: `${notificationData.from.uname} commented on your post.`,
+          type: "Comments",
+          image: post.mediaFiles[0].mediaType === "image" ?
+            post.mediaFiles[0].url :
+            post.mediaFiles[0].thumbnail.url,
+        }
+      );
+    }
   }
 
   const commentData = await utility.getCommentData(newComment._id, req.user);

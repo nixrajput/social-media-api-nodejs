@@ -3,6 +3,7 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
+import { sendNotification } from "../../../../firebase/index.js";
 
 /// LIKE/UNLIKE POST ///
 
@@ -12,7 +13,7 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
   }
 
   const post = await models.Post.findById(req.query.id)
-    .select(["_id", "owner", "likesCount"]);
+    .select(["_id", "owner", "likesCount", "mediaFiles"]);
 
   if (!post) {
     return next(new ErrorHandler(ResponseMessages.POST_NOT_FOUND, 404));
@@ -34,6 +35,8 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
     await models.PostLike.create({ post: post._id, user: req.user._id });
     post.likesCount++;
 
+    await post.save();
+
     const notification = await models.Notification.findOne({
       to: post.owner,
       from: req.user._id,
@@ -44,16 +47,35 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
     const isPostOwner = await utility.checkIfPostOwner(post._id, req.user);
 
     if (!notification && !isPostOwner) {
-      await models.Notification.create({
+      const noti = await models.Notification.create({
         to: post.owner,
         from: req.user._id,
         body: "liked your post",
         refId: post._id,
         type: "postLike",
       });
-    }
 
-    await post.save();
+      const notificationData = await utility.getNotificationData(noti._id, req.user);
+
+      const fcmToken = await models.User.findOne(
+        { _id: post.owner },
+        { fcmToken: 1 }
+      );
+
+      if (fcmToken) {
+        await sendNotification(
+          fcmToken.fcmToken,
+          {
+            title: "New Like",
+            body: `${notificationData.from.uname} liked your post.`,
+            type: "Likes",
+            image: post.mediaFiles[0].mediaType === "image" ?
+              post.mediaFiles[0].url :
+              post.mediaFiles[0].thumbnail.url,
+          }
+        );
+      }
+    }
 
     res.status(200).json({
       success: true,

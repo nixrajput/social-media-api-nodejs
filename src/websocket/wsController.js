@@ -49,15 +49,11 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (fcmToken) {
                     await sendNotification(
                         fcmToken.fcmToken,
-                        "New Message",
-                        "You have received a new message",
-                        "chat",
                         {
-                            chatMessageId: chatMessageData._id,
-                            message: chatMessageData.message,
-                            messageType: chatMessageData.type,
-                            senderName: chatMessageData.sender.uname,
-                            avatar: chatMessageData.sender.avatar.url,
+                            title: "New Message",
+                            body: chatMessageData.sender.uname + " sent you a message",
+                            type: "Chats",
+                            image: chatMessageData.sender.avatar.url,
                         }
                     );
                 }

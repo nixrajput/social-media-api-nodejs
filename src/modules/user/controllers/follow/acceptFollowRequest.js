@@ -2,6 +2,8 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
+import utility from "../../../../utils/utility.js";
+import { sendNotification } from "../../../../firebase/index.js";
 
 /// ACCEPT/REMOVE FOLLOW REQUEST ///
 
@@ -47,6 +49,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
 
     if (sentToReqUserNotification) {
         sentToReqUserNotification.isRead = false;
+        sentToReqUserNotification.createdAt = Date.now();
         await sentToReqUserNotification.save();
     }
     else {
@@ -58,6 +61,25 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
         });
     }
 
+    const notificationData = await utility.getNotificationData(sentToReqUserNotification._id, req.user);
+
+    const fcmToken = await models.User.findOne(
+        { _id: userRequested._id },
+        { fcmToken: 1 }
+    );
+
+    if (fcmToken) {
+        await sendNotification(
+            fcmToken.fcmToken,
+            {
+                title: "Request Accepted",
+                body: `${notificationData.from.uname} accepted your follow request.`,
+                type: "Follow Requests",
+                image: notificationData.from.avatar.url,
+            }
+        );
+    }
+
     const sentToUserNotification = await models.Notification.findOne({
         to: user._id,
         from: userRequested._id,
@@ -66,6 +88,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
 
     if (sentToUserNotification) {
         sentToUserNotification.isRead = false;
+        sentToUserNotification.createdAt = Date.now();
         sentToUserNotification.type = "followRequestApproved";
         sentToUserNotification.body = "started following you";
         await sentToUserNotification.save();
