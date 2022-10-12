@@ -512,6 +512,9 @@ utility.getChatData = async (chatId) => {
   const receiverData = await utility.getUserData(chat.receiver, chat.receiver);
 
   chatData._id = chat._id;
+  chatData.tempId = chat.tempId;
+  chatData.senderId = chat.sender;
+  chatData.receiverId = chat.receiver;
   chatData.message = chat.message;
   chatData.type = chat.type;
   chatData.mediaFiles = chat.mediaFiles;

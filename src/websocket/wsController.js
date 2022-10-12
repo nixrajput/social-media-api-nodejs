@@ -24,7 +24,10 @@ const wsController = async (ws, message, wssClients, req) => {
     switch (type) {
         case eventTypes.SEND_MESSAGE:
             try {
-                const { message, type, receiverId, mediaFiles, replyTo } = payload;
+                const {
+                    message, type, receiverId,
+                    mediaFiles, replyTo, tempId,
+                } = payload;
 
                 if (!message || !type || !receiverId) {
                     return ws.send(JSON.stringify({
@@ -72,6 +75,7 @@ const wsController = async (ws, message, wssClients, req) => {
                     receiver: receiverId,
                     mediaFiles: mediaFiles,
                     replyTo: replyTo,
+                    tempId: tempId,
                 });
 
                 const chatMessageData = await utility.getChatData(chatMessage._id);
