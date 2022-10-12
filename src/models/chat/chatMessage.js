@@ -33,6 +33,11 @@ const chatMessageSchema = new mongoose.Schema({
         required: true,
     },
 
+    replyTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChatMessage",
+    },
+
     sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

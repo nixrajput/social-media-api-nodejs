@@ -1,3 +1,4 @@
+import cloudinary from "cloudinary";
 import ResponseMessages from "../contants/responseMessages.js";
 import models from "../models/index.js";
 import utility from "../utils/utility.js";
@@ -23,7 +24,7 @@ const wsController = async (ws, message, wssClients, req) => {
     switch (type) {
         case eventTypes.SEND_MESSAGE:
             try {
-                const { message, type, receiverId } = payload;
+                const { message, type, receiverId, mediaFiles, replyTo } = payload;
 
                 if (!message || !type || !receiverId) {
                     return ws.send(JSON.stringify({
@@ -39,11 +40,38 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
+                if (mediaFiles && mediaFiles.length > 0) {
+                    for (let i = 0; i < mediaFiles.length; i++) {
+                        if (!mediaFiles[i].public_id) {
+                            return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
+                        }
+                        if (!mediaFiles[i].url) {
+                            return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
+                        }
+                        if (!mediaFiles[i].mediaType) {
+                            return next(new ErrorHandler(ResponseMessages.MEDIA_TYPE_REQUIRED, 400));
+                        }
+                        if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail) {
+                            return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_REQUIRED, 400));
+                        }
+
+                        if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.public_id) {
+                            return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED, 400));
+                        }
+
+                        if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.url) {
+                            return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED, 400));
+                        }
+                    }
+                }
+
                 const chatMessage = await models.ChatMessage.create({
-                    message,
-                    type,
+                    message: message,
+                    type: type,
                     sender: ws.userId,
                     receiver: receiverId,
+                    mediaFiles: mediaFiles,
+                    replyTo: replyTo,
                 });
 
                 const chatMessageData = await utility.getChatData(chatMessage._id);
@@ -244,6 +272,23 @@ const wsController = async (ws, message, wssClients, req) => {
                         success: false,
                         message: ResponseMessages.UNAUTHORIZED
                     }));
+                }
+
+                if (message.mediaFiles && message.mediaFiles.length > 0) {
+                    for (let i = 0; i < message.mediaFiles.length; i++) {
+                        let publicId = message.mediaFiles[i].public_id;
+                        let mediaType = message.mediaFiles[i].mediaType;
+
+                        if (mediaType === "video") {
+                            let thumbnailPublicId = message.mediaFiles[i].thumbnail.public_id;
+                            if (thumbnailPublicId) {
+                                await cloudinary.v2.uploader.destroy(thumbnailPublicId);
+                            }
+                            await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
+                        } else {
+                            await cloudinary.v2.uploader.destroy(publicId);
+                        }
+                    }
                 }
 
                 await message.remove();

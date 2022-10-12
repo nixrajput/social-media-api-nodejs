@@ -514,6 +514,8 @@ utility.getChatData = async (chatId) => {
   chatData._id = chat._id;
   chatData.message = chat.message;
   chatData.type = chat.type;
+  chatData.mediaFiles = chat.mediaFiles;
+  chatData.replyTo = chat.replyTo;
   chatData.sender = senderData;
   chatData.receiver = receiverData;
   chatData.sent = chat.sent;
