@@ -252,6 +252,79 @@ const wsController = async (ws, message, wssClients, req) => {
             }
             break;
 
+        case eventTypes.MESSAGE_READ:
+            try {
+                const { messageId } = payload;
+
+                if (!messageId) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
+
+                const message = await models.ChatMessage.findById(messageId);
+
+                if (!message) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
+                    }));
+                }
+
+                if (message.receiver.toString() !== ws.userId.toString()) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.UNAUTHORIZED
+                    }));
+                }
+
+                if (message.seen) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ
+                    }));
+                }
+
+                message.seen = true;
+                message.seenAt = Date.now();
+                await message.save();
+
+                const chatMessageData = await utility.getChatData(message._id);
+
+                let senderId = message.sender.toHexString();
+
+                const sender = wssClients.find(
+                    (client) => client.userId === senderId
+                );
+
+                if (sender) {
+                    sender.send(JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
+                        data: chatMessageData
+                    }));
+                }
+
+                client.send(
+                    JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
+                        data: chatMessageData,
+                    })
+                );
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        message: ResponseMessages.CHAT_MESSAGE_READ_FAILURE,
+                    })
+                );
+
+                console.log(err);
+            }
+            break;
+
         case eventTypes.DELETE_MESSAGE:
             try {
                 const { messageId } = payload;
