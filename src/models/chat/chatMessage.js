@@ -7,7 +7,6 @@ const chatMessageSchema = new mongoose.Schema({
 
     message: {
         type: String,
-        required: true,
     },
 
     mediaFiles: [
@@ -29,13 +28,6 @@ const chatMessageSchema = new mongoose.Schema({
             },
         }
     ],
-
-    type: {
-        type: String,
-        enum: ["text", "image", "video", "audio"],
-        default: "text",
-        required: true,
-    },
 
     replyTo: {
         type: mongoose.Schema.Types.ObjectId,

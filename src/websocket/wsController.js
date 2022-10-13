@@ -25,11 +25,11 @@ const wsController = async (ws, message, wssClients, req) => {
         case eventTypes.SEND_MESSAGE:
             try {
                 const {
-                    message, type, receiverId,
+                    message, receiverId,
                     mediaFiles, replyTo, tempId,
                 } = payload;
 
-                if (!message || !type || !receiverId) {
+                if (!message || !receiverId) {
                     return ws.send(JSON.stringify({
                         success: false,
                         message: ResponseMessages.INVALID_DATA
@@ -70,7 +70,6 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 const chatMessage = await models.ChatMessage.create({
                     message: message,
-                    type: type,
                     sender: ws.userId,
                     receiver: receiverId,
                     mediaFiles: mediaFiles,
@@ -86,11 +85,12 @@ const wsController = async (ws, message, wssClients, req) => {
                 );
 
                 if (fcmToken.fcmToken) {
+                    let name = `${chatMessageData.sender.fname} ${chatMessageData.sender.lname}`;
                     await sendNotification(
                         fcmToken.fcmToken,
                         {
-                            title: "New Message",
-                            body: chatMessageData.sender.uname + " sent you a message.",
+                            title: name,
+                            body: name + " sent you a message.",
                             type: "Chats",
                             image: chatMessageData.sender.avatar.url,
                         }
@@ -179,11 +179,11 @@ const wsController = async (ws, message, wssClients, req) => {
             }
             break;
 
-        case eventTypes.MESSAGE_READ:
+        case eventTypes.READ_MESSAGE:
             try {
-                const { messageId, senderId } = payload;
+                const { messageId } = payload;
 
-                if (!messageId || !senderId) {
+                if (!messageId) {
                     return ws.send(JSON.stringify({
                         success: false,
                         message: ResponseMessages.INVALID_DATA
@@ -219,6 +219,8 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 const chatMessageData = await utility.getChatData(message._id);
 
+                let senderId = message.sender.toHexString();
+
                 const sender = wssClients.find(
                     (client) => client.userId === senderId
                 );
@@ -250,7 +252,7 @@ const wsController = async (ws, message, wssClients, req) => {
             }
             break;
 
-        case eventTypes.MESSAGE_DELETED:
+        case eventTypes.DELETE_MESSAGE:
             try {
                 const { messageId } = payload;
 
@@ -263,6 +265,8 @@ const wsController = async (ws, message, wssClients, req) => {
                 }
 
                 const message = await models.ChatMessage.findById(messageId);
+
+                const receiverId = message.receiver.toHexString();
 
                 if (!message) {
                     return ws.send(JSON.stringify({
@@ -308,10 +312,25 @@ const wsController = async (ws, message, wssClients, req) => {
                 // message.deletedAt = Date.now();
                 // await message.save();
 
+                const receiver = wssClients.find(
+                    (client) => client.userId === receiverId
+                );
+
+                if (receiver) {
+                    receiver.send(JSON.stringify({
+                        success: true,
+                        message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
+                        action: eventTypes.MESSAGE_DELETED,
+                        messageId: messageId,
+                    }));
+                }
+
                 client.send(
                     JSON.stringify({
                         success: true,
                         message: ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS,
+                        action: eventTypes.MESSAGE_DELETED,
+                        messageId: messageId,
                     })
                 );
             } catch (err) {

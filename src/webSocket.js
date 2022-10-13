@@ -1,7 +1,6 @@
 import { WebSocketServer } from "ws";
 import jwt from "jsonwebtoken";
 import url from "url";
-import models from "./models/index.js";
 import wsController from "./websocket/wsController.js";
 
 const port = process.env.PORT || 4000;
@@ -80,6 +79,8 @@ const initWebSocket = (server) => {
                     //     await user.save();
                     // }
 
+                    wss.emit("online", ws.userId);
+
                     ws.send(
                         JSON.stringify({
                             success: true,
@@ -124,6 +125,8 @@ const initWebSocket = (server) => {
 
         ws.on("close", async () => {
             wssClients = wssClients.filter((client) => client.userId !== ws.userId);
+            wss.emit("offline", ws.userId);
+
             console.log(`[websocket]: user ${ws.userId} disconnected`);
             console.log(`[websocket]: ${wssClients.length} clients connected`);
 
@@ -146,6 +149,7 @@ const initWebSocket = (server) => {
 
     wss.on("close", () => {
         clearInterval(interval);
+        wssClients = [];
         console.log("client disconnected");
     });
 
