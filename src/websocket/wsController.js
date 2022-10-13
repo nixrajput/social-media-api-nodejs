@@ -14,6 +14,7 @@ const wsController = async (ws, message, wssClients, req) => {
         ws.send(
             JSON.stringify({
                 success: false,
+                type: 'error',
                 message: ResponseMessages.CLIENT_NOT_CONNECTED,
             })
         );
@@ -32,6 +33,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (!message || !receiverId) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.INVALID_DATA
                     }));
                 }
@@ -39,6 +41,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (receiverId === ws.userId) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CANNOT_MESSAGE_YOURSELF
                     }));
                 }
@@ -104,6 +107,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (receiver) {
                     receiver.send(JSON.stringify({
                         success: true,
+                        type: 'message',
                         message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
                         data: chatMessageData
                     }));
@@ -118,6 +122,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 client.send(
                     JSON.stringify({
                         success: true,
+                        type: 'message',
                         message: ResponseMessages.CHAT_MESSAGE_SENT_SUCCESS,
                         data: updatedChatMessageData,
                     })
@@ -126,6 +131,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 ws.send(
                     JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_NOT_SENT,
                     })
                 );
@@ -141,6 +147,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (!receiverId) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.INVALID_DATA
                     }));
                 }
@@ -158,6 +165,7 @@ const wsController = async (ws, message, wssClients, req) => {
                         const chatMessageData = await utility.getChatData(messages[i]._id);
                         client.send(JSON.stringify({
                             success: true,
+                            type: 'message',
                             message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
                             data: chatMessageData
                         }));
@@ -171,6 +179,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 ws.send(
                     JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGES_NOT_RECEIVED,
                     })
                 );
@@ -184,33 +193,45 @@ const wsController = async (ws, message, wssClients, req) => {
                 const { messageId } = payload;
 
                 if (!messageId) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        message: ResponseMessages.INVALID_DATA
-                    }));
+                    return ws.send(
+                        JSON.stringify({
+                            success: false,
+                            type: 'error',
+                            message: ResponseMessages.INVALID_DATA
+                        })
+                    );
                 }
 
                 const message = await models.ChatMessage.findById(messageId);
 
                 if (!message) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
-                    }));
+                    return ws.send(
+                        JSON.stringify({
+                            success: false,
+                            type: 'error',
+                            message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
+                        })
+                    );
                 }
 
                 if (message.receiver.toString() !== ws.userId.toString()) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        message: ResponseMessages.UNAUTHORIZED
-                    }));
+                    return ws.send(
+                        JSON.stringify({
+                            success: false,
+                            type: 'error',
+                            message: ResponseMessages.UNAUTHORIZED
+                        })
+                    );
                 }
 
                 if (message.seen) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ
-                    }));
+                    return ws.send(
+                        JSON.stringify({
+                            success: false,
+                            type: 'error',
+                            message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ
+                        })
+                    );
                 }
 
                 message.seen = true;
@@ -228,6 +249,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (sender) {
                     sender.send(JSON.stringify({
                         success: true,
+                        type: 'message',
                         message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
                         data: chatMessageData
                     }));
@@ -236,6 +258,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 client.send(
                     JSON.stringify({
                         success: true,
+                        type: 'message',
                         message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
                         data: chatMessageData,
                     })
@@ -244,6 +267,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 ws.send(
                     JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_READ_FAILURE,
                     })
                 );
@@ -259,6 +283,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (!messageId) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.INVALID_DATA
                     }));
                 }
@@ -268,6 +293,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (!message) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
                     }));
                 }
@@ -275,6 +301,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (message.receiver.toString() !== ws.userId.toString()) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.UNAUTHORIZED
                     }));
                 }
@@ -282,6 +309,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (message.seen) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ
                     }));
                 }
@@ -301,6 +329,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (sender) {
                     sender.send(JSON.stringify({
                         success: true,
+                        type: 'message',
                         message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
                         data: chatMessageData
                     }));
@@ -309,6 +338,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 client.send(
                     JSON.stringify({
                         success: true,
+                        type: 'message',
                         message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
                         data: chatMessageData,
                     })
@@ -317,6 +347,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 ws.send(
                     JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_READ_FAILURE,
                     })
                 );
@@ -332,6 +363,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (!messageId) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.INVALID_DATA
                     }));
 
@@ -344,6 +376,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (!message) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
                     }));
                 }
@@ -351,6 +384,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (message.sender.toString() !== ws.userId.toString()) {
                     return ws.send(JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.UNAUTHORIZED
                     }));
                 }
@@ -392,8 +426,8 @@ const wsController = async (ws, message, wssClients, req) => {
                 if (receiver) {
                     receiver.send(JSON.stringify({
                         success: true,
-                        message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
-                        action: eventTypes.MESSAGE_DELETED,
+                        type: 'messageDelete',
+                        message: ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS,
                         messageId: messageId,
                     }));
                 }
@@ -401,8 +435,8 @@ const wsController = async (ws, message, wssClients, req) => {
                 client.send(
                     JSON.stringify({
                         success: true,
+                        type: 'messageDelete',
                         message: ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS,
-                        action: eventTypes.MESSAGE_DELETED,
                         messageId: messageId,
                     })
                 );
@@ -410,6 +444,7 @@ const wsController = async (ws, message, wssClients, req) => {
                 ws.send(
                     JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_DELETE_FAILURE,
                     })
                 );
@@ -422,6 +457,7 @@ const wsController = async (ws, message, wssClients, req) => {
             ws.send(
                 JSON.stringify({
                     success: false,
+                    type: 'error',
                     message: ResponseMessages.INVALID_ACTION,
                 })
             );

@@ -54,7 +54,7 @@ const connectToDatabase = function () {
         });
 
         console.log(`[database]: could not connect due to [${err.message}]`);
-        app.listen(port, (err) => {
+        const server = app.listen(port, (err) => {
           if (err) {
             console.log(
               `[server] could not start http server on port: ${port}`
@@ -64,7 +64,11 @@ const connectToDatabase = function () {
           console.log(`[server] running on port: ${port}`);
         });
 
-        setTimeout(connectToDatabase, 10000);
+
+        setTimeout(() => {
+          server.close();
+          connectToDatabase();
+        }, 10000);
         return;
       } else {
         console.log(`[database]: connected successfully to MongoDB`);

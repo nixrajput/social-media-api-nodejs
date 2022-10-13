@@ -43,6 +43,7 @@ const initWebSocket = (server) => {
             ws.send(
                 JSON.stringify({
                     success: false,
+                    type: 'error',
                     message: "token not provided",
                 })
             );
@@ -64,6 +65,7 @@ const initWebSocket = (server) => {
                     ws.send(
                         JSON.stringify({
                             success: false,
+                            type: 'connection',
                             message: "connection already exist",
                         })
                     );
@@ -84,6 +86,7 @@ const initWebSocket = (server) => {
                             client.send(
                                 JSON.stringify({
                                     success: true,
+                                    type: 'onlineStatus',
                                     message: "online",
                                     data: {
                                         userId: ws.userId,
@@ -98,6 +101,7 @@ const initWebSocket = (server) => {
                     ws.send(
                         JSON.stringify({
                             success: true,
+                            type: 'connection',
                             message: `connection established`,
                         })
                     );
@@ -114,6 +118,7 @@ const initWebSocket = (server) => {
                 ws.send(
                     JSON.stringify({
                         success: false,
+                        type: 'error',
                         message: "invalid token",
                     })
                 );
@@ -127,6 +132,7 @@ const initWebSocket = (server) => {
                     client.send(
                         JSON.stringify({
                             success: false,
+                            type: 'error',
                             message: "invalid token",
                         })
                     );
@@ -146,6 +152,7 @@ const initWebSocket = (server) => {
                     client.send(
                         JSON.stringify({
                             success: true,
+                            type: 'onlineStatus',
                             message: "offline",
                             data: {
                                 userId: userId,
