@@ -2,6 +2,7 @@ const eventTypes = {
     SEND_MESSAGE: "send-message",
     RECEIVE_MESSAGE: "receive-message",
     DELETE_MESSAGE: "delete-message",
+    DELETE_MESSAGES: "delete-messages",
     READ_MESSAGE: "read-message",
     GET_UNREAD_MESSAGES: "get-unread-messages",
     GET_UNDELIVERED_MESSAGES: "get-undelivered-messages",
@@ -15,6 +16,8 @@ const eventTypes = {
     MESSAGE_DELETED: "message-deleted",
     MESSAGE_UPDATED: "message-updated",
     MESSAGE_ERROR: "message-error",
+
+    MESSAGE_TYPING: "message-typing",
 
     GET_ONLINE_USERS: "get-online-users",
     CHECK_USER_ONLINE: "check-user-online",

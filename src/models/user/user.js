@@ -109,16 +109,6 @@ const userSchema = new mongoose.Schema({
     default: "active",
   },
 
-  online: {
-    type: Boolean,
-    default: false,
-  },
-
-  lastActive: {
-    type: Date,
-    default: null,
-  },
-
   verificationStatus: {
     type: String,
     enum: ["verified", "unverified", "pending", "rejected"],
@@ -161,6 +151,16 @@ const userSchema = new mongoose.Schema({
   fcmToken: {
     type: String,
     default: null,
+  },
+
+  showOnlineStatus: {
+    type: Boolean,
+    default: true,
+  },
+
+  showLastSeen: {
+    type: Boolean,
+    default: true,
   },
 
   token: String,

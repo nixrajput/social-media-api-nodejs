@@ -319,7 +319,6 @@ const wsController = async (ws, message, wssClients, req) => {
                 await message.save();
 
                 const chatMessageData = await utility.getChatData(message._id);
-
                 let senderId = message.sender.toHexString();
 
                 const sender = wssClients.find(
@@ -370,7 +369,6 @@ const wsController = async (ws, message, wssClients, req) => {
                 }
 
                 const message = await models.ChatMessage.findById(messageId);
-
                 const receiverId = message.receiver.toHexString();
 
                 if (!message) {
@@ -408,17 +406,6 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 await message.remove();
 
-                // if (message.deleted) {
-                //     return ws.send(JSON.stringify({
-                //         success: false,
-                //         message: ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED
-                //     }));
-                // }
-
-                // message.deleted = true;
-                // message.deletedAt = Date.now();
-                // await message.save();
-
                 const receiver = wssClients.find(
                     (client) => client.userId === receiverId
                 );
@@ -446,6 +433,138 @@ const wsController = async (ws, message, wssClients, req) => {
                         success: false,
                         type: 'error',
                         message: ResponseMessages.CHAT_MESSAGE_DELETE_FAILURE,
+                    })
+                );
+
+                console.log(err);
+            }
+            break;
+
+        case eventTypes.DELETE_MESSAGES:
+            try {
+                const { messageIds } = payload;
+
+                if (!messageIds || messageIds.length === 0) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
+
+                const messages = await models.ChatMessage.find({
+                    _id: {
+                        $in: messageIds
+                    }
+                });
+
+                if (!messages || messages.length === 0) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
+                    }));
+                }
+
+                for (let i = 0; i < messages.length; i++) {
+                    const message = messages[i];
+                    const receiverId = message.receiver.toHexString();
+
+                    if (message.sender.toString() !== ws.userId.toString()) {
+                        return ws.send(JSON.stringify({
+                            success: false,
+                            type: 'error',
+                            message: ResponseMessages.UNAUTHORIZED
+                        }));
+                    }
+
+                    if (message.mediaFiles && message.mediaFiles.length > 0) {
+                        for (let i = 0; i < message.mediaFiles.length; i++) {
+                            let publicId = message.mediaFiles[i].public_id;
+                            let mediaType = message.mediaFiles[i].mediaType;
+
+                            if (mediaType === "video") {
+                                let thumbnailPublicId = message.mediaFiles[i].thumbnail.public_id;
+                                if (thumbnailPublicId) {
+                                    await cloudinary.v2.uploader.destroy(thumbnailPublicId);
+                                }
+                                await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
+                            } else {
+                                await cloudinary.v2.uploader.destroy(publicId);
+                            }
+                        }
+                    }
+
+                    await message.remove();
+
+                    const receiver = wssClients.find(
+                        (client) => client.userId === receiverId
+                    );
+
+                    if (receiver) {
+                        receiver.send(JSON.stringify({
+                            success: true,
+                            type: 'messageDelete',
+                            message: ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS,
+                            messageId: message._id,
+                        }));
+                    }
+
+                    client.send(
+                        JSON.stringify({
+                            success: true,
+                            type: 'messageDelete',
+                            message: ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS,
+                            messageId: message._id,
+                        })
+                    );
+                }
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.CHAT_MESSAGE_DELETE_FAILURE,
+                    })
+                );
+
+                console.log(err);
+            }
+            break;
+
+        case eventTypes.MESSAGE_TYPING:
+            try {
+                const { receiverId, status } = payload;
+
+                if (!receiverId || !status) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
+
+                const receiver = wssClients.find(
+                    (client) => client.userId === receiverId
+                );
+
+                if (receiver) {
+                    receiver.send(JSON.stringify({
+                        success: true,
+                        type: 'messageTyping',
+                        message: ResponseMessages.CHAT_MESSAGE_TYPING,
+                        data: {
+                            senderId: ws.userId,
+                            status: status
+                        }
+                    }));
+                }
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.CHAT_MESSAGE_TYPING_FAILURE,
                     })
                 );
 

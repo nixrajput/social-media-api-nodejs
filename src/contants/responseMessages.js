@@ -74,6 +74,7 @@ ResponseMessages.OTP_SEND_FAILURE = 'OTP send failure';
 ResponseMessages.EMAIL_SEND_FAILURE = 'Email send failure';
 ResponseMessages.CHAT_MESSAGE_READ_FAILURE = 'Chat message read failure';
 ResponseMessages.CHAT_MESSAGE_DELETE_FAILURE = 'Chat message delete failure';
+ResponseMessages.CHAT_MESSAGE_TYPING_FAILURE = 'Chat message typing failure';
 
 ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 
@@ -170,7 +171,8 @@ ResponseMessages.FCM_TOKEN_RECEIVED = 'FCM token received';
 ResponseMessages.FCM_TOKEN_NOT_RECEIVED = 'FCM token not received';
 
 ResponseMessages.CANNOT_MESSAGE_YOURSELF = 'You cannot message yourself';
-
+ResponseMessages.CHAT_MESSAGE_TYPING = 'Chat message typing';
+ResponseMessages.CHAT_MESSAGE_NOT_TYPING = 'Chat message not typing';
 
 ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 

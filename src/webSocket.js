@@ -2,6 +2,7 @@ import WebSocket, { WebSocketServer } from "ws";
 import jwt from "jsonwebtoken";
 import url from "url";
 import wsController from "./websocket/wsController.js";
+import models from "./models/index.js";
 
 const port = process.env.PORT || 4000;
 
@@ -74,29 +75,26 @@ const initWebSocket = (server) => {
                 } else {
                     wssClients.push(ws);
 
-                    // const user = await models.User.findById(ws.userId)
-                    //     .select("_id lastActive active");
-                    // if (user) {
-                    //     user.active = true;
-                    //     await user.save();
-                    // }
+                    let user = await models.User.findById(ws.userId)
+                        .select("showOnlineStatus showLastSeen");
 
-                    wssClients.forEach((client) => {
-                        if (client !== ws && client.readyState === WebSocket.OPEN) {
-                            client.send(
-                                JSON.stringify({
-                                    success: true,
-                                    type: 'onlineStatus',
-                                    message: "online",
-                                    data: {
-                                        userId: ws.userId,
-                                    },
-                                })
-                            );
-                        }
-                    });
-
-                    // wss.emit("online", ws.userId);
+                    if (user.showOnlineStatus === true && user.showLastSeen === true) {
+                        wssClients.forEach((client) => {
+                            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                                client.send(
+                                    JSON.stringify({
+                                        success: true,
+                                        type: 'onlineStatus',
+                                        message: "user online",
+                                        data: {
+                                            userId: ws.userId,
+                                            status: "online",
+                                        },
+                                    })
+                                );
+                            }
+                        });
+                    }
 
                     ws.send(
                         JSON.stringify({
@@ -109,11 +107,6 @@ const initWebSocket = (server) => {
                 }
 
                 console.log(`[websocket]: ${wssClients.length} clients connected`);
-                // for (let i = 0; i < wssClients.length; i++) {
-                //     const clients = [];
-                //     clients.push(wssClients[i].userId);
-                //     console.log(clients);
-                // }
             } catch (err) {
                 ws.send(
                     JSON.stringify({
@@ -147,29 +140,30 @@ const initWebSocket = (server) => {
             const userId = ws.userId;
             wssClients = wssClients.filter((client) => client.userId !== ws.userId);
 
-            wssClients.forEach((client) => {
-                if (client !== ws && client.readyState === WebSocket.OPEN) {
-                    client.send(
-                        JSON.stringify({
-                            success: true,
-                            type: 'onlineStatus',
-                            message: "offline",
-                            data: {
-                                userId: userId,
-                            },
-                        })
-                    );
-                }
-            });
+            let user = await models.User.findById(userId)
+                .select("showOnlineStatus showLastSeen");
+
+            if (user.showOnlineStatus === true && user.showLastSeen === true) {
+                wssClients.forEach((client) => {
+                    if (client !== ws && client.readyState === WebSocket.OPEN) {
+                        client.send(
+                            JSON.stringify({
+                                success: true,
+                                type: 'onlineStatus',
+                                message: "user offline",
+                                data: {
+                                    userId: userId,
+                                    status: "offline",
+                                    lastSeen: new Date(),
+                                },
+                            })
+                        );
+                    }
+                });
+            }
 
             console.log(`[websocket]: user ${ws.userId} disconnected`);
             console.log(`[websocket]: ${wssClients.length} clients connected`);
-
-            // for (let i = 0; i < wssClients.length; i++) {
-            //     const clients = [];
-            //     clients.push(wssClients[i].userId);
-            //     console.log(clients);
-            // }
         });
     });
 
