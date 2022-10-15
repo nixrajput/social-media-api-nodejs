@@ -158,6 +158,11 @@ const userSchema = new mongoose.Schema({
     default: true,
   },
 
+  lastSeen: {
+    type: Date,
+    default: null,
+  },
+
   showLastSeen: {
     type: Boolean,
     default: true,

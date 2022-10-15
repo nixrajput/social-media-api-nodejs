@@ -141,7 +141,10 @@ const initWebSocket = (server) => {
             wssClients = wssClients.filter((client) => client.userId !== ws.userId);
 
             let user = await models.User.findById(userId)
-                .select("showOnlineStatus showLastSeen");
+                .select("showOnlineStatus showLastSeen lastSeen");
+
+            user.lastSeen = Date.now();
+            await user.save();
 
             if (user.showOnlineStatus === true && user.showLastSeen === true) {
                 wssClients.forEach((client) => {

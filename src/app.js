@@ -41,7 +41,7 @@ export const runApp = () => {
   });
 
   // (async () => {
-  //   const users = await models.ChatMessage.find();
+  //   const users = await models.User.find();
   //   console.log(users.length);
 
   //   // for (let i = 0; i < 10; i++) {
@@ -54,12 +54,14 @@ export const runApp = () => {
   //   //   }
   //   // }
 
-  //   // for (let user of users) {
-  //   //   // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
-  //   //   // console.log("done");
+  //   for (let user of users) {
+  //     //   // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
+  //     //   // console.log("done");
 
-  //   //   // user.accountPrivacy = user.accountType;
-  //   //   // await user.save();
+  //     //   // user.accountPrivacy = user.accountType;
+  //     await user.save();
+
+  //   }
 
   //   //   // await models.User.updateOne({ _id: user._id }, {
   //   //   //   $unset: {
