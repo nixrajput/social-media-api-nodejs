@@ -616,17 +616,23 @@ const wsController = async (ws, message, wssClients, req) => {
                         .select("showOnlineStatus showLastSeen");
 
                     if (user.showOnlineStatus === true && user.showLastSeen === true) {
-                        client.send(
-                            JSON.stringify({
-                                success: true,
-                                type: 'onlineStatus',
-                                message: "user online",
-                                data: {
-                                    userId: userId,
-                                    status: "online",
-                                },
-                            })
+                        let onlineUser = wssClients.find(
+                            (client) => client.userId === userId
                         );
+
+                        if (onlineUser) {
+                            client.send(
+                                JSON.stringify({
+                                    success: true,
+                                    type: 'onlineStatus',
+                                    message: "user online",
+                                    data: {
+                                        userId: userId,
+                                        status: "online",
+                                    },
+                                })
+                            );
+                        }
                     }
                 }
 
