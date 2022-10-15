@@ -171,7 +171,7 @@ const initWebSocket = (server) => {
                         JSON.stringify({
                             success: true,
                             type: 'messageTyping',
-                            message: ResponseMessages.CHAT_MESSAGE_TYPING,
+                            message: "user stopped typing",
                             data: {
                                 senderId: ws.userId,
                                 status: 'end'

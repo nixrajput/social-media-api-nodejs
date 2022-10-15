@@ -572,6 +572,77 @@ const wsController = async (ws, message, wssClients, req) => {
             }
             break;
 
+        case eventTypes.GET_ONLINE_USERS:
+            try {
+                const onlineUsers = wssClients
+                    .filter(client => client.userId !== ws.userId)
+                    .map(client => client.userId);
+
+                ws.send(JSON.stringify({
+                    success: true,
+                    type: 'onlineUsers',
+                    message: ResponseMessages.ONLINE_USERS,
+                    data: onlineUsers
+                }));
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.ONLINE_USERS_FAILURE,
+                    })
+                );
+
+                console.log(err);
+            }
+            break;
+
+        case eventTypes.CHECK_ONLINE_USERS:
+            try {
+                const { userIds } = payload;
+
+                if (!userIds || userIds.length === 0) {
+                    return ws.send(JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.INVALID_DATA
+                    }));
+                }
+
+                for (let i = 0; i < userIds.length; i++) {
+                    const userId = userIds[i];
+
+                    let user = await models.User.findById(userId)
+                        .select("showOnlineStatus showLastSeen");
+
+                    if (user.showOnlineStatus === true && user.showLastSeen === true) {
+                        client.send(
+                            JSON.stringify({
+                                success: true,
+                                type: 'onlineStatus',
+                                message: "user online",
+                                data: {
+                                    userId: userId,
+                                    status: "online",
+                                },
+                            })
+                        );
+                    }
+                }
+
+            } catch (err) {
+                ws.send(
+                    JSON.stringify({
+                        success: false,
+                        type: 'error',
+                        message: ResponseMessages.ONLINE_USERS_FAILURE,
+                    })
+                );
+
+                console.log(err);
+            }
+            break;
+
         default:
             ws.send(
                 JSON.stringify({

@@ -20,7 +20,7 @@ const eventTypes = {
     MESSAGE_TYPING: "message-typing",
 
     GET_ONLINE_USERS: "get-online-users",
-    CHECK_USER_ONLINE: "check-user-online",
+    CHECK_ONLINE_USERS: "check-online-users",
 
     GET_ALL_CONVERSATIONS: "get-all-conversations",
 };
