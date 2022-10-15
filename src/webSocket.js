@@ -165,6 +165,22 @@ const initWebSocket = (server) => {
                 });
             }
 
+            wssClients.forEach((client) => {
+                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                    client.send(
+                        JSON.stringify({
+                            success: true,
+                            type: 'messageTyping',
+                            message: ResponseMessages.CHAT_MESSAGE_TYPING,
+                            data: {
+                                senderId: ws.userId,
+                                status: 'end'
+                            }
+                        })
+                    );
+                }
+            });
+
             console.log(`[websocket]: user ${ws.userId} disconnected`);
             console.log(`[websocket]: ${wssClients.length} clients connected`);
         });
