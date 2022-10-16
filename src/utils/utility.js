@@ -516,7 +516,7 @@ utility.getChatData = async (chatId) => {
   chatData.senderId = chat.sender;
   chatData.receiverId = chat.receiver;
   chatData.message = chat.message;
-  chatData.mediaFiles = chat.mediaFiles;
+  chatData.mediaFile = chat.mediaFile;
   chatData.replyTo = chat.replyTo;
   chatData.sender = senderData;
   chatData.receiver = receiverData;
@@ -526,8 +526,6 @@ utility.getChatData = async (chatId) => {
   chatData.deliveredAt = chat.deliveredAt;
   chatData.seen = chat.seen;
   chatData.seenAt = chat.seenAt;
-  chatData.deleted = chat.deleted;
-  chatData.deletedAt = chat.deletedAt;
   chatData.createdAt = chat.createdAt;
   chatData.updatedAt = chat.updatedAt;
 

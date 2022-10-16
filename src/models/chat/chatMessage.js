@@ -9,25 +9,23 @@ const chatMessageSchema = new mongoose.Schema({
         type: String,
     },
 
-    mediaFiles: [
-        {
+    mediaFile: {
+        public_id: String,
+        url: String,
+        thumbnail: {
             public_id: String,
             url: String,
-            thumbnail: {
-                public_id: String,
-                url: String,
-            },
-            mediaType: {
-                type: String,
-                enum: [
-                    "image", "video", "audio",
-                    "sticker", "file", "gif",
-                    "location"
-                ],
-                default: "image",
-            },
-        }
-    ],
+        },
+        mediaType: {
+            type: String,
+            enum: [
+                "image", "video", "audio",
+                "sticker", "file", "gif",
+                "location"
+            ],
+            default: "image",
+        },
+    },
 
     replyTo: {
         type: mongoose.Schema.Types.ObjectId,
@@ -71,15 +69,6 @@ const chatMessageSchema = new mongoose.Schema({
     },
 
     seenAt: {
-        type: Date,
-    },
-
-    deleted: {
-        type: Boolean,
-        default: false,
-    },
-
-    deletedAt: {
         type: Date,
     },
 

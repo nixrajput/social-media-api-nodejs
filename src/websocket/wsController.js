@@ -27,10 +27,10 @@ const wsController = async (ws, message, wssClients, req) => {
             try {
                 const {
                     message, receiverId,
-                    mediaFiles, replyTo, tempId,
+                    mediaFile, replyTo, tempId,
                 } = payload;
 
-                if (!message || !receiverId) {
+                if ((!message && !mediaFile) || !receiverId) {
                     return ws.send(JSON.stringify({
                         success: false,
                         type: 'error',
@@ -46,28 +46,26 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
-                if (mediaFiles && mediaFiles.length > 0) {
-                    for (let i = 0; i < mediaFiles.length; i++) {
-                        if (!mediaFiles[i].public_id) {
-                            return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
-                        }
-                        if (!mediaFiles[i].url) {
-                            return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
-                        }
-                        if (!mediaFiles[i].mediaType) {
-                            return next(new ErrorHandler(ResponseMessages.MEDIA_TYPE_REQUIRED, 400));
-                        }
-                        if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail) {
-                            return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_REQUIRED, 400));
-                        }
+                if (mediaFile) {
+                    if (!mediaFile.public_id) {
+                        return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
+                    }
+                    if (!mediaFile.url) {
+                        return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
+                    }
+                    if (!mediaFile.mediaType) {
+                        return next(new ErrorHandler(ResponseMessages.MEDIA_TYPE_REQUIRED, 400));
+                    }
+                    if (mediaFile.mediaType === "video" && !mediaFile.thumbnail) {
+                        return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_REQUIRED, 400));
+                    }
 
-                        if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.public_id) {
-                            return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED, 400));
-                        }
+                    if (mediaFile.mediaType === "video" && !mediaFile.thumbnail.public_id) {
+                        return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED, 400));
+                    }
 
-                        if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.url) {
-                            return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED, 400));
-                        }
+                    if (mediaFile.mediaType === "video" && !mediaFile.thumbnail.url) {
+                        return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED, 400));
                     }
                 }
 
@@ -75,7 +73,7 @@ const wsController = async (ws, message, wssClients, req) => {
                     message: message,
                     sender: ws.userId,
                     receiver: receiverId,
-                    mediaFiles: mediaFiles,
+                    mediaFile: mediaFile,
                     replyTo: replyTo,
                     tempId: tempId,
                 });
@@ -387,20 +385,18 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
-                if (message.mediaFiles && message.mediaFiles.length > 0) {
-                    for (let i = 0; i < message.mediaFiles.length; i++) {
-                        let publicId = message.mediaFiles[i].public_id;
-                        let mediaType = message.mediaFiles[i].mediaType;
+                if (message.mediaFile) {
+                    let publicId = message.mediaFile.public_id;
+                    let mediaType = message.mediaFile.mediaType;
 
-                        if (mediaType === "video") {
-                            let thumbnailPublicId = message.mediaFiles[i].thumbnail.public_id;
-                            if (thumbnailPublicId) {
-                                await cloudinary.v2.uploader.destroy(thumbnailPublicId);
-                            }
-                            await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
-                        } else {
-                            await cloudinary.v2.uploader.destroy(publicId);
+                    if (mediaType === "video") {
+                        let thumbnailPublicId = message.mediaFile.thumbnail.public_id;
+                        if (thumbnailPublicId) {
+                            await cloudinary.v2.uploader.destroy(thumbnailPublicId);
                         }
+                        await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
+                    } else {
+                        await cloudinary.v2.uploader.destroy(publicId);
                     }
                 }
 
@@ -478,20 +474,18 @@ const wsController = async (ws, message, wssClients, req) => {
                         }));
                     }
 
-                    if (message.mediaFiles && message.mediaFiles.length > 0) {
-                        for (let i = 0; i < message.mediaFiles.length; i++) {
-                            let publicId = message.mediaFiles[i].public_id;
-                            let mediaType = message.mediaFiles[i].mediaType;
+                    if (message.mediaFile) {
+                        let publicId = message.mediaFile.public_id;
+                        let mediaType = message.mediaFile.mediaType;
 
-                            if (mediaType === "video") {
-                                let thumbnailPublicId = message.mediaFiles[i].thumbnail.public_id;
-                                if (thumbnailPublicId) {
-                                    await cloudinary.v2.uploader.destroy(thumbnailPublicId);
-                                }
-                                await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
-                            } else {
-                                await cloudinary.v2.uploader.destroy(publicId);
+                        if (mediaType === "video") {
+                            let thumbnailPublicId = message.mediaFile.thumbnail.public_id;
+                            if (thumbnailPublicId) {
+                                await cloudinary.v2.uploader.destroy(thumbnailPublicId);
                             }
+                            await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
+                        } else {
+                            await cloudinary.v2.uploader.destroy(publicId);
                         }
                     }
 

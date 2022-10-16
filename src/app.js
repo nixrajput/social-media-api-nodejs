@@ -41,7 +41,7 @@ export const runApp = () => {
   });
 
   // (async () => {
-  //   const users = await models.User.find();
+  //   const users = await models.ChatMessage.find();
   //   console.log(users.length);
 
   //   // for (let i = 0; i < 10; i++) {
@@ -59,18 +59,22 @@ export const runApp = () => {
   //     //   // console.log("done");
 
   //     //   // user.accountPrivacy = user.accountType;
-  //     await user.save();
+  //     // await user.save();
+
+  //     // await models.ChatMessage.updateOne({ _id: user._id }, {
+  //     //   $unset: {
+  //     //     mediaFiles: [],
+  //     //     deleted: 0,
+  //     //     deletedAt: 0,
+  //     //     // resetPasswordToken: "",
+  //     //     // resetPasswordExpire: "",
+  //     //     //publicKey: 0,
+  //     //   }
+  //     // });
 
   //   }
 
-  //   //   // await models.User.updateOne({ _id: user._id }, {
-  //   //   //   $unset: {
-  //   //   //     publicKeys: {},
-  //   //   //     resetPasswordToken: "",
-  //   //   //     resetPasswordExpire: "",
-  //   //   //     //publicKey: 0,
-  //   //   //   }
-  //   //   // });
+
 
   //   //   // const posts = await models.Post.find({ owner: user._id })
   //   //   //   .select("_id").sort({ createdAt: -1 });
