@@ -511,7 +511,11 @@ utility.getChatData = async (chatId) => {
   const senderData = await utility.getUserData(chat.sender, chat.sender);
   const receiverData = await utility.getUserData(chat.receiver, chat.receiver);
 
-  const replyToData = await utility.getChatData(chat.replyTo);
+  let replyToData = {};
+
+  if (chat.replyTo) {
+    replyToData = await utility.getChatData(chat.replyTo);
+  }
 
   chatData._id = chat._id;
   chatData.tempId = chat.tempId;

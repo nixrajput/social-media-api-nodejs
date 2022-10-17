@@ -30,10 +30,12 @@ const fcm = admin.messaging(app);
 
 export const verifyToken = async (token) => {
     try {
-        const decodedToken = await admin.auth().verifyIdToken(token);
-        return decodedToken;
-    } catch (err) {
-        return err;
+        await fcm.send({ token }, true);
+        return true;
+    }
+    catch (err) {
+        console.log(err.message);
+        return false;
     }
 };
 
@@ -45,6 +47,11 @@ export const sendNotification = async (token,
         image = "",
     }
 ) => {
+
+    const isValid = await verifyToken(token);
+
+    if (!isValid) return;
+
     const message = {
         data: {
             title,
@@ -55,13 +62,12 @@ export const sendNotification = async (token,
         token,
     };
 
-    //console.log(message);
     try {
         const response = await fcm.send(message);
         console.log("[firebase] successfully sent message:", response);
         return response;
     } catch (err) {
-        console.log("[firebase] error sending message:", err);
+        console.log("[firebase] error sending message:", err.message);
         return err;
     }
 }
