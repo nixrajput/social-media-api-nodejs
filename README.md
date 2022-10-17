@@ -66,11 +66,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 * [x] Recommendations
 * [ ] Search Suggestions
 
-## License
-
-This project is licensed under the GPL-3.0 License - see the
-[LICENSE.md](LICENSE.md) file for details
-
 ## Usage
 
 * Star and Fork the repository
@@ -115,6 +110,18 @@ CLOUDINARY_API_SECRET = 'XXXXXXXXXXXXXXXXXX'
 TWILIO_ACCOUNT_SID = 'XXXXXXXXXXXXXXXXXX'
 TWILIO_AUTH_TOKEN = 'XXXXXXXXXXXXXXXXXX'
 TWILIO_PHONE_NO = 'XXXXXXXXXXXXXXXXXX'
+
+# Firebase
+FIREBASE_TYPE = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_PROJECT_ID = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_PRIVATE_KEY_ID = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_PRIVATE_KEY = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_CLIENT_EMAIL = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_CLIENT_ID = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_AUTH_URI = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_TOKEN_URI = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_AUTH_PROVIDER_X509_CERT_URL = 'XXXXXXXXXXXXXXXXXX'
+FIREBASE_CLIENT_X509_CERT_URL = 'XXXXXXXXXXXXXXXXXX'
 ```
 
 * Run the server
@@ -122,6 +129,15 @@ TWILIO_PHONE_NO = 'XXXXXXXXXXXXXXXXXX'
 ```bash
 npm run dev
 ```
+
+## License
+
+This project is licensed under the GPL-3.0 License - see the
+[LICENSE.md](LICENSE.md) file for details.
+
+## Activities
+
+![Alt](https://repobeats.axiom.co/api/embed/c3dfb333461ededdd3671da9162a49bea38a9126.svg "Repobeats analytics image")
 
 ## Connect With Me
 
