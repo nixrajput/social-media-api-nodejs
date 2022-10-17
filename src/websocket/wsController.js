@@ -274,84 +274,84 @@ const wsController = async (ws, message, wssClients, req) => {
             }
             break;
 
-        case eventTypes.MESSAGE_READ:
-            try {
-                const { messageId } = payload;
+        // case eventTypes.MESSAGE_READ:
+        //     try {
+        //         const { messageId } = payload;
 
-                if (!messageId) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        type: 'error',
-                        message: ResponseMessages.INVALID_DATA
-                    }));
-                }
+        //         if (!messageId) {
+        //             return ws.send(JSON.stringify({
+        //                 success: false,
+        //                 type: 'error',
+        //                 message: ResponseMessages.INVALID_DATA
+        //             }));
+        //         }
 
-                const message = await models.ChatMessage.findById(messageId);
+        //         const message = await models.ChatMessage.findById(messageId);
 
-                if (!message) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        type: 'error',
-                        message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
-                    }));
-                }
+        //         if (!message) {
+        //             return ws.send(JSON.stringify({
+        //                 success: false,
+        //                 type: 'error',
+        //                 message: ResponseMessages.CHAT_MESSAGE_NOT_FOUND
+        //             }));
+        //         }
 
-                if (message.receiver.toString() !== ws.userId.toString()) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        type: 'error',
-                        message: ResponseMessages.UNAUTHORIZED
-                    }));
-                }
+        //         if (message.receiver.toString() !== ws.userId.toString()) {
+        //             return ws.send(JSON.stringify({
+        //                 success: false,
+        //                 type: 'error',
+        //                 message: ResponseMessages.UNAUTHORIZED
+        //             }));
+        //         }
 
-                if (message.seen) {
-                    return ws.send(JSON.stringify({
-                        success: false,
-                        type: 'error',
-                        message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ
-                    }));
-                }
+        //         if (message.seen) {
+        //             return ws.send(JSON.stringify({
+        //                 success: false,
+        //                 type: 'error',
+        //                 message: ResponseMessages.CHAT_MESSAGE_ALREADY_READ
+        //             }));
+        //         }
 
-                message.seen = true;
-                message.seenAt = Date.now();
-                await message.save();
+        //         message.seen = true;
+        //         message.seenAt = Date.now();
+        //         await message.save();
 
-                const chatMessageData = await utility.getChatData(message._id);
-                let senderId = message.sender.toHexString();
+        //         const chatMessageData = await utility.getChatData(message._id);
+        //         let senderId = message.sender.toHexString();
 
-                const sender = wssClients.find(
-                    (client) => client.userId === senderId
-                );
+        //         const sender = wssClients.find(
+        //             (client) => client.userId === senderId
+        //         );
 
-                if (sender) {
-                    sender.send(JSON.stringify({
-                        success: true,
-                        type: 'message',
-                        message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
-                        data: chatMessageData
-                    }));
-                }
+        //         if (sender) {
+        //             sender.send(JSON.stringify({
+        //                 success: true,
+        //                 type: 'message',
+        //                 message: ResponseMessages.CHAT_MESSAGE_RECEIVED,
+        //                 data: chatMessageData
+        //             }));
+        //         }
 
-                client.send(
-                    JSON.stringify({
-                        success: true,
-                        type: 'message',
-                        message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
-                        data: chatMessageData,
-                    })
-                );
-            } catch (err) {
-                ws.send(
-                    JSON.stringify({
-                        success: false,
-                        type: 'error',
-                        message: ResponseMessages.CHAT_MESSAGE_READ_FAILURE,
-                    })
-                );
+        //         client.send(
+        //             JSON.stringify({
+        //                 success: true,
+        //                 type: 'message',
+        //                 message: ResponseMessages.CHAT_MESSAGE_READ_SUCCESS,
+        //                 data: chatMessageData,
+        //             })
+        //         );
+        //     } catch (err) {
+        //         ws.send(
+        //             JSON.stringify({
+        //                 success: false,
+        //                 type: 'error',
+        //                 message: ResponseMessages.CHAT_MESSAGE_READ_FAILURE,
+        //             })
+        //         );
 
-                console.log(err);
-            }
-            break;
+        //         console.log(err);
+        //     }
+        //     break;
 
         case eventTypes.DELETE_MESSAGE:
             try {
@@ -385,7 +385,7 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
-                if (message.mediaFile) {
+                if (message.mediaFile && message.mediaFile.public_id && message.mediaFile.public_id !== '') {
                     let publicId = message.mediaFile.public_id;
                     let mediaType = message.mediaFile.mediaType;
 
@@ -474,7 +474,7 @@ const wsController = async (ws, message, wssClients, req) => {
                         }));
                     }
 
-                    if (message.mediaFile) {
+                    if (message.mediaFile && message.mediaFile.public_id && message.mediaFile.public_id !== '') {
                         let publicId = message.mediaFile.public_id;
                         let mediaType = message.mediaFile.mediaType;
 
