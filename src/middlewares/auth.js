@@ -34,7 +34,11 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
     }
 
     if (!user.isValid) {
-      return next(new ErrorHandler(ResponseMessages.INVALID_ACCOUNT_VALIDATION, 400));
+      return res.status(401).json({
+        success: false,
+        accountStatus: "unverified",
+        message: ResponseMessages.INVALID_ACCOUNT_VALIDATION,
+      });
     }
 
     if (user.accountStatus !== "active") {
