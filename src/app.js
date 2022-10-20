@@ -41,7 +41,7 @@ export const runApp = () => {
   });
 
   // (async () => {
-  //   const users = await models.ChatMessage.find();
+  //   const users = await models.User.find();
   //   console.log(users.length);
 
   //   // for (let i = 0; i < 10; i++) {
@@ -61,11 +61,11 @@ export const runApp = () => {
   //     //   // user.accountPrivacy = user.accountType;
   //     // await user.save();
 
-  //     // await models.ChatMessage.updateOne({ _id: user._id }, {
+  //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     mediaFiles: [],
-  //     //     deleted: 0,
-  //     //     deletedAt: 0,
+  //     //     accountPrivacy: 0,
+  //     //     // deleted: 0,
+  //     //     //deletedAt: 0,
   //     //     // resetPasswordToken: "",
   //     //     // resetPasswordExpire: "",
   //     //     //publicKey: 0,

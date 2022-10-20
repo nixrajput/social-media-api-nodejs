@@ -58,6 +58,14 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     user.location = req.body.location;
   }
 
+  if (req.body.showOnlineStatus) {
+    user.showOnlineStatus = req.body.showOnlineStatus;
+  }
+
+  if (req.body.showLastSeen) {
+    user.showLastSeen = req.body.showLastSeen;
+  }
+
   await user.save();
 
   res.status(200).json({

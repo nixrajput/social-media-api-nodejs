@@ -86,12 +86,6 @@ const userSchema = new mongoose.Schema({
     default: 0,
   },
 
-  accountPrivacy: {
-    type: String,
-    enum: ["public", "private"],
-    default: "public",
-  },
-
   role: {
     type: String,
     enum: ["user", "admin", "superadmin", "moderator"],
