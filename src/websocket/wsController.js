@@ -489,6 +489,13 @@ const wsController = async (ws, message, wssClients, req) => {
 
         case eventTypes.GET_ONLINE_USERS:
             try {
+                let currentUser = await models.User.findById(ws.userId)
+                    .select("showOnlineStatus");
+
+                if (currentUser.showOnlineStatus === false) {
+                    return;
+                }
+
                 const onlineUsers = wssClients
                     .filter(client => client.userId !== ws.userId)
                     .map(client => client.userId);
@@ -524,13 +531,20 @@ const wsController = async (ws, message, wssClients, req) => {
                     }));
                 }
 
+                let currentUser = await models.User.findById(ws.userId)
+                    .select("showOnlineStatus");
+
+                if (currentUser.showOnlineStatus === false) {
+                    return;
+                }
+
                 for (let i = 0; i < userIds.length; i++) {
                     const userId = userIds[i];
 
                     let user = await models.User.findById(userId)
-                        .select("showOnlineStatus showLastSeen");
+                        .select("showOnlineStatus");
 
-                    if (user.showOnlineStatus === true && user.showLastSeen === true) {
+                    if (user.showOnlineStatus === true) {
                         let onlineUser = wssClients.find(
                             (client) => client.userId === userId
                         );

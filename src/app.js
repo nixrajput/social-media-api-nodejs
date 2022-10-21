@@ -63,7 +63,7 @@ export const runApp = () => {
 
   //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     accountPrivacy: 0,
+  //     //     showLastSeen: 0,
   //     //     // deleted: 0,
   //     //     //deletedAt: 0,
   //     //     // resetPasswordToken: "",

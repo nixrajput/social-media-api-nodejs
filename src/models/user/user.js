@@ -157,11 +157,6 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
 
-  showLastSeen: {
-    type: Boolean,
-    default: true,
-  },
-
   token: String,
 
   expiresAt: Number,
