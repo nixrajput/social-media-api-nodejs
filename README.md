@@ -1,6 +1,8 @@
 # Social Media API - By NixLab
 
-An open-source RESTful API developed using NodeJS, ExpressJS and MongoDB helps you to integrate User Authentication and Social Media Post Management in your application with ease.
+An open source social media API built with Node.js, Express, and MongoDB. This API is built for developers to use in their projects. It is not meant to be used as a standalone social media platform. This API is still in development and is not ready for production use.
+
+* If you would like to contribute to this project, please see the [contributing guidelines](CONTRIBUTING.md).
 
 * We are open to suggestions and contributions. Feel free to open an [issue](https://github.com/nixrajput/social-media-api-nodejs/issues) or a [pull request](https://github.com/nixrajput/social-media-api-nodejs/pulls). If you like the project, please consider giving it a star.
 

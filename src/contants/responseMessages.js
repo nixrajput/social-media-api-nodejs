@@ -179,6 +179,9 @@ ResponseMessages.ONLINE_USERS = 'Online users';
 
 ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 
+ResponseMessages.NOT_AUTHORIZED = 'Not authorized';
+ResponseMessages.UNAUTHORIZED_ACCESS = 'Unauthorized access';
+
 /// Invalid Response Messages
 ResponseMessages.CHAT_MESSAGE_NOT_FOUND = 'Chat message not found';
 ResponseMessages.INVALID_ACTION = 'Invalid action';

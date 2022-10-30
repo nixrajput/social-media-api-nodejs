@@ -7,9 +7,11 @@ import getUserDetails from "./user/getUserDetails.js";
 import getAllPosts from "./post/getAllPosts.js";
 import updateVerificationStatus from "./user/updateVerificationStatus.js";
 import getAllComments from "./comment/getAllComments.js";
+import adminLogin from "./auth/adminLogin.js";
 
 const adminController = {};
 
+adminController.adminLogin = adminLogin;
 adminController.getAllUsers = getAllUsers;
 adminController.deleteUser = deleteUser;
 adminController.updateAccountStatus = updateAccountStatus;

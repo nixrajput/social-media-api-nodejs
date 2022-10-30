@@ -9,6 +9,9 @@ const adminRouter = Router();
 
 // Admin Routes  --------------------------------------------------------------------
 
+adminRouter.route("/admin/login")
+  .post(adminController.adminLogin);
+
 adminRouter
   .route("/admin/users")
   .get(
