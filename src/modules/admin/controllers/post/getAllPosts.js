@@ -1,39 +1,14 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
-import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 
 /// GET POSTS ///
 
 const getAllPosts = catchAsyncError(async (req, res, next) => {
-  const user = await models.User.findById(req.user._id);
-
-  if (!user) {
-    return next(new ErrorHandler("user not found", 404));
-  }
-
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 50;
+  let limit = parseInt(req.query.limit) || 20;
 
-  const posts = await models.Post.find()
-    .select("-__v")
-    .populate("owner", [
-      "_id",
-      "fname",
-      "lname",
-      "email",
-      "uname",
-      "avatar",
-      "profession",
-      "accountType",
-      "accountStatus",
-      "isVerified",
-    ])
-    .sort({
-      createdAt: -1,
-    });
-
-  let totalPosts = posts.length;
-  let totalPages = Math.ceil(totalPosts / limit);
+  const totalUsers = await models.Post.countDocuments();
+  let totalPages = Math.ceil(totalUsers / limit);
 
   if (currentPage < 1) {
     currentPage = 1;
@@ -62,9 +37,8 @@ const getAllPosts = catchAsyncError(async (req, res, next) => {
     hasPrevPage = true;
   }
 
-  const baseUrl = `${req.protocol}://${req.get("host")}${
-    req.originalUrl
-  }`.split("?")[0];
+  const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl
+    }`.split("?")[0];
 
   if (hasPrevPage) {
     prevPage = `${baseUrl}?page=${prevPageIndex}&limit=${limit}`;
@@ -74,7 +48,11 @@ const getAllPosts = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const results = posts.slice(skip, skip + limit);
+  const results = await models.Post.find()
+    .select("-__v -password")
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
   res.status(200).json({
     success: true,

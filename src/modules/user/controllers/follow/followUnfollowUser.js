@@ -56,7 +56,7 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
         from: user._id,
       });
 
-      const notification = await models.Notification.findOne({
+      let notification = await models.Notification.findOne({
         to: userToFollow._id,
         from: user._id,
         type: "followRequest",
@@ -68,7 +68,7 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
         await notification.save();
       }
       else {
-        await models.Notification.create({
+        notification = await models.Notification.create({
           to: userToFollow._id,
           from: user._id,
           body: "sent you a follow request",
@@ -111,7 +111,7 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
       await userToFollow.save();
       await user.save();
 
-      const notification = await models.Notification.findOne({
+      let notification = await models.Notification.findOne({
         to: userToFollow._id,
         from: user._id,
         type: "follow",
@@ -123,7 +123,7 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
         await notification.save();
       }
       else {
-        await models.Notification.create({
+        notification = await models.Notification.create({
           to: userToFollow._id,
           from: user._id,
           body: "started following you",

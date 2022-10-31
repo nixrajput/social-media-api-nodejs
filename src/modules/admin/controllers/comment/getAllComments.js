@@ -1,18 +1,14 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import models from "../../../../models/index.js";
-import utility from "../../../../utils/utility.js";
 
 /// GET ALL COMMENTS ///
 
 const getAllComments = catchAsyncError(async (req, res, next) => {
-
   let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 50;
+  let limit = parseInt(req.query.limit) || 20;
 
-  const comments = await models.Comment.find().select("_id").sort({ createdAt: -1 });
-
-  let totalComments = comments.length;
-  let totalPages = Math.ceil(totalComments / limit);
+  const totalUsers = await models.Comment.countDocuments();
+  let totalPages = Math.ceil(totalUsers / limit);
 
   if (currentPage < 1) {
     currentPage = 1;
@@ -52,17 +48,11 @@ const getAllComments = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const slicedComments = comments.slice(skip, skip + limit);
-
-  const results = [];
-
-  for (let comment of slicedComments) {
-    const commentData = await utility.getCommentData(comment._id, req.user);
-
-    if (commentData) {
-      results.push(commentData);
-    }
-  }
+  const results = await models.Comment.find()
+    .select("-__v -password")
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
   res.status(200).json({
     success: true,

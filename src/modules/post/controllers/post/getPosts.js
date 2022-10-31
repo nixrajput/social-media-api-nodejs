@@ -5,6 +5,9 @@ import utility from "../../../../utils/utility.js";
 /// GET POSTS ///
 
 const getPosts = catchAsyncError(async (req, res, next) => {
+  let currentPage = parseInt(req.query.page) || 1;
+  let limit = parseInt(req.query.limit) || 20;
+
   const followings = await models.Follower.find({ follower: req.user._id })
     .select("_id user");
 
@@ -12,15 +15,11 @@ const getPosts = catchAsyncError(async (req, res, next) => {
 
   followingIds.push(req.user._id);
 
-  const posts = await models.Post.find({
+  const totalPosts = await models.Post.find({
     owner: { $in: followingIds },
     isArchived: false,
-  }).select("_id").sort({ createdAt: -1 });
+  }).countDocuments();
 
-  let currentPage = parseInt(req.query.page) || 1;
-  let limit = parseInt(req.query.limit) || 20;
-
-  let totalPosts = posts.length;
   let totalPages = Math.ceil(totalPosts / limit);
 
   if (currentPage < 1) {
@@ -61,7 +60,14 @@ const getPosts = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const slicedPosts = posts.slice(skip, skip + limit);
+  const slicedPosts = await models.Post.find({
+    owner: { $in: followingIds },
+    isArchived: false,
+  })
+    .select("_id")
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
   const results = [];
 

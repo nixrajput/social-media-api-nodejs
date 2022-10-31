@@ -41,7 +41,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
 
     await models.FollowRequest.findByIdAndDelete(followRequest._id);
 
-    const sentToReqUserNotification = await models.Notification.findOne({
+    let sentToReqUserNotification = await models.Notification.findOne({
         to: userRequested._id,
         from: user._id,
         type: "followRequestAccepted",
@@ -53,7 +53,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
         await sentToReqUserNotification.save();
     }
     else {
-        await models.Notification.create({
+        sentToReqUserNotification = await models.Notification.create({
             to: userRequested._id,
             from: user._id,
             body: "accepted your follow request",
@@ -80,7 +80,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
         );
     }
 
-    const sentToUserNotification = await models.Notification.findOne({
+    let sentToUserNotification = await models.Notification.findOne({
         to: user._id,
         from: userRequested._id,
         type: "followRequest",
@@ -94,7 +94,7 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
         await sentToUserNotification.save();
     }
     else {
-        await models.Notification.create({
+        sentToUserNotification = await models.Notification.create({
             to: user._id,
             from: userRequested._id,
             body: "started following you",
