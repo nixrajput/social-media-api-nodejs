@@ -12,6 +12,13 @@ const adminRouter = Router();
 adminRouter.route("/admin/login")
   .post(adminController.adminLogin);
 
+adminRouter.route("/admin/get-progress")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getProgress
+  );
+
 adminRouter
   .route("/admin/users")
   .get(

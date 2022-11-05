@@ -8,6 +8,7 @@ import getAllPosts from "./post/getAllPosts.js";
 import updateVerificationStatus from "./user/updateVerificationStatus.js";
 import getAllComments from "./comment/getAllComments.js";
 import adminLogin from "./auth/adminLogin.js";
+import getProgress from "./stats/getProgress.js";
 
 const adminController = {};
 
@@ -21,5 +22,6 @@ adminController.getUserDetails = getUserDetails;
 adminController.getAllPosts = getAllPosts;
 adminController.updateVerificationStatus = updateVerificationStatus;
 adminController.getAllComments = getAllComments;
+adminController.getProgress = getProgress;
 
 export default adminController;
