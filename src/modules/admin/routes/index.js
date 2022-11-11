@@ -12,11 +12,31 @@ const adminRouter = Router();
 adminRouter.route("/admin/login")
   .post(adminController.adminLogin);
 
+adminRouter.route("/admin/forgot-password")
+  .post(adminController.adminForgotPassword);
+
+adminRouter.route("/admin/reset-password")
+  .post(adminController.adminResetPassword);
+
+adminRouter.route("/admin/change-password")
+  .post(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.changeAdminPassword
+  );
+
 adminRouter.route("/admin/get-progress")
   .get(
     isAuthenticatedUser,
     authorizeRoles("admin"),
     adminController.getProgress
+  );
+
+adminRouter.route("/admin/get-stats")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getStats
   );
 
 adminRouter
