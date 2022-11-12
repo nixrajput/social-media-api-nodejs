@@ -1,8 +1,104 @@
+:root {
+  --successColor: #4caf50;
+  --errorColor: #f44336;
+  --warningColor: #f09c00;
+
+  --grayColor: #b4b4b4;
+  --darkGrayColor: #787878;
+  --darkerGrayColor: #505050;
+  --lightGrayColor: #d2d2d2;
+
+  --darkBgColor: #1c1d31;
+  --darkDialogColor: #333446;
+
+  --whiteColor: #ffffff;
+  --blackColor: #000000;
+
+  --primaryTextColor: #dddddd;
+  --primaryColor: #e3096f;
+  --primaryLightColor: #dd5896;
+
+  --linkColor: #1056be;
+
+  --primaryGradient: linear-gradient(to right, #1c1d31, #203246);
+  --boxGradient: linear-gradient(120deg, var(--darkDialogColor), #203246);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   scroll-behavior: smooth;
+}
+
+html,
+body,
+#root,
+.app,
+.content {
+  height: 100%;
+  width: 100%;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.app {
+  display: flex;
+  position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+a {
+  text-decoration: none;
+  color: var(--linkColor);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input {
+  outline: none;
+  border: none;
+}
+
+textarea {
+  outline: none;
+  border: none;
+}
+
+button {
+  outline: none !important;
+  border: none;
+  background: transparent;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+iframe {
+  border: none !important;
 }
 
 body {
@@ -82,8 +178,8 @@ body {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: stretch;
+  align-items: stretch;
 }
 
 ul {
