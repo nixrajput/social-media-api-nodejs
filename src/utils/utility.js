@@ -8,7 +8,9 @@ import axios from "axios";
 const utility = {};
 
 utility.getIp = (req) => {
-  return req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  return req.headers["x-forwarded-for"] ||
+    req.socket.remoteAddress ||
+    req.connection.remoteAddress;
 };
 
 utility.getLocationDetailsFromIp = async (ip) => {
