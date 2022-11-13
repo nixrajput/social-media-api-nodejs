@@ -9,6 +9,7 @@ const utility = {};
 
 utility.getIp = (req) => {
   return req.headers["x-forwarded-for"] ||
+    req.headers["x-real-ip"] ||
     req.socket.remoteAddress ||
     req.connection.remoteAddress;
 };
