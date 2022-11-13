@@ -7,24 +7,32 @@ const authorizeRoles = authMiddleware.authorizeRoles;
 
 const adminRouter = Router();
 
-// Admin Routes  --------------------------------------------------------------------
+// --------------------------------- Routes ---------------------------------------
 
+// --------------------------------------------------------------------------------
+// Admin Login
 adminRouter.route("/admin/login")
   .post(adminController.adminLogin);
 
+// Admin Forgot Password
 adminRouter.route("/admin/forgot-password")
   .post(adminController.adminForgotPassword);
 
+// Admin Reset Password
 adminRouter.route("/admin/reset-password")
   .post(adminController.adminResetPassword);
 
+// Admin Change Password
 adminRouter.route("/admin/change-password")
   .post(
     isAuthenticatedUser,
     authorizeRoles("admin"),
     adminController.changeAdminPassword
   );
+// --------------------------------------------------------------------------------
 
+// --------------------------------------------------------------------------------
+// Get Progress
 adminRouter.route("/admin/get-progress")
   .get(
     isAuthenticatedUser,
@@ -32,13 +40,25 @@ adminRouter.route("/admin/get-progress")
     adminController.getProgress
   );
 
+// Get Stats
 adminRouter.route("/admin/get-stats")
   .get(
     isAuthenticatedUser,
     authorizeRoles("admin"),
     adminController.getStats
   );
+// --------------------------------------------------------------------------------
 
+// --------------------------------------------------------------------------------
+// Get Recent Users
+adminRouter.route("/admin/get-recent-users")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getRecentUsers
+  );
+
+// Get All Users
 adminRouter
   .route("/admin/users")
   .get(
@@ -47,6 +67,16 @@ adminRouter
     adminController.getAllUsers
   );
 
+// Get Verified Users
+adminRouter
+  .route("/admin/get-verified-users-stats")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getVerifiedUsers
+  );
+
+// Search User
 adminRouter
   .route("/admin/user/search")
   .get(
@@ -55,6 +85,7 @@ adminRouter
     adminController.searchUser
   );
 
+// Get User Details
 adminRouter
   .route("/admin/user")
   .delete(
@@ -68,6 +99,7 @@ adminRouter
     adminController.getUserDetails
   );
 
+// Update User Role
 adminRouter
   .route("/admin/user/update-role")
   .put(
@@ -76,6 +108,7 @@ adminRouter
     adminController.updateUserRole
   );
 
+// Update Account Status
 adminRouter
   .route("/admin/user/update-status")
   .put(
@@ -84,6 +117,7 @@ adminRouter
     adminController.updateAccountStatus
   );
 
+// Update Verification Status
 adminRouter
   .route("/admin/user/update-verification-status")
   .put(
@@ -91,9 +125,10 @@ adminRouter
     authorizeRoles("admin"),
     adminController.updateVerificationStatus
   );
+// --------------------------------------------------------------------------------
 
-/// POSTS
-
+// --------------------------------------------------------------------------------
+// Get All Posts
 adminRouter
   .route("/admin/get-posts")
   .get(
@@ -102,8 +137,17 @@ adminRouter
     adminController.getAllPosts
   );
 
+// Get Recent Posts
+adminRouter.route("/admin/get-recent-posts")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getRecentPosts
+  );
+// --------------------------------------------------------------------------------
 
-/// COMMENTS
+// --------------------------------------------------------------------------------
+// Get All Comments
 adminRouter
   .route("/admin/get-comments")
   .get(
@@ -111,5 +155,6 @@ adminRouter
     authorizeRoles("admin"),
     adminController.getAllComments
   );
+// --------------------------------------------------------------------------------
 
 export default adminRouter;

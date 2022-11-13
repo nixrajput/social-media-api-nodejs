@@ -13,6 +13,9 @@ import forgotAdminPassword from "./auth/forgotPassword.js";
 import resetAdminPassword from "./auth/resetPassword.js";
 import changeAdminPassword from "./auth/changePassword.js";
 import getStats from "./stats/getStats.js";
+import getRecentPosts from "./post/getRecentPosts.js";
+import getRecentUsers from "./user/getRecentUsers.js";
+import getVerifiedUsersStats from "./user/getVerifiedUsersStats.js";
 
 const adminController = {};
 
@@ -31,5 +34,8 @@ adminController.getStats = getStats;
 adminController.adminForgotPassword = forgotAdminPassword;
 adminController.adminResetPassword = resetAdminPassword;
 adminController.changeAdminPassword = changeAdminPassword;
+adminController.getRecentPosts = getRecentPosts;
+adminController.getRecentUsers = getRecentUsers;
+adminController.getVerifiedUsers = getVerifiedUsersStats;
 
 export default adminController;

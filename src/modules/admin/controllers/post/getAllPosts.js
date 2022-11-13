@@ -1,7 +1,7 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import models from "../../../../models/index.js";
 
-/// GET POSTS ///
+/// GET ALL POSTS -- ADMIN ///
 
 const getAllPosts = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
@@ -49,7 +49,7 @@ const getAllPosts = catchAsyncError(async (req, res, next) => {
   }
 
   const results = await models.Post.find()
-    .select("-__v -password")
+    .select("-__v")
     .skip(skip)
     .limit(limit)
     .sort({ createdAt: -1 });
