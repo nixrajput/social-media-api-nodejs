@@ -2,10 +2,23 @@ import sgMail from "@sendgrid/mail";
 import twilio from "twilio";
 import optGenerator from "otp-generator";
 import models from "../models/index.js";
-import dates from "./dateFunc.js";
 import ResponseMessages from "../contants/responseMessages.js";
 
 const utility = {};
+
+utility.getIp = (req) => {
+  return req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+};
+
+utility.getLocationDetailsFromIp = async (ip) => {
+  let url = `http://ip-api.com/json/${ip}`;
+  const queryParams = '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,zip,lat,lon,timezone,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query';
+  url += queryParams;
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log(data);
+  return data;
+};
 
 // Check Username Availability
 utility.checkUsernameAvailable = async (uname) => {

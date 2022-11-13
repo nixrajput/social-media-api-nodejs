@@ -1,4 +1,4 @@
-import DeviceInfo from "./device-info/deviceInfo.js";
+import LoginInfo from "./login-info/loginInfo.js";
 import User from "./user/user.js";
 import Notification from "./notification/notification.js";
 import Post from "./post/post.js";
@@ -14,7 +14,7 @@ import ChatMessage from "./chat/chatMessage.js";
 
 const models = {};
 
-models.DeviceInfo = DeviceInfo;
+models.LoginInfo = LoginInfo;
 models.User = User;
 models.Comment = Comment;
 models.CommentLike = CommentLike;

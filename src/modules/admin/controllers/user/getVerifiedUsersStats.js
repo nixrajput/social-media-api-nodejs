@@ -21,8 +21,8 @@ const getVerifiedUsersStats = catchAsyncError(async (req, res, next) => {
             verifiedUsers,
             unit: unitVerifiedUsers,
             percentage: percentageVerifiedUsers,
-            roundedUnitVerifiedUsers,
-            roundedPercentage,
+            roundedUnit: roundedUnitVerifiedUsers,
+            roundedPercentage: roundedPercentage,
         }
     });
 });

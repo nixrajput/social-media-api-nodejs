@@ -24,4 +24,7 @@ authRouter.route("/verify-account")
 authRouter.route("/validate-token")
     .get(isAuthenticatedUser, authController.validateToken);
 
+authRouter.route("/get-location-info")
+    .get(authController.getLocationInfoFromIp);
+
 export default authRouter;

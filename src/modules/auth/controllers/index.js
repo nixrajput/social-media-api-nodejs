@@ -6,6 +6,7 @@ import logout from "./logout/logout.js";
 import verifyAccountOtp from "./verify-account/verifyAccountOtp.js";
 import verifyAccount from "./verify-account/verifyAccount.js";
 import validateToken from "./validate-token/validateToken.js";
+import getLocationInfoFromIp from "./register/getLocationInfo.js";
 
 const authController = {};
 
@@ -17,5 +18,6 @@ authController.logout = logout;
 authController.verifyAccountOtp = verifyAccountOtp;
 authController.verifyAccount = verifyAccount;
 authController.validateToken = validateToken;
+authController.getLocationInfoFromIp = getLocationInfoFromIp;
 
 export default authController;
