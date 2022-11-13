@@ -3,20 +3,20 @@ import twilio from "twilio";
 import optGenerator from "otp-generator";
 import models from "../models/index.js";
 import ResponseMessages from "../contants/responseMessages.js";
+import axios from "axios";
 
 const utility = {};
 
 utility.getIp = (req) => {
-  return req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  return req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 };
 
 utility.getLocationDetailsFromIp = async (ip) => {
   let url = `http://ip-api.com/json/${ip}`;
   const queryParams = '?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,zip,lat,lon,timezone,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query';
   url += queryParams;
-  const response = await fetch(url);
-  const data = await response.json();
-  console.log(data);
+  const response = await axios.get(url);
+  const data = response.data;
   return data;
 };
 

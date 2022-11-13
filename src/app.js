@@ -29,6 +29,7 @@ export const runApp = () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+  app.set("trust proxy", true);
 
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, "public")));
