@@ -88,6 +88,12 @@ const register = catchAsyncError(async (req, res, next) => {
     password,
   });
 
+  const ip = utility.getIp(req);
+
+  user.accountCreatedIp = ip;
+
+  await user.save();
+
   const htmlMessage = `<p>Hi ${user.fname},</p>
   <p>
     Thank you so much for creating an account with us. We're glad you're here!

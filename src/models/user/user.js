@@ -103,11 +103,11 @@ const userSchema = new mongoose.Schema({
     default: "active",
   },
 
-  verificationStatus: {
-    type: String,
-    enum: ["verified", "unverified", "pending", "rejected"],
-    default: "unverified",
-  },
+  // verificationStatus: {
+  //   type: String,
+  //   enum: ["verified", "unverified", "pending", "rejected"],
+  //   default: "unverified",
+  // },
 
   isVerified: {
     type: Boolean,
@@ -134,14 +134,6 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
 
-  preKeyBundle: {
-    type: Object,
-  },
-
-  deviceId: {
-    type: String,
-  },
-
   fcmToken: {
     type: String,
     default: null,
@@ -157,32 +149,11 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
 
-  createdAtLocation: {
-    ip: String,
-    city: String,
-    region: String,
-    regionName: String,
-    country: String,
-    countryCode: String,
-    continent: String,
-    continentCode: String,
-    lat: Number,
-    lon: Number,
-    zip: String,
-    timezone: String,
-    isp: String,
-    org: String,
-    as: String,
-    asname: String,
-    reverse: String,
-    mobile: Boolean,
-    proxy: Boolean,
-    hosting: Boolean,
-  },
-
   token: String,
 
   expiresAt: Number,
+
+  accountCreatedIp: String,
 
   createdAt: {
     type: Date,

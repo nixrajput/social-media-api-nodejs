@@ -32,6 +32,16 @@ adminRouter.route("/admin/change-password")
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
+// Get All Users
+adminRouter.route("/admin/get-location-info")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getLocationInfoFromIp
+  );
+// --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
 // Get Progress
 adminRouter.route("/admin/get-progress")
   .get(

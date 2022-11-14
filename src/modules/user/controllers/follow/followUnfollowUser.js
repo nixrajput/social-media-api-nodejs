@@ -78,14 +78,12 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
 
       const notificationData = await utility.getNotificationData(notification._id, req.user);
 
-      const fcmToken = await models.User.findOne(
-        { _id: userToFollow._id },
-        { fcmToken: 1 }
-      );
+      const fcmToken = await models.FcmToken.findOne({ user: userToFollow._id })
+        .select("token");
 
-      if (fcmToken.fcmToken) {
+      if (fcmToken) {
         await sendNotification(
-          fcmToken.fcmToken,
+          fcmToken.token,
           {
             title: "New Follow Request",
             body: `${notificationData.from.uname} sent you a follow request.`,
@@ -133,14 +131,12 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
 
       const notificationData = await utility.getNotificationData(notification._id, req.user);
 
-      const fcmToken = await models.User.findOne(
-        { _id: userToFollow._id },
-        { fcmToken: 1 }
-      );
+      const fcmToken = await models.FcmToken.findOne({ user: userToFollow._id })
+        .select("token");
 
-      if (fcmToken.fcmToken) {
+      if (fcmToken) {
         await sendNotification(
-          fcmToken.fcmToken,
+          fcmToken.token,
           {
             title: "New Follower",
             body: `${notificationData.from.uname} started following you.`,

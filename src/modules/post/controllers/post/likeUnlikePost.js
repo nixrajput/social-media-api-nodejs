@@ -57,14 +57,12 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
 
       const notificationData = await utility.getNotificationData(noti._id, req.user);
 
-      const fcmToken = await models.User.findOne(
-        { _id: post.owner },
-        { fcmToken: 1 }
-      );
+      const fcmToken = await models.FcmToken.findOne({ user: post.owner })
+        .select("token");
 
-      if (fcmToken.fcmToken) {
+      if (fcmToken) {
         await sendNotification(
-          fcmToken.fcmToken,
+          fcmToken.token,
           {
             title: "New Like",
             body: `${notificationData.from.uname} liked your post.`,

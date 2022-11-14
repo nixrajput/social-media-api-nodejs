@@ -11,6 +11,8 @@ import PostLike from "./post/postLike.js";
 import Follower from "./user/follower.js";
 import FollowRequest from "./notification/followRequest.js";
 import ChatMessage from "./chat/chatMessage.js";
+import FcmToken from "./user/fcmToken.js";
+import PreKeyBundle from "./user/preKeyBundle.js";
 
 const models = {};
 
@@ -27,5 +29,7 @@ models.Follower = Follower;
 models.Notification = Notification;
 models.FollowRequest = FollowRequest;
 models.ChatMessage = ChatMessage;
+models.FcmToken = FcmToken;
+models.PreKeyBundle = PreKeyBundle;
 
 export default models;

@@ -12,18 +12,29 @@ const savePreKeyBundle = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.INVALID_REQUEST, 400));
     }
 
-    const user = await models.User.findById(req.user._id).select("_id preKeyBundle");
+    const userPreKeyBundle = await models.PreKeyBundle.findOne({ user: req.user._id });
 
-    if (!user) {
-        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+    if (userPreKeyBundle && userPreKeyBundle.preKeyBundle === preKeyBundle) {
+        return res.status(200).json({
+            success: true,
+            preKeyBundle: userPreKeyBundle.preKeyBundle,
+            message: ResponseMessages.PREKEY_BUNDLE_ALREADY_EXISTS,
+        });
     }
 
-    user.preKeyBundle = preKeyBundle;
-
-    await user.save();
+    if (userPreKeyBundle) {
+        userPreKeyBundle.preKeyBundle = preKeyBundle;
+        await userPreKeyBundle.save();
+    } else {
+        await models.PreKeyBundle.create({
+            user: req.user._id,
+            preKeyBundle,
+        });
+    }
 
     res.status(200).json({
         success: true,
+        preKeyBundle,
         message: ResponseMessages.PREKEY_BUNDLE_SAVED,
     });
 });

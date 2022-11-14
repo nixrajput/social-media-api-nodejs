@@ -84,6 +84,7 @@ userRouter
 
 userRouter
   .route("/fcm-token")
+  .get(isAuthenticatedUser, userController.getFcmToken)
   .post(isAuthenticatedUser, userController.saveFcmToken);
 
 
@@ -160,5 +161,15 @@ userRouter
 userRouter
   .route("/delete-device-info")
   .delete(isAuthenticatedUser, userController.deleteDeviceInfo);
+
+userRouter
+  .route("/get-login-history")
+  .get(isAuthenticatedUser, userController.getLoginHistory);
+
+userRouter
+  .route("/login-info")
+  .get(isAuthenticatedUser, userController.getLoginInfo)
+  .post(isAuthenticatedUser, userController.saveLoginInfo)
+  .delete(isAuthenticatedUser, userController.deleteLoginInfo);
 
 export default userRouter;

@@ -12,18 +12,29 @@ const saveFcmToken = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.INVALID_REQUEST, 400));
     }
 
-    const user = await models.User.findById(req.user._id).select("_id fcmToken");
+    const userToken = await models.FcmToken.findOne({ user: req.user._id });
 
-    if (!user) {
-        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+    if (userToken && userToken.token === fcmToken) {
+        return res.status(200).json({
+            success: true,
+            token: userToken.token,
+            message: ResponseMessages.FCM_TOKEN_ALREADY_EXISTS,
+        });
     }
 
-    user.fcmToken = fcmToken;
-
-    await user.save();
+    if (userToken) {
+        userToken.token = fcmToken;
+        await userToken.save();
+    } else {
+        await models.FcmToken.create({
+            user: req.user._id,
+            token: fcmToken,
+        });
+    }
 
     res.status(200).json({
         success: true,
+        token: fcmToken,
         message: ResponseMessages.FCM_TOKEN_SAVED,
     });
 });

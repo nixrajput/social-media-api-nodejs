@@ -63,14 +63,12 @@ const acceptFollowRequest = catchAsyncError(async (req, res, next) => {
 
     const notificationData = await utility.getNotificationData(sentToReqUserNotification._id, req.user);
 
-    const fcmToken = await models.User.findOne(
-        { _id: userRequested._id },
-        { fcmToken: 1 }
-    );
+    const fcmToken = await models.FcmToken.findOne({ user: userRequested._id })
+        .select("token");
 
-    if (fcmToken.fcmToken) {
+    if (fcmToken) {
         await sendNotification(
-            fcmToken.fcmToken,
+            fcmToken.token,
             {
                 title: "Request Accepted",
                 body: `${notificationData.from.uname} accepted your follow request.`,

@@ -80,15 +80,13 @@ const wsController = async (ws, message, wssClients, req) => {
 
                 const chatMessageData = await utility.getChatData(chatMessage._id);
 
-                const fcmToken = await models.User.findOne(
-                    { _id: receiverId },
-                    { fcmToken: 1 }
-                );
+                const fcmToken = await models.FcmToken.findOne({ user: receiverId })
+                    .select("token");
 
-                if (fcmToken.fcmToken) {
+                if (fcmToken) {
                     let name = `${chatMessageData.sender.fname} ${chatMessageData.sender.lname}`;
                     await sendNotification(
-                        fcmToken.fcmToken,
+                        fcmToken.token,
                         {
                             title: name,
                             body: name + " sent you a message.",

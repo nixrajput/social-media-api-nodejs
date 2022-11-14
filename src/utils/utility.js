@@ -279,7 +279,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt", "deviceId"
+      "updatedAt"
     ]);
 
   const ownerData = {};
@@ -298,7 +298,6 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.isPrivate = owner.isPrivate;
   ownerData.isValid = owner.isValid;
   ownerData.isVerified = owner.isVerified;
-  ownerData.deviceId = owner.deviceId;
   ownerData.createdAt = owner.createdAt;
   ownerData.updatedAt = owner.updatedAt;
 
@@ -310,7 +309,7 @@ utility.getUserData = async (userId, reqUser) => {
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
       "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt", "deviceId"
+      "updatedAt"
     ]);
 
   const userData = {};
@@ -329,7 +328,6 @@ utility.getUserData = async (userId, reqUser) => {
   userData.isPrivate = user.isPrivate;
   userData.isValid = user.isValid;
   userData.isVerified = user.isVerified;
-  userData.deviceId = user.deviceId;
   userData.createdAt = user.createdAt;
   userData.updatedAt = user.updatedAt;
 

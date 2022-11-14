@@ -11,6 +11,11 @@ const loginInfoSchema = new mongoose.Schema({
     required: true,
   },
 
+  ip: {
+    type: String,
+    required: true,
+  },
+
   deviceName: String,
 
   deviceModel: String,
@@ -19,9 +24,11 @@ const loginInfoSchema = new mongoose.Schema({
 
   deviceManufacturer: String,
 
+  deviceOs: String,
+
   deviceOsVersion: String,
 
-  ip: String,
+  deviceType: String,
 
   city: String,
 

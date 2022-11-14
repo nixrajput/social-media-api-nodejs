@@ -27,6 +27,17 @@ ResponseMessages.POST_ID_REQUIRED = 'Post id is required';
 ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED = 'Video thumbnail public id is required';
 ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED = 'Video thumbnail url is required';
 ResponseMessages.COMMENT_REQUIRED = 'Comment is required';
+ResponseMessages.COMMENT_ID_REQUIRED = 'Comment id is required';
+ResponseMessages.DEVICE_ID_REQUIRED = 'Device id is required';
+ResponseMessages.IP_REQUIRED = 'IP is required';
+ResponseMessages.DEVICE_INFO_REQUIRED = 'Device info is required';
+ResponseMessages.DEVICE_NAME_REQUIRED = 'Device name is required';
+ResponseMessages.DEVICE_MODEL_REQUIRED = 'Device model is required';
+ResponseMessages.DEVICE_BRAND_REQUIRED = 'Device brand is required';
+ResponseMessages.DEVICE_OS_REQUIRED = 'Device OS is required';
+ResponseMessages.DEVICE_OS_VERSION_REQUIRED = 'Device OS version is required';
+ResponseMessages.DEVICE_TYPE_REQUIRED = 'Device type is required';
+ResponseMessages.DEVICE_MANUFACTURER_REQUIRED = 'Device manufacturer is required';
 
 
 /// Incorrect Response Messages
@@ -157,6 +168,7 @@ ResponseMessages.PREKEY_BUNDLE_NOT_SAVED = 'Prekey bundle not saved';
 ResponseMessages.PREKEY_BUNDLE_NOT_FOUND = 'Prekey bundle not found';
 ResponseMessages.PREKEY_BUNDLE_RECEIVED = 'Prekey bundle received';
 ResponseMessages.PREKEY_BUNDLE_NOT_RECEIVED = 'Prekey bundle not received';
+ResponseMessages.PREKEY_BUNDLE_ALREADY_EXISTS = 'Prekey bundle already exists';
 
 ResponseMessages.DEVICE_ID_NOT_FOUND = 'Device id not found';
 ResponseMessages.DEVICE_ID_ALREADY_EXISTS = 'Device id already exists';
@@ -170,12 +182,22 @@ ResponseMessages.FCM_TOKEN_NOT_SAVED = 'FCM token not saved';
 ResponseMessages.FCM_TOKEN_NOT_FOUND = 'FCM token not found';
 ResponseMessages.FCM_TOKEN_RECEIVED = 'FCM token received';
 ResponseMessages.FCM_TOKEN_NOT_RECEIVED = 'FCM token not received';
+ResponseMessages.FCM_TOKEN_ALREADY_EXISTS = 'FCM token already exists';
 
 ResponseMessages.CANNOT_MESSAGE_YOURSELF = 'You cannot message yourself';
 ResponseMessages.CHAT_MESSAGE_TYPING = 'Chat message typing';
 ResponseMessages.CHAT_MESSAGE_NOT_TYPING = 'Chat message not typing';
 
 ResponseMessages.ONLINE_USERS = 'Online users';
+
+ResponseMessages.LOGIN_INFO_SAVED = 'Login info saved';
+ResponseMessages.LOGIN_INFO_NOT_SAVED = 'Login info not saved';
+ResponseMessages.LOGIN_INFO_NOT_FOUND = 'Login info not found';
+ResponseMessages.LOGIN_INFO_RECEIVED = 'Login info received';
+ResponseMessages.LOGIN_INFO_NOT_RECEIVED = 'Login info not received';
+ResponseMessages.LOGIN_INFO_ALREADY_EXISTS = 'Login info already exists';
+ResponseMessages.LOGIN_INFO_DELETED = 'Login info deleted';
+ResponseMessages.LOGIN_INFO_FOUND = 'Login info found';
 
 ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 

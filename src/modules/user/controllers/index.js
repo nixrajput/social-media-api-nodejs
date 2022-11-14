@@ -16,9 +16,9 @@ import checkUsernameAvailable from "./check-username/checkUsernameAvailable.js";
 import deleteProfile from "./profile/deleteProfile.js";
 import searchUser from "./user/searchUser.js";
 import getRecommendedUsers from "./recommend-users/getRecommendedUsers.js";
-import saveDeviceInfo from "./device-info/saveDeviceInfo.js";
-import getUserDeviceInfo from "./device-info/getUserDeviceInfo.js";
-import deleteDeviceInfo from "./device-info/deleteDeviceInfo.js";
+import saveDeviceInfo from "./login-info/saveDeviceInfo.js";
+import getUserDeviceInfo from "./login-info/getUserDeviceInfo.js";
+import deleteDeviceInfo from "./login-info/deleteDeviceInfo.js";
 import acceptFollowRequest from "./follow/acceptFollowRequest.js";
 import cancelFollowRequest from "./follow/cancelFollowRequest.js";
 import removeFollowRequest from "./follow/removeFollowRequest.js";
@@ -38,6 +38,11 @@ import getPreKeyBundle from "./profile/getPreKeyBundle.js";
 import getDeviceId from "./profile/getDeviceId.js";
 import saveDeviceId from "./profile/saveDeviceId.js";
 import saveFcmToken from "./profile/saveFcmToken.js";
+import getFcmToken from "./profile/getFcmToken.js";
+import getLoginHistory from "./login-info/getLoginHistory.js";
+import deleteLoginInfo from "./login-info/deleteLoginInfo.js";
+import saveLoginInfo from "./login-info/saveLoginInfo.js";
+import getLoginInfo from "./login-info/getLoginInfo.js";
 
 const userController = {};
 
@@ -81,5 +86,10 @@ userController.getPreKeyBundle = getPreKeyBundle;
 userController.getDeviceId = getDeviceId;
 userController.saveDeviceId = saveDeviceId;
 userController.saveFcmToken = saveFcmToken;
+userController.getFcmToken = getFcmToken;
+userController.getLoginHistory = getLoginHistory;
+userController.deleteLoginInfo = deleteLoginInfo;
+userController.saveLoginInfo = saveLoginInfo;
+userController.getLoginInfo = getLoginInfo;
 
 export default userController;

@@ -58,10 +58,6 @@ const getFollowers = catchAsyncError(async (req, res, next) => {
 
   const slicedFollowers = followers.slice(skip, skip + limit);
 
-  // slicedFollowers.sort((a, b) => {
-  //   return new Date(b.createdAt) - new Date(a.createdAt);
-  // });
-
   const results = [];
 
   for (let follower of slicedFollowers) {

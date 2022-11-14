@@ -44,7 +44,6 @@ export const runApp = () => {
   // (async () => {
   //   const users = await models.User.find();
   //   console.log(users.length);
-
   //   // for (let i = 0; i < 10; i++) {
   //   //   if (users[i]._id.toString() !== "622cd2a8bf28bebb45f64b68") {
   //   //     await models.ChatMessage.create({
@@ -64,7 +63,7 @@ export const runApp = () => {
 
   //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     showLastSeen: 0,
+  //     //     deviceId: 0,
   //     //     // deleted: 0,
   //     //     //deletedAt: 0,
   //     //     // resetPasswordToken: "",
