@@ -103,12 +103,6 @@ const userSchema = new mongoose.Schema({
     default: "active",
   },
 
-  // verificationStatus: {
-  //   type: String,
-  //   enum: ["verified", "unverified", "pending", "rejected"],
-  //   default: "unverified",
-  // },
-
   isVerified: {
     type: Boolean,
     default: false,
@@ -131,11 +125,6 @@ const userSchema = new mongoose.Schema({
 
   deletedAt: {
     type: Date,
-    default: null,
-  },
-
-  fcmToken: {
-    type: String,
     default: null,
   },
 

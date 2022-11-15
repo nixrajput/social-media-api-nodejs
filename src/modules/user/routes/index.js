@@ -78,11 +78,6 @@ userRouter
   .post(isAuthenticatedUser, userController.savePreKeyBundle);
 
 userRouter
-  .route("/device-id")
-  .get(isAuthenticatedUser, userController.getDeviceId)
-  .post(isAuthenticatedUser, userController.saveDeviceId);
-
-userRouter
   .route("/fcm-token")
   .get(isAuthenticatedUser, userController.getFcmToken)
   .post(isAuthenticatedUser, userController.saveFcmToken);
@@ -151,18 +146,6 @@ userRouter
   .get(isAuthenticatedUser, userController.getRecommendedUsers);
 
 userRouter
-  .route("/save-device-info")
-  .post(isAuthenticatedUser, userController.saveDeviceInfo);
-
-userRouter
-  .route("/get-device-info")
-  .get(isAuthenticatedUser, userController.getUserDeviceInfo);
-
-userRouter
-  .route("/delete-device-info")
-  .delete(isAuthenticatedUser, userController.deleteDeviceInfo);
-
-userRouter
   .route("/get-login-history")
   .get(isAuthenticatedUser, userController.getLoginHistory);
 
@@ -171,5 +154,22 @@ userRouter
   .get(isAuthenticatedUser, userController.getLoginInfo)
   .post(isAuthenticatedUser, userController.saveLoginInfo)
   .delete(isAuthenticatedUser, userController.deleteLoginInfo);
+
+userRouter
+  .route("/verify-login-info")
+  .get(isAuthenticatedUser, userController.verifyLoginInfo);
+
+userRouter
+  .route("/report-user")
+  .post(isAuthenticatedUser, userController.reportUser);
+
+userRouter
+  .route("/request-blue-tick")
+  .post(isAuthenticatedUser, userController.requestBlueTick);
+
+// userRouter
+//   .route("/get-user-activity")
+//   .get(isAuthenticatedUser, userController.getUserActivity);
+
 
 export default userRouter;

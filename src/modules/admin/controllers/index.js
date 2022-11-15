@@ -16,7 +16,6 @@ import getStats from "./stats/getStats.js";
 import getRecentPosts from "./post/getRecentPosts.js";
 import getRecentUsers from "./user/getRecentUsers.js";
 import getVerifiedUsersStats from "./user/getVerifiedUsersStats.js";
-import getLocationInfoFromIp from "./location-info/getLocationInfo.js";
 
 const adminController = {};
 
@@ -38,6 +37,5 @@ adminController.changeAdminPassword = changeAdminPassword;
 adminController.getRecentPosts = getRecentPosts;
 adminController.getRecentUsers = getRecentUsers;
 adminController.getVerifiedUsers = getVerifiedUsersStats;
-adminController.getLocationInfoFromIp = getLocationInfoFromIp;
 
 export default adminController;

@@ -38,6 +38,17 @@ ResponseMessages.DEVICE_OS_REQUIRED = 'Device OS is required';
 ResponseMessages.DEVICE_OS_VERSION_REQUIRED = 'Device OS version is required';
 ResponseMessages.DEVICE_TYPE_REQUIRED = 'Device type is required';
 ResponseMessages.DEVICE_MANUFACTURER_REQUIRED = 'Device manufacturer is required';
+ResponseMessages.USER_ID_REQUIRED = 'User id is required';
+ResponseMessages.REPORT_TYPE_REQUIRED = 'Report type is required';
+ResponseMessages.REPORT_REASON_REQUIRED = 'Report reason is required';
+ResponseMessages.REPORT_ID_REQUIRED = 'Report id is required';
+ResponseMessages.LEGAL_NAME_REQUIRED = 'Legal name is required';
+ResponseMessages.BUSINESS_NAME_REQUIRED = 'Business name is required';
+ResponseMessages.BUSINESS_TYPE_REQUIRED = 'Business type is required';
+ResponseMessages.BUSINESS_EMAIL_REQUIRED = 'Business email is required';
+ResponseMessages.BUSINESS_PHONE_REQUIRED = 'Business phone is required';
+ResponseMessages.BUSINESS_ADDRESS_REQUIRED = 'Business address is required';
+ResponseMessages.BUSINESS_DOCUMENT_REQUIRED = 'Business document is required';
 
 
 /// Incorrect Response Messages
@@ -75,6 +86,9 @@ ResponseMessages.COMMENT_DELETE_SUCCESS = 'Comment deleted successfully';
 ResponseMessages.CHAT_MESSAGE_SENT_SUCCESS = 'Chat message sent successfully';
 ResponseMessages.CHAT_MESSAGE_READ_SUCCESS = 'Chat message read successfully';
 ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS = 'Chat message deleted successfully';
+ResponseMessages.REPORT_USER_SUCCESS = 'User reported successfully';
+ResponseMessages.REPORT_POST_SUCCESS = 'Post reported successfully';
+ResponseMessages.REPORT_COMMENT_SUCCESS = 'Comment reported successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
@@ -198,11 +212,16 @@ ResponseMessages.LOGIN_INFO_NOT_RECEIVED = 'Login info not received';
 ResponseMessages.LOGIN_INFO_ALREADY_EXISTS = 'Login info already exists';
 ResponseMessages.LOGIN_INFO_DELETED = 'Login info deleted';
 ResponseMessages.LOGIN_INFO_FOUND = 'Login info found';
+ResponseMessages.INVALID_LOGIN_INFO = 'Invalid login info';
+ResponseMessages.LOGIN_INFO_VALIDATED = 'Login info validated';
 
 ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 
 ResponseMessages.NOT_AUTHORIZED = 'Not authorized';
 ResponseMessages.UNAUTHORIZED_ACCESS = 'Unauthorized access';
+ResponseMessages.UNAUTHORIZED_ACCESS_MESSAGE = 'You are not authorized to access this resource';
+
+ResponseMessages.UNKNOW_ERROR = 'Unknown error';
 
 /// Invalid Response Messages
 ResponseMessages.CHAT_MESSAGE_NOT_FOUND = 'Chat message not found';
@@ -229,6 +248,9 @@ ResponseMessages.INVALID_PASSWORD = 'Invalid password';
 ResponseMessages.INVALID_USERNAME = 'Invalid username';
 ResponseMessages.INVALID_USER = 'Invalid user';
 ResponseMessages.INVALID_USER_ID = 'Invalid user id';
+ResponseMessages.INVALID_POST_ID = 'Invalid post id';
+ResponseMessages.INVALID_COMMENT_ID = 'Invalid comment id';
+ResponseMessages.INVALID_CHAT_ID = 'Invalid chat id';
 ResponseMessages.INVALID_USER_TYPE = 'Invalid user type';
 ResponseMessages.INVALID_USER_STATUS = 'Invalid user status';
 ResponseMessages.INVALID_USER_ACCOUNT_STATUS = 'Invalid user account status';

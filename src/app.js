@@ -38,7 +38,6 @@ export const runApp = () => {
   cron.schedule("59 23 * * *", () => {
     console.log("[cron]: task running every day at 11:59 PM");
     utility.deleteExpiredOTPs();
-    utility.deleteOldNotifications();
   });
 
   // (async () => {
@@ -63,7 +62,7 @@ export const runApp = () => {
 
   //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     deviceId: 0,
+  //     //     fcmToken: 0,
   //     //     // deleted: 0,
   //     //     //deletedAt: 0,
   //     //     // resetPasswordToken: "",

@@ -16,9 +16,6 @@ import checkUsernameAvailable from "./check-username/checkUsernameAvailable.js";
 import deleteProfile from "./profile/deleteProfile.js";
 import searchUser from "./user/searchUser.js";
 import getRecommendedUsers from "./recommend-users/getRecommendedUsers.js";
-import saveDeviceInfo from "./login-info/saveDeviceInfo.js";
-import getUserDeviceInfo from "./login-info/getUserDeviceInfo.js";
-import deleteDeviceInfo from "./login-info/deleteDeviceInfo.js";
 import acceptFollowRequest from "./follow/acceptFollowRequest.js";
 import cancelFollowRequest from "./follow/cancelFollowRequest.js";
 import removeFollowRequest from "./follow/removeFollowRequest.js";
@@ -35,14 +32,15 @@ import searchFollowers from "./follow/searchFollowers.js";
 import searchFollowings from "./follow/searchFollowings.js";
 import savePreKeyBundle from "./profile/savePreKeyBundle.js";
 import getPreKeyBundle from "./profile/getPreKeyBundle.js";
-import getDeviceId from "./profile/getDeviceId.js";
-import saveDeviceId from "./profile/saveDeviceId.js";
 import saveFcmToken from "./profile/saveFcmToken.js";
 import getFcmToken from "./profile/getFcmToken.js";
 import getLoginHistory from "./login-info/getLoginHistory.js";
 import deleteLoginInfo from "./login-info/deleteLoginInfo.js";
 import saveLoginInfo from "./login-info/saveLoginInfo.js";
 import getLoginInfo from "./login-info/getLoginInfo.js";
+import verifyLoginInfo from "./login-info/verifyLoginInfo.js";
+import reportUser from "./report/reportUser.js";
+import requestBlueTick from "./requests/requestBlueTick.js";
 
 const userController = {};
 
@@ -64,9 +62,6 @@ userController.checkUsernameAvailable = checkUsernameAvailable;
 userController.deleteProfile = deleteProfile;
 userController.searchUser = searchUser;
 userController.getRecommendedUsers = getRecommendedUsers;
-userController.saveDeviceInfo = saveDeviceInfo;
-userController.getUserDeviceInfo = getUserDeviceInfo;
-userController.deleteDeviceInfo = deleteDeviceInfo;
 userController.acceptFollowRequest = acceptFollowRequest;
 userController.cancelFollowRequest = cancelFollowRequest;
 userController.removeFollowRequest = removeFollowRequest;
@@ -81,15 +76,20 @@ userController.verifyPassword = verifyPassword;
 userController.removeFollower = removeFollower;
 userController.searchFollowers = searchFollowers;
 userController.searchFollowings = searchFollowings;
+
 userController.savePreKeyBundle = savePreKeyBundle;
 userController.getPreKeyBundle = getPreKeyBundle;
-userController.getDeviceId = getDeviceId;
-userController.saveDeviceId = saveDeviceId;
+
 userController.saveFcmToken = saveFcmToken;
 userController.getFcmToken = getFcmToken;
+
 userController.getLoginHistory = getLoginHistory;
 userController.deleteLoginInfo = deleteLoginInfo;
 userController.saveLoginInfo = saveLoginInfo;
 userController.getLoginInfo = getLoginInfo;
+userController.verifyLoginInfo = verifyLoginInfo;
+
+userController.reportUser = reportUser;
+userController.requestBlueTick = requestBlueTick;
 
 export default userController;

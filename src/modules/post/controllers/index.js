@@ -11,6 +11,8 @@ import createUploadPost from "./post/createUploadPost.js";
 import getLikedUsers from "./post/getLikedUsers.js";
 import getTrendingPosts from "./post/getTrendingPosts.js";
 import searchPosts from "./post/searchPost.js";
+import reportPost from "./post/reportPost.js";
+import reportComment from "./comment/reportComment.js";
 
 const postController = {};
 
@@ -27,5 +29,8 @@ postController.createUploadPost = createUploadPost;
 postController.getLikedUsers = getLikedUsers;
 postController.getTrendingPosts = getTrendingPosts;
 postController.searchPosts = searchPosts;
+
+postController.reportPost = reportPost;
+postController.reportComment = reportComment;
 
 export default postController;

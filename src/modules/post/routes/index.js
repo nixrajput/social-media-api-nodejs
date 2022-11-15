@@ -50,6 +50,10 @@ postRouter
   .route("/search-posts")
   .get(isAuthenticatedUser, postController.searchPosts);
 
+postRouter
+  .route("/report-post")
+  .post(isAuthenticatedUser, postController.reportPost);
+
 /// COMMENTS ///
 
 postRouter
@@ -67,5 +71,9 @@ postRouter
 postRouter
   .route("/delete-comment")
   .delete(isAuthenticatedUser, postController.deleteComment);
+
+postRouter
+  .route("/report-comment")
+  .post(isAuthenticatedUser, postController.reportComment);
 
 export default postRouter;

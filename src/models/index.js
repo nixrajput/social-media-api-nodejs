@@ -9,27 +9,47 @@ import OTP from "./otp/otp.js";
 import Tag from "./hashtag/tag.js";
 import PostLike from "./post/postLike.js";
 import Follower from "./user/follower.js";
-import FollowRequest from "./notification/followRequest.js";
+import FollowRequest from "./requests/followRequest.js";
 import ChatMessage from "./chat/chatMessage.js";
 import FcmToken from "./user/fcmToken.js";
 import PreKeyBundle from "./user/preKeyBundle.js";
+import FeedbackReport from "./reports/feedbackReport.js";
+import PostReport from "./reports/postReport.js";
+import CommentReport from "./reports/commentReport.js";
+import UserReport from "./reports/userReport.js";
+import IssueReport from "./reports/issueReport.js";
+import BlueTickRequest from "./requests/blueTickRequest.js";
 
 const models = {};
 
-models.LoginInfo = LoginInfo;
-models.User = User;
 models.Comment = Comment;
 models.CommentLike = CommentLike;
 models.CommentReply = CommentReply;
+
 models.OTP = OTP;
+
 models.Tag = Tag;
+
 models.Post = Post;
 models.PostLike = PostLike;
+
+models.User = User;
+models.LoginInfo = LoginInfo;
 models.Follower = Follower;
-models.Notification = Notification;
-models.FollowRequest = FollowRequest;
-models.ChatMessage = ChatMessage;
 models.FcmToken = FcmToken;
 models.PreKeyBundle = PreKeyBundle;
+
+models.Notification = Notification;
+
+models.ChatMessage = ChatMessage;
+
+models.FeedbackReport = FeedbackReport;
+models.PostReport = PostReport;
+models.CommentReport = CommentReport;
+models.UserReport = UserReport;
+models.IssueReport = IssueReport;
+
+models.FollowRequest = FollowRequest;
+models.BlueTickRequest = BlueTickRequest;
 
 export default models;

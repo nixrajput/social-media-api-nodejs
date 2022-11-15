@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const validators = {};
 
 const Numeric = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -68,6 +70,141 @@ const AlphaNumeric = [
   "_",
 ];
 
+const FilteredWordsForUsername = [
+  "administrator",
+  "mod",
+  "mods",
+
+  "support",
+  "supporter",
+  "supporters",
+  "supporting",
+  "supports",
+  "supported",
+
+  "help",
+  "helper",
+  "helpers",
+  "helping",
+  "helps",
+  "helped",
+
+  "staff",
+  "staffs",
+  "staffing",
+  "staffed",
+  "staffs",
+
+  "owner",
+  "owners",
+  "owning",
+  "owned",
+
+  "admin",
+  "admins",
+  "admining",
+  "admined",
+
+  "moderator",
+  "moderators",
+  "moderating",
+  "moderated",
+  "moderates",
+
+  "developer",
+  "developers",
+  "developing",
+  "developed",
+  "develops",
+
+  "creator",
+  "creators",
+  "creating",
+  "created",
+  "creates",
+
+  "user",
+  "users",
+  "using",
+  "used",
+  "uses",
+
+  "member",
+  "members",
+  "membering",
+  "membered",
+  "members",
+
+  "follower",
+  "followers",
+  "following",
+  "followed",
+  "follows",
+
+  "subscriber",
+  "subscribers",
+  "subscribing",
+  "subscribed",
+  "subscribes",
+
+  "viewer",
+  "viewers",
+  "viewing",
+  "viewed",
+  "views",
+
+  "player",
+  "players",
+  "playing",
+  "played",
+  "plays",
+
+  "guest",
+  "guests",
+  "guesting",
+  "guested",
+  "guests",
+
+  "visitor",
+  "visitors",
+  "visiting",
+  "visited",
+  "visits",
+
+  "friend",
+  "friends",
+  "friending",
+  "friended",
+  "friends",
+
+  "god",
+  "gods",
+  "godding",
+
+  "ceo",
+  "ceos",
+  "ceoing",
+  "ceoed",
+
+  "manager",
+  "managers",
+  "managing",
+  "managed",
+
+  "leader",
+  "leaders",
+  "leading",
+  "led",
+  "leads",
+
+  "test",
+  "tests",
+  "testing",
+  "tested",
+  "tester",
+  "testers",
+];
+
 const startsWithNumber = (str) => {
   return Numeric.includes(str[0]);
 };
@@ -75,6 +212,8 @@ const startsWithNumber = (str) => {
 // Validate username
 validators.validateUsername = (username) => {
   if (username.length < 3 || username.length > 15) return false;
+
+  if (FilteredWordsForUsername.includes(username)) return false;
 
   if (username.includes(" ")) return false;
 
@@ -113,6 +252,10 @@ validators.validatePhone = (phone) => {
   }
 
   return true;
+};
+
+validators.isValidObjectId = (uid) => {
+  return mongoose.Types.ObjectId.isValid(uid);
 };
 
 export default validators;

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const postReportSchema = new mongoose.Schema({
-    post: {
+const userReportSchema = new mongoose.Schema({
+    user: {
         type: mongoose.Schema.ObjectId,
-        ref: "Post",
+        ref: "User",
     },
 
     reporter: {
@@ -22,16 +22,24 @@ const postReportSchema = new mongoose.Schema({
 
     reportReason: {
         type: String,
-        default: "This post is spam",
     },
 
     reportStatus: {
         type: String,
         enum: [
-            "pending", "resolved", "dismissed", "flagged",
-            "banned", "muted", "verified", "unverified"
+            "pending", "resolved", "rejected",
+            "ignored", "closed"
         ],
         default: "pending",
+    },
+
+    resolvedBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+    },
+
+    resolvedAt: {
+        type: Date,
     },
 
     createdAt: {
@@ -45,10 +53,10 @@ const postReportSchema = new mongoose.Schema({
     },
 });
 
-postReportSchema.pre(/^find/, function (next) {
+userReportSchema.pre(/^find/, function (next) {
     this.populate({
-        path: "post",
-        select: "postType postContent postStatus visibility allowComments allowLikes allowReposts",
+        path: "user",
+        select: "username email avatar",
     }).populate({
         path: "reporter",
         select: "username email avatar",
@@ -57,12 +65,12 @@ postReportSchema.pre(/^find/, function (next) {
     next();
 });
 
-postReportSchema.pre("save", function (next) {
+userReportSchema.pre("save", function (next) {
     this.updatedAt = Date.now();
 
     next();
 });
 
-const PostReport = mongoose.model("PostReport", postReportSchema);
+const UserReport = mongoose.model("UserReport", userReportSchema);
 
-export default PostReport;
+export default UserReport;
