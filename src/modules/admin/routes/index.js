@@ -47,6 +47,14 @@ adminRouter.route("/admin/get-stats")
     authorizeRoles("admin"),
     adminController.getStats
   );
+
+// Get Monthly Stats
+adminRouter.route("/admin/get-monthly-stats")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getMonthlyStats
+  );
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

@@ -2,7 +2,7 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
-import dates from "../../../../utils/dateFunc.js";
+import dateUtility from "../../../../utils/dateUtil.js";
 import validators from "../../../../utils/validators.js";
 
 /// VERIFY ACCOUNT ///
@@ -36,7 +36,7 @@ const verifyAccount = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.OTP_ALREADY_USED, 400));
     }
 
-    if (dates.compare(otpObj.expiresAt, new Date()) !== 1) {
+    if (dateUtility.compare(otpObj.expiresAt, new Date()) !== 1) {
         return next(new ErrorHandler(ResponseMessages.OTP_EXPIRED, 400));
     }
 

@@ -552,4 +552,33 @@ utility.getChatData = async (chatId) => {
   return chatData;
 };
 
+utility.getStats = async (startDate, endDate) => {
+  const users = await models.User.countDocuments({
+    createdAt: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+  });
+
+  const posts = await models.Post.countDocuments({
+    createdAt: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+  });
+
+  const comments = await models.Comment.countDocuments({
+    createdAt: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+  });
+
+  return {
+    users,
+    posts,
+    comments,
+  };
+}
+
 export default utility;
