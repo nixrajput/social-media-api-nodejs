@@ -68,7 +68,7 @@ adminRouter.route("/admin/get-recent-users")
 
 // Get All Users
 adminRouter
-  .route("/admin/users")
+  .route("/admin/get-users")
   .get(
     isAuthenticatedUser,
     authorizeRoles("admin"),
@@ -93,14 +93,18 @@ adminRouter
     adminController.searchUser
   );
 
-// Get User Details
+// Delete User
 adminRouter
-  .route("/admin/user")
+  .route("/admin/delete-user")
   .delete(
     isAuthenticatedUser,
     authorizeRoles("admin"),
     adminController.deleteUser
   )
+
+// Get User Details
+adminRouter
+  .route("/admin/get-user-details")
   .get(
     isAuthenticatedUser,
     authorizeRoles("admin"),
@@ -143,6 +147,15 @@ adminRouter
     isAuthenticatedUser,
     authorizeRoles("admin"),
     adminController.getAllPosts
+  );
+
+// Get Post Details
+adminRouter
+  .route("/admin/get-post-details")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getPostDetails
   );
 
 // Get Recent Posts

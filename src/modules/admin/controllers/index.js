@@ -17,6 +17,7 @@ import getRecentPosts from "./post/getRecentPosts.js";
 import getRecentUsers from "./user/getRecentUsers.js";
 import getVerifiedUsersStats from "./user/getVerifiedUsersStats.js";
 import getMonthlyStats from "./stats/monthlyStats.js";
+import getPostDetails from "./post/getPostDetails.js";
 
 const adminController = {};
 
@@ -39,5 +40,6 @@ adminController.getRecentPosts = getRecentPosts;
 adminController.getRecentUsers = getRecentUsers;
 adminController.getVerifiedUsers = getVerifiedUsersStats;
 adminController.getMonthlyStats = getMonthlyStats;
+adminController.getPostDetails = getPostDetails;
 
 export default adminController;

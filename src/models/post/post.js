@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
+  tempId: String,
+
   caption: String,
 
   postType: {
     type: String,
-    enum: ["media", "poll", "text", "media_and_poll",
-      "media_and_text", "poll_and_text",
-      "media_and_poll_and_text",
-    ],
+    enum: ["media", "poll", "text"],
     default: "media",
   },
 
@@ -22,7 +21,10 @@ const postSchema = new mongoose.Schema({
       },
       mediaType: {
         type: String,
-        enum: ["image", "video",],
+        enum: [
+          "image", "video", "audio", "document",
+          "gif", ""
+        ],
         default: "image",
       },
     }
