@@ -2,6 +2,7 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import validators from "../../../../utils/validators.js";
 
 /// UPDATE PROFILE ///
 
@@ -13,21 +14,19 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
   }
 
   if (req.body.fname) {
-    if (String(req.body.fname).length < 3) {
-      return next(
-        new ErrorHandler(ResponseMessages.INVALID_FIRST_NAME_LENGTH, 400)
-      );
-    } else {
-      user.fname = req.body.fname;
+    if (!validators.validateName(req.body.fname)) {
+      return next(new ErrorHandler(ResponseMessages.INVALID_FIRST_NAME_LENGTH, 400));
     }
+
+    user.fname = req.body.fname;
   }
 
   if (req.body.lname) {
-    if (String(req.body.lname).length < 1) {
+    if (!validators.validateName(req.body.lname)) {
       return next(new ErrorHandler(ResponseMessages.INVALID_LAST_NAME_LENGTH, 400));
-    } else {
-      user.lname = req.body.lname;
     }
+
+    user.lname = req.body.lname;
   }
 
   if (req.body.gender) {
@@ -39,6 +38,10 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
   }
 
   if (req.body.about) {
+    if (!validators.validateAbout(req.body.about)) {
+      return next(new ErrorHandler(ResponseMessages.INVALID_ABOUT_LENGTH, 400));
+    }
+
     user.about = req.body.about;
   }
 
@@ -51,6 +54,9 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
   }
 
   if (req.body.website) {
+    if (!validators.validateUrl(req.body.website)) {
+      return next(new ErrorHandler(ResponseMessages.INVALID_URL, 400));
+    }
     user.website = req.body.website;
   }
 

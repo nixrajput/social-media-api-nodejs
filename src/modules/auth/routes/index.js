@@ -24,4 +24,16 @@ authRouter.route("/verify-account")
 authRouter.route("/validate-token")
     .get(isAuthenticatedUser, authController.validateToken);
 
+authRouter.route("/send-otp-to-email")
+    .post(authController.sendOtpToEmail);
+
+authRouter.route("/verify-email-otp")
+    .post(authController.verifyEmailOtp);
+
+authRouter.route("/send-otp-to-phone")
+    .post(authController.sendOtpToPhone);
+
+authRouter.route("/verify-phone-otp")
+    .post(authController.verifyPhoneOtp);
+
 export default authRouter;

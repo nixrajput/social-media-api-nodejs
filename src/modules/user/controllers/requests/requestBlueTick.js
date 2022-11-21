@@ -2,36 +2,63 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
 import models from "../../../../models/index.js";
+import validators from "../../../../utils/validators.js";
 
 /// REQUEST BLUE TICK ///
 
 const requestBlueTick = catchAsyncError(async (req, res, next) => {
     let {
-        legalName, email, phone, profession,
+        legalName, email, phone, category,
         document, isVerifiedOnOtherPlatform,
         otherPlatformProfileLinks, hasWikipediaPage,
         wikipediaPageLink, featuredInArticles,
-        articleLinks, articleDocument
+        articleLinks,
     } = req.body;
 
     if (!legalName) {
         return next(new ErrorHandler(ResponseMessages.LEGAL_NAME_REQUIRED, 400));
     }
 
+    if (legalName && !validators.validateName(legalName)) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_LEGAL_NAME, 400));
+    }
+
     if (!email) {
         return next(new ErrorHandler(ResponseMessages.EMAIL_REQUIRED, 400));
+    }
+
+    if (email && !validators.validateEmail(email)) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_EMAIL, 400));
     }
 
     if (!phone) {
         return next(new ErrorHandler(ResponseMessages.PHONE_REQUIRED, 400));
     }
 
-    if (!profession) {
-        return next(new ErrorHandler(ResponseMessages.PROFESSION_REQUIRED, 400));
+    if (phone && !validators.validatePhone(phone)) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_PHONE, 400));
+    }
+
+    if (!category) {
+        return next(new ErrorHandler(ResponseMessages.CATEGORY_REQUIRED, 400));
     }
 
     if (!document) {
         return next(new ErrorHandler(ResponseMessages.DOCUMENT_REQUIRED, 400));
+    }
+
+    if (document) {
+        if (!document.public_id) {
+            return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
+        }
+
+        if (!document.url) {
+            return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
+        }
+
+        if (!validators.validateUrl(document.url)) {
+            return next(new ErrorHandler(ResponseMessages.INVALID_URL, 400));
+        }
     }
 
     if (!isVerifiedOnOtherPlatform) {
@@ -64,26 +91,47 @@ const requestBlueTick = catchAsyncError(async (req, res, next) => {
         }
     }
 
+    const isALreadyRequested = await models.BlueTickRequest.findOne({
+        user: req.user._id
+    });
+
+    if (isALreadyRequested) {
+        return next(new ErrorHandler(ResponseMessages.ALREADY_REQUESTED, 400));
+    }
+
+    const user = await models.User.findById(req.user._id);
+
+    if (!user) {
+        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+    }
+
+    if ((user.email && user.emailVerified === false) || (user.phone && user.phoneVerified === false) || !user.avatar) {
+        return next(new ErrorHandler(ResponseMessages.INELIGIBLE_FOR_VERIFICATION, 400));
+    }
+
+    if (user.avatar && !user.avatar.public_id && !user.avatar.url) {
+        return next(new ErrorHandler(ResponseMessages.INELIGIBLE_FOR_VERIFICATION, 400));
+    }
+
     const blueTickRequest = await models.BlueTickRequest.create({
-        userId: req.user._id,
+        user: req.user._id,
         legalName,
         email,
         phone,
-        profession,
+        category,
         document,
         isVerifiedOnOtherPlatform,
         otherPlatformProfileLinks,
         hasWikipediaPage,
         wikipediaPageLink,
         featuredInArticles,
-        articleLinks,
-        articleDocument
+        articleLinks
     });
 
     res.status(200).json({
         success: true,
+        message: ResponseMessages.BLUE_TICK_REQUEST_SUCCESS,
         request: blueTickRequest,
-        message: ResponseMessages.REPORT_USER_SUCCESS,
     });
 });
 

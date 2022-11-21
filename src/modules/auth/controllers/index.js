@@ -6,6 +6,10 @@ import logout from "./logout/logout.js";
 import verifyAccountOtp from "./verify-account/verifyAccountOtp.js";
 import verifyAccount from "./verify-account/verifyAccount.js";
 import validateToken from "./validate-token/validateToken.js";
+import sendOtpToEmail from "./verify-otp/sendOtpToEmail.js";
+import verifyEmailOtp from "./verify-otp/verifyEmailOtp.js";
+import sendOtpToPhone from "./verify-otp/sendOtpToPhone.js";
+import verifyPhoneOtp from "./verify-otp/verifyPhoneOtp.js";
 
 const authController = {};
 
@@ -17,5 +21,9 @@ authController.logout = logout;
 authController.verifyAccountOtp = verifyAccountOtp;
 authController.verifyAccount = verifyAccount;
 authController.validateToken = validateToken;
+authController.sendOtpToEmail = sendOtpToEmail;
+authController.verifyEmailOtp = verifyEmailOtp;
+authController.sendOtpToPhone = sendOtpToPhone;
+authController.verifyPhoneOtp = verifyPhoneOtp;
 
 export default authController;

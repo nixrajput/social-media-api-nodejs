@@ -14,14 +14,16 @@ const register = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.FIRST_NAME_REQUIRED, 400));
   }
 
-  if (String(fname).length < 3) {
-    return next(
-      new ErrorHandler(ResponseMessages.INVALID_FIRST_NAME_LENGTH, 400)
-    );
+  if (fname && !validators.validateName(fname)) {
+    return next(new ErrorHandler(ResponseMessages.INVALID_FIRST_NAME_LENGTH, 400));
   }
 
   if (!lname) {
     return next(new ErrorHandler(ResponseMessages.LAST_NAME_REQUIRED, 400));
+  }
+
+  if (lname && !validators.validateName(lname)) {
+    return next(new ErrorHandler(ResponseMessages.INVALID_LAST_NAME_LENGTH, 400));
   }
 
   if (!email) {
@@ -36,18 +38,6 @@ const register = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.USERAME_REQUIRED, 400));
   }
 
-  if (String(uname).length < 3) {
-    return next(
-      new ErrorHandler(ResponseMessages.INVALID_USERNAME_LENGTH, 400)
-    );
-  }
-
-  if (String(uname).length > 15) {
-    return next(
-      new ErrorHandler(ResponseMessages.INVALID_USERNAME_LENGTH, 400)
-    );
-  }
-
   if (uname && !validators.validateUsername(uname)) {
     return next(new ErrorHandler(ResponseMessages.INVALID_USERNAME, 400));
   }
@@ -60,15 +50,13 @@ const register = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.CONFIRM_PASSWORD_REQUIRED, 400));
   }
 
-  if (uname) {
-    const isUsernameAvailable = await utility.checkUsernameAvailable(uname);
+  const isUsernameAvailable = await utility.checkUsernameAvailable(uname);
 
-    if (!isUsernameAvailable) {
-      return next(new ErrorHandler(ResponseMessages.USERAME_NOT_AVAILABLE, 400));
-    }
-
-    uname = uname.toLowerCase();
+  if (!isUsernameAvailable) {
+    return next(new ErrorHandler(ResponseMessages.USERAME_NOT_AVAILABLE, 400));
   }
+
+  uname = uname.toLowerCase();
 
   if (password !== confirmPassword) {
     return next(new ErrorHandler(ResponseMessages.PASSWORDS_DO_NOT_MATCH, 400));

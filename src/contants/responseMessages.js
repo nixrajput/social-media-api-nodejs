@@ -49,6 +49,16 @@ ResponseMessages.BUSINESS_EMAIL_REQUIRED = 'Business email is required';
 ResponseMessages.BUSINESS_PHONE_REQUIRED = 'Business phone is required';
 ResponseMessages.BUSINESS_ADDRESS_REQUIRED = 'Business address is required';
 ResponseMessages.BUSINESS_DOCUMENT_REQUIRED = 'Business document is required';
+ResponseMessages.DOCUMENT_REQUIRED = 'Document is required';
+ResponseMessages.PROFESSION_REQUIRED = 'Profession is required';
+ResponseMessages.CATEGORY_REQUIRED = 'Category is required';
+ResponseMessages.BIO_REQUIRED = 'Bio is required';
+ResponseMessages.IS_VERIFIED_ON_OTHER_PLATFORM_REQUIRED = 'Is verified on other platform is required';
+ResponseMessages.OTHER_PLATFORM_PROFILE_LINKS_REQUIRED = 'Other platform profile links is required';
+ResponseMessages.HAS_WIKIPEDIA_PAGE_REQUIRED = 'Has wikipedia page is required';
+ResponseMessages.WIKIPEDIA_PAGE_LINK_REQUIRED = 'Wikipedia page link is required';
+ResponseMessages.FEATURED_IN_ARTICLES_REQUIRED = 'Featured in articles is required';
+ResponseMessages.ARTICLE_LINKS_REQUIRED = 'Article links is required';
 
 
 /// Incorrect Response Messages
@@ -66,6 +76,7 @@ ResponseMessages.LOGIN_SUCCESS = 'Login success';
 ResponseMessages.SIGNUP_SUCCESS = 'Signup success';
 ResponseMessages.LOGOUT_SUCCESS = 'Logout success';
 ResponseMessages.OTP_SEND_SUCCESS = 'OTP sent successfully';
+ResponseMessages.OTP_VERIFY_SUCCESS = 'OTP verified successfully';
 ResponseMessages.EMAIL_SEND_SUCCESS = 'Email sent successfully';
 ResponseMessages.EMAIL_CHANGE_SUCCESS = 'Email changed successfully';
 ResponseMessages.PASSWORD_CHANGE_SUCCESS = 'Password changed successfully';
@@ -89,6 +100,12 @@ ResponseMessages.CHAT_MESSAGE_DELETE_SUCCESS = 'Chat message deleted successfull
 ResponseMessages.REPORT_USER_SUCCESS = 'User reported successfully';
 ResponseMessages.REPORT_POST_SUCCESS = 'Post reported successfully';
 ResponseMessages.REPORT_COMMENT_SUCCESS = 'Comment reported successfully';
+ResponseMessages.REPORT_CHAT_MESSAGE_SUCCESS = 'Chat message reported successfully';
+ResponseMessages.BLUE_TICK_REQUEST_SUCCESS = 'Request has been sent successfully';
+ResponseMessages.BLUE_TICK_REQUEST_ACCEPT_SUCCESS = 'Blue tick request accepted successfully';
+ResponseMessages.BLUE_TICK_REQUEST_REJECT_SUCCESS = 'Blue tick request rejected successfully';
+ResponseMessages.BLUE_TICK_REQUEST_CANCEL_SUCCESS = 'Blue tick request cancelled successfully';
+ResponseMessages.BLUE_TICK_REQUEST_DELETE_SUCCESS = 'Blue tick request deleted successfully';
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
@@ -222,8 +239,16 @@ ResponseMessages.UNAUTHORIZED_ACCESS = 'Unauthorized access';
 ResponseMessages.UNAUTHORIZED_ACCESS_MESSAGE = 'You are not authorized to access this resource';
 
 ResponseMessages.UNKNOW_ERROR = 'Unknown error';
+ResponseMessages.ALREADY_REQUESTED = 'Already requested';
+
+ResponseMessages.INELIGIBLE_FOR_VERIFICATION = 'You are not eligible for verification';
 
 /// Invalid Response Messages
+ResponseMessages.INVALID_LEGAL_NAME = 'Invalid legal name';
+ResponseMessages.INVALID_FIRST_NAME = 'Invalid first name';
+ResponseMessages.INVALID_LAST_NAME = 'Invalid last name';
+ResponseMessages.INVALID_URL = 'Invalid url';
+ResponseMessages.INVALID_ABOUT_LENGTH = 'Invalid about length';
 ResponseMessages.CHAT_MESSAGE_NOT_FOUND = 'Chat message not found';
 ResponseMessages.INVALID_ACTION = 'Invalid action';
 ResponseMessages.INVALID = 'Invalid';
@@ -236,7 +261,7 @@ ResponseMessages.INVALID_USERNAME = 'Invalid username';
 ResponseMessages.INVALID_PASSWORD = 'Invalid password';
 ResponseMessages.INVALID_OTP = 'Invalid OTP';
 ResponseMessages.INVALID_FIRST_NAME_LENGTH = 'First name must be at least 3 characters';
-ResponseMessages.INVALID_LAST_NAME_LENGTH = 'Last name must be at least 1 characters';
+ResponseMessages.INVALID_LAST_NAME_LENGTH = 'Last name must be at least 3 characters';
 ResponseMessages.INVALID_USERNAME_LENGTH = 'Username must be between 3-15 characters';
 ResponseMessages.INVALID_CREDENTIALS = 'Invalid credentials';
 ResponseMessages.INVALID_TOKEN = 'Invalid token';

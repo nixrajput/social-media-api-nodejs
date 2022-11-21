@@ -203,6 +203,20 @@ const FilteredWordsForUsername = [
   "tested",
   "tester",
   "testers",
+
+  "null",
+  "undefined",
+  "NaN",
+  "false",
+  "true",
+
+  "root",
+  "roots",
+  "rooting",
+  "rooted",
+
+  "temp",
+  "temps",
 ];
 
 const startsWithNumber = (str) => {
@@ -256,6 +270,39 @@ validators.validatePhone = (phone) => {
 
 validators.isValidObjectId = (uid) => {
   return mongoose.Types.ObjectId.isValid(uid);
+};
+
+validators.validatePassword = (password) => {
+  if (password.length < 8 || password.length > 32) return false;
+
+  return true;
+};
+
+const nameRegExp = /^[a-zA-Z0-9 ]{3,32}$/;
+
+validators.validateName = (name) => {
+  if (name.length < 3 || name.length > 32) return false;
+
+  if (name.startsWith(" ")) return false;
+
+  if (startsWithNumber(name)) return false;
+
+  return nameRegExp.test(name);
+};
+
+validators.validateAbout = (about) => {
+  if (about.length > 110) return false;
+
+  return true;
+};
+
+validators.validateUrl = (url) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 export default validators;

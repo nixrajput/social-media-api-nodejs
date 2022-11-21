@@ -22,7 +22,7 @@ const blueTickRequestSchema = new mongoose.Schema({
         required: true,
     },
 
-    profession: {
+    category: {
         type: String,
         required: true,
     },
@@ -55,17 +55,14 @@ const blueTickRequestSchema = new mongoose.Schema({
     },
 
     featuredInArticles: {
-        type: Boolean,
-        default: false,
+        type: String,
+        enum: ["yes", "no"],
+        required: true,
+        default: "no",
     },
 
     articleLinks: {
         type: String,
-    },
-
-    articleDocument: {
-        public_id: String,
-        url: String,
     },
 
     status: {
