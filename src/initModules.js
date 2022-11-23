@@ -6,6 +6,7 @@ import notificationModule from "./modules/notification/index.js";
 import tagModule from "./modules/hashtag/index.js";
 import chatModule from "./modules/chat/index.js";
 import locationInfoModule from "./modules/location-info/index.js";
+import updateModule from "./modules/app_update/index.js";
 
 const initModules = (app) => {
   authModule.init(app);
@@ -16,6 +17,7 @@ const initModules = (app) => {
   notificationModule.init(app);
   chatModule.init(app);
   locationInfoModule.init(app);
+  updateModule.init(app);
 };
 
 export default initModules;

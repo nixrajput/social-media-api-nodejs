@@ -59,7 +59,8 @@ ResponseMessages.HAS_WIKIPEDIA_PAGE_REQUIRED = 'Has wikipedia page is required';
 ResponseMessages.WIKIPEDIA_PAGE_LINK_REQUIRED = 'Wikipedia page link is required';
 ResponseMessages.FEATURED_IN_ARTICLES_REQUIRED = 'Featured in articles is required';
 ResponseMessages.ARTICLE_LINKS_REQUIRED = 'Article links is required';
-
+ResponseMessages.REPO_NAME_REQUIRED = 'Repo name is required';
+ResponseMessages.CURRENT_VERSION_REQUIRED = 'Current version is required';
 
 /// Incorrect Response Messages
 ResponseMessages.INCORRECT_EMAIL = 'Incorrect email';
@@ -248,6 +249,17 @@ ResponseMessages.UNAUTHORIZED_ACCESS_MESSAGE = 'You are not authorized to access
 
 ResponseMessages.UNKNOW_ERROR = 'Unknown error';
 ResponseMessages.ALREADY_REQUESTED = 'Already requested';
+
+ResponseMessages.GITHUB_API_ERROR = 'Github API error';
+ResponseMessages.UPDATE_CHECKED = 'Update checked';
+ResponseMessages.UPDATE_NOT_FOUND = 'Update not found';
+ResponseMessages.UPDATE_FOUND = 'Update found';
+ResponseMessages.UPDATE_DOWNLOADED = 'Update downloaded';
+ResponseMessages.UPDATE_NOT_DOWNLOADED = 'Update not downloaded';
+ResponseMessages.UPDATE_INSTALLED = 'Update installed';
+ResponseMessages.NO_UPDATE_AVAILABLE = 'No update available';
+ResponseMessages.UPDATE_ERROR = 'Update error';
+ResponseMessages.UPDATE_AVAILABLE = 'Update available';
 
 ResponseMessages.INELIGIBLE_FOR_VERIFICATION = 'You are not eligible for verification';
 
