@@ -40,7 +40,8 @@ import saveLoginInfo from "./login-info/saveLoginInfo.js";
 import getLoginInfo from "./login-info/getLoginInfo.js";
 import verifyLoginInfo from "./login-info/verifyLoginInfo.js";
 import reportUser from "./report/reportUser.js";
-import requestBlueTick from "./requests/requestBlueTick.js";
+import requestVerification from "./requests/requestVerification.js";
+import logoutOtherDevices from "./login-info/logoutOtherDevices.js";
 
 const userController = {};
 
@@ -88,8 +89,9 @@ userController.deleteLoginInfo = deleteLoginInfo;
 userController.saveLoginInfo = saveLoginInfo;
 userController.getLoginInfo = getLoginInfo;
 userController.verifyLoginInfo = verifyLoginInfo;
+userController.logoutOtherDevices = logoutOtherDevices;
 
 userController.reportUser = reportUser;
-userController.requestBlueTick = requestBlueTick;
+userController.requestVerification = requestVerification;
 
 export default userController;

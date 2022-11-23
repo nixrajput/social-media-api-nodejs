@@ -79,6 +79,7 @@ ResponseMessages.OTP_SEND_SUCCESS = 'OTP sent successfully';
 ResponseMessages.OTP_VERIFY_SUCCESS = 'OTP verified successfully';
 ResponseMessages.EMAIL_SEND_SUCCESS = 'Email sent successfully';
 ResponseMessages.EMAIL_CHANGE_SUCCESS = 'Email changed successfully';
+ResponseMessages.USERNAME_CHANGE_SUCCESS = 'Username changed successfully';
 ResponseMessages.PASSWORD_CHANGE_SUCCESS = 'Password changed successfully';
 ResponseMessages.PASSWORD_RESET_SUCCESS = 'Password reset successfully';
 ResponseMessages.PHONE_CHANGE_SUCCESS = 'Phone changed successfully';
@@ -106,6 +107,8 @@ ResponseMessages.BLUE_TICK_REQUEST_ACCEPT_SUCCESS = 'Blue tick request accepted 
 ResponseMessages.BLUE_TICK_REQUEST_REJECT_SUCCESS = 'Blue tick request rejected successfully';
 ResponseMessages.BLUE_TICK_REQUEST_CANCEL_SUCCESS = 'Blue tick request cancelled successfully';
 ResponseMessages.BLUE_TICK_REQUEST_DELETE_SUCCESS = 'Blue tick request deleted successfully';
+ResponseMessages.LOGOUT_OTHER_DEVICES_SUCCESS = 'Other devices logged out successfully';
+
 
 /// Failure Response Messages
 ResponseMessages.FAILURE = 'Failure';
@@ -118,6 +121,10 @@ ResponseMessages.CHAT_MESSAGE_READ_FAILURE = 'Chat message read failure';
 ResponseMessages.CHAT_MESSAGE_DELETE_FAILURE = 'Chat message delete failure';
 ResponseMessages.CHAT_MESSAGE_TYPING_FAILURE = 'Chat message typing failure';
 ResponseMessages.ONLINE_USERS_FAILURE = 'Online users failure';
+ResponseMessages.REPORT_USER_FAILURE = 'User report failure';
+ResponseMessages.REPORT_POST_FAILURE = 'Post report failure';
+ResponseMessages.REPORT_COMMENT_FAILURE = 'Comment report failure';
+
 
 ResponseMessages.EMAIL_NOT_SENT = 'Email not sent';
 
@@ -231,6 +238,7 @@ ResponseMessages.LOGIN_INFO_DELETED = 'Login info deleted';
 ResponseMessages.LOGIN_INFO_FOUND = 'Login info found';
 ResponseMessages.INVALID_LOGIN_INFO = 'Invalid login info';
 ResponseMessages.LOGIN_INFO_VALIDATED = 'Login info validated';
+ResponseMessages.NO_OTHER_DEVICES = 'No other devices';
 
 ResponseMessages.CHAT_MESSAGE_ALREADY_DELETED = 'Chat message already deleted';
 

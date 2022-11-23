@@ -105,13 +105,10 @@ const createUploadPost = catchAsyncError(async (req, res, next) => {
 
     const newPost = {
         owner: req.user._id,
+        mediaFiles: mediaFilesLinks,
+        caption: req.body.caption,
+        visibility: req.body.visibility,
     };
-
-    newPost.mediaFiles = mediaFilesLinks;
-
-    if (req.body.caption) {
-        newPost.caption = req.body.caption;
-    }
 
     const post = await models.Post.create(newPost);
 

@@ -33,6 +33,7 @@ const changePassword = catchAsyncError(async (req, res, next) => {
   }
 
   user.password = newPassword;
+  user.passwordChangedAt = Date.now();
 
   await user.generateToken();
   await user.save();

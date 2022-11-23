@@ -17,10 +17,6 @@ authRouter.route("/forgot-password").post(authController.forgotPassword);
 
 authRouter.route("/reset-password").post(authController.resetPassword);
 
-authRouter.route("/verify-account")
-    .post(authController.verifyAccountOtp)
-    .put(authController.verifyAccount);
-
 authRouter.route("/validate-token")
     .get(isAuthenticatedUser, authController.validateToken);
 

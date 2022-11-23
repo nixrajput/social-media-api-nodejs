@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter a last name."],
   },
 
+  nameChangedAt: Date,
+
   email: {
     type: String,
     required: [true, "Please enter an email."],
@@ -24,12 +26,16 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
+  emailChangedAt: Date,
+
   uname: {
     type: String,
     required: [true, "Please enter an username."],
     minlength: [3, "Username must be at least 3 characters."],
     maxlength: [20, "Username must not exceeds 20 characters."],
   },
+
+  usernameChangedAt: Date,
 
   phone: String,
 
@@ -40,12 +46,16 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
+  phoneChangedAt: Date,
+
   password: {
     type: String,
     required: [true, "Please enter a password."],
     minlength: [6, "password must be at least 6 characters."],
     select: false,
   },
+
+  passwordChangedAt: Date,
 
   avatar: {
     public_id: String,
@@ -107,6 +117,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  verifiedAt: Date,
+
+  verificationRequestedAt: Date,
 
   isValid: {
     type: Boolean,

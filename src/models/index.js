@@ -18,7 +18,8 @@ import PostReport from "./reports/postReport.js";
 import CommentReport from "./reports/commentReport.js";
 import UserReport from "./reports/userReport.js";
 import IssueReport from "./reports/issueReport.js";
-import BlueTickRequest from "./requests/blueTickRequest.js";
+import VerificationRequest from "./requests/verificationRequest.js";
+import AuthToken from "./user/authToken.js";
 
 const models = {};
 
@@ -33,6 +34,7 @@ models.Tag = Tag;
 models.Post = Post;
 models.PostLike = PostLike;
 
+models.AuthToken = AuthToken;
 models.User = User;
 models.LoginInfo = LoginInfo;
 models.Follower = Follower;
@@ -50,6 +52,6 @@ models.UserReport = UserReport;
 models.IssueReport = IssueReport;
 
 models.FollowRequest = FollowRequest;
-models.BlueTickRequest = BlueTickRequest;
+models.VerificationRequest = VerificationRequest;
 
 export default models;

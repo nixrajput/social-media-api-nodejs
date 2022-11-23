@@ -58,6 +58,7 @@ const addChangePhone = catchAsyncError(async (req, res, next) => {
         user.phone = phone;
         user.countryCode = countryCode;
         user.phoneVerified = true;
+        user.phoneChangedAt = Date.now();
 
         otpObj.isUsed = true;
 

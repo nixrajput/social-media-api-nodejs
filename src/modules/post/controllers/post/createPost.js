@@ -7,7 +7,7 @@ import utility from "../../../../utils/utility.js";
 /// CREATE POST ///
 
 const createPost = catchAsyncError(async (req, res, next) => {
-  let { mediaFiles, caption } = req.body;
+  let { mediaFiles, caption, visibility } = req.body;
 
   if (!mediaFiles || mediaFiles?.length <= 0) {
     return next(new ErrorHandler(ResponseMessages.MEDIA_FILES_REQUIRED, 400));
@@ -40,6 +40,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
     owner: req.user._id,
     caption: caption,
     mediaFiles: mediaFiles,
+    visibility: visibility,
   };
 
   const post = await models.Post.create(newPost);

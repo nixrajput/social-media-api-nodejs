@@ -17,7 +17,7 @@ const getPosts = catchAsyncError(async (req, res, next) => {
 
   const totalPosts = await models.Post.find({
     owner: { $in: followingIds },
-    isArchived: false,
+    postStatus: "active",
   }).countDocuments();
 
   let totalPages = Math.ceil(totalPosts / limit);
@@ -62,7 +62,7 @@ const getPosts = catchAsyncError(async (req, res, next) => {
 
   const slicedPosts = await models.Post.find({
     owner: { $in: followingIds },
-    isArchived: false,
+    postStatus: "active",
   })
     .select("_id")
     .skip(skip)

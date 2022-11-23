@@ -156,6 +156,10 @@ userRouter
   .delete(isAuthenticatedUser, userController.deleteLoginInfo);
 
 userRouter
+  .route("/logout-all-other-devices")
+  .delete(isAuthenticatedUser, userController.logoutOtherDevices);
+
+userRouter
   .route("/verify-login-info")
   .get(isAuthenticatedUser, userController.verifyLoginInfo);
 
@@ -164,8 +168,8 @@ userRouter
   .post(isAuthenticatedUser, userController.reportUser);
 
 userRouter
-  .route("/request-blue-tick")
-  .post(isAuthenticatedUser, userController.requestBlueTick);
+  .route("/request-verification")
+  .post(isAuthenticatedUser, userController.requestVerification);
 
 // userRouter
 //   .route("/get-user-activity")

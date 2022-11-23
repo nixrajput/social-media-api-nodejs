@@ -19,6 +19,7 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     }
 
     user.fname = req.body.fname;
+    user.nameChangedAt = Date.now();
   }
 
   if (req.body.lname) {
@@ -27,6 +28,7 @@ const updateProfile = catchAsyncError(async (req, res, next) => {
     }
 
     user.lname = req.body.lname;
+    user.nameChangedAt = Date.now();
   }
 
   if (req.body.gender) {

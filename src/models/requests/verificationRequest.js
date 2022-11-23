@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const blueTickRequestSchema = new mongoose.Schema({
+const verificationRequestSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -39,7 +39,7 @@ const blueTickRequestSchema = new mongoose.Schema({
         default: "no",
     },
 
-    otherPlatformProfileLinks: {
+    otherPlatformLinks: {
         type: String,
     },
 
@@ -62,6 +62,10 @@ const blueTickRequestSchema = new mongoose.Schema({
     },
 
     articleLinks: {
+        type: String,
+    },
+
+    otherLinks: {
         type: String,
     },
 
@@ -104,11 +108,11 @@ const blueTickRequestSchema = new mongoose.Schema({
     }
 });
 
-blueTickRequestSchema.pre('save', function (next) {
+verificationRequestSchema.pre('save', function (next) {
     this.updatedAt = Date.now();
     next();
 });
 
-const BlueTickRequest = mongoose.model("BlueTickRequest", blueTickRequestSchema);
+const VerificationRequest = mongoose.model("VerificationRequest", verificationRequestSchema);
 
-export default BlueTickRequest;
+export default VerificationRequest;

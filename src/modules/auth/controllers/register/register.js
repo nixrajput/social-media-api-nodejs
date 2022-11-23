@@ -8,7 +8,15 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 /// REGISTER USER ///
 
 const register = catchAsyncError(async (req, res, next) => {
-  let { fname, lname, email, uname, password, confirmPassword } = req.body;
+  let {
+    fname,
+    lname,
+    email,
+    uname,
+    password,
+    confirmPassword,
+    isValidated,
+  } = req.body;
 
   if (!fname) {
     return next(new ErrorHandler(ResponseMessages.FIRST_NAME_REQUIRED, 400));
@@ -79,6 +87,11 @@ const register = catchAsyncError(async (req, res, next) => {
   const ip = utility.getIp(req);
 
   user.accountCreatedIp = ip;
+
+  if (isValidated === "true") {
+    user.emailVerified = true;
+    user.isValid = true;
+  }
 
   await user.save();
 

@@ -50,6 +50,7 @@ const changeEmail = catchAsyncError(async (req, res, next) => {
   if (otpObj.user.toString() === user._id.toString()) {
     user.email = email;
     user.emailVerified = true;
+    user.emailChangedAt = Date.now();
 
     otpObj.isUsed = true;
 

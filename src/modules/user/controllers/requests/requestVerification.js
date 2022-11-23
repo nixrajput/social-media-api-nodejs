@@ -6,13 +6,13 @@ import validators from "../../../../utils/validators.js";
 
 /// REQUEST BLUE TICK ///
 
-const requestBlueTick = catchAsyncError(async (req, res, next) => {
+const requestVerification = catchAsyncError(async (req, res, next) => {
     let {
         legalName, email, phone, category,
         document, isVerifiedOnOtherPlatform,
-        otherPlatformProfileLinks, hasWikipediaPage,
+        otherPlatformLinks, hasWikipediaPage,
         wikipediaPageLink, featuredInArticles,
-        articleLinks,
+        articleLinks, otherLinks
     } = req.body;
 
     if (!legalName) {
@@ -66,7 +66,7 @@ const requestBlueTick = catchAsyncError(async (req, res, next) => {
     }
 
     if (isVerifiedOnOtherPlatform === "yes") {
-        if (!otherPlatformProfileLinks) {
+        if (!otherPlatformLinks) {
             return next(new ErrorHandler(ResponseMessages.OTHER_PLATFORM_PROFILE_LINKS_REQUIRED, 400));
         }
     }
@@ -91,7 +91,7 @@ const requestBlueTick = catchAsyncError(async (req, res, next) => {
         }
     }
 
-    const isALreadyRequested = await models.BlueTickRequest.findOne({
+    const isALreadyRequested = await models.VerificationRequest.findOne({
         user: req.user._id
     });
 
@@ -113,7 +113,7 @@ const requestBlueTick = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.INELIGIBLE_FOR_VERIFICATION, 400));
     }
 
-    const blueTickRequest = await models.BlueTickRequest.create({
+    const blueTickRequest = await models.VerificationRequest.create({
         user: req.user._id,
         legalName,
         email,
@@ -121,12 +121,15 @@ const requestBlueTick = catchAsyncError(async (req, res, next) => {
         category,
         document,
         isVerifiedOnOtherPlatform,
-        otherPlatformProfileLinks,
+        otherPlatformLinks,
         hasWikipediaPage,
         wikipediaPageLink,
         featuredInArticles,
-        articleLinks
+        articleLinks,
+        otherLinks
     });
+
+    user.verificationRequestedAt = Date.now();
 
     res.status(200).json({
         success: true,
@@ -135,4 +138,4 @@ const requestBlueTick = catchAsyncError(async (req, res, next) => {
     });
 });
 
-export default requestBlueTick;
+export default requestVerification;

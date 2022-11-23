@@ -22,7 +22,10 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
         const isSameUser = await utility.checkIfSameUser(req.user, user._id);
         if (followingStatus === "following" || isSameUser) {
 
-            const posts = await models.Post.find({ owner: user._id, isArchived: false })
+            const posts = await models.Post.find({
+                owner: user._id,
+                postStatus: "active",
+            })
                 .select("_id").sort({ createdAt: -1 });
 
             let totalPosts = posts.length;
@@ -104,7 +107,10 @@ const getUserPosts = catchAsyncError(async (req, res, next) => {
             });
         }
     } else {
-        const posts = await models.Post.find({ owner: user._id, isArchived: false })
+        const posts = await models.Post.find({
+            owner: user._id,
+            postStatus: "active",
+        })
             .select("_id").sort({ createdAt: -1 });
 
         let totalPosts = posts.length;

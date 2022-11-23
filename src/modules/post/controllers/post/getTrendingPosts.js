@@ -8,7 +8,7 @@ const getTrendingPosts = catchAsyncError(async (req, res, next) => {
     const currentTimestamp = new Date().getTime();
     const posts = await models.Post.find({
         visibility: "public",
-        isArchived: false,
+        postStatus: "active",
         owner: { $ne: req.user._id },
         createdAt: {
             $gte: currentTimestamp - 30 * 24 * 60 * 60 * 1000,

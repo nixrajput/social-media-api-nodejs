@@ -57,6 +57,8 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
   }
 
   user.password = newPassword;
+  user.passwordChangedAt = Date.now();
+
   otpObj.isUsed = true;
 
   await user.generateToken();
