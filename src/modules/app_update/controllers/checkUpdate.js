@@ -6,7 +6,7 @@ import axios from "axios";
 /// CHECK UPDATE FROM GITHUB ///
 
 const checkUpdateFromGithub = catchAsyncError(async (req, res, next) => {
-    const { repoName, currentVersion } = req.body;
+    const { repoName, currentVersion, fileName, extension } = req.body;
 
     if (!repoName) {
         return next(new ErrorHandler(ResponseMessages.REPO_NAME_REQUIRED, 400));
@@ -17,6 +17,8 @@ const checkUpdateFromGithub = catchAsyncError(async (req, res, next) => {
     }
 
     const username = process.env.GITHUB_USERNAME;
+    const appName = fileName || 'app-release';
+    const ext = extension || 'apk';
 
     const githubApiUrl = `https://api.github.com/repos/${username}/${repoName}/releases/latest`;
     const headers = {
@@ -44,6 +46,10 @@ const checkUpdateFromGithub = catchAsyncError(async (req, res, next) => {
     const currentBuildNumber = currentVersion.split('+')[1];
     const splittedCurrentBuildVersion = currentBuildVersion.split('.');
 
+    const assets = data.assets;
+
+    const downloadUrl = assets.find(asset => asset.name === `${appName}.${ext}`).browser_download_url;
+
     let isUpdateAvailable = false;
     let message = ResponseMessages.NO_UPDATE_AVAILABLE;
 
@@ -54,12 +60,14 @@ const checkUpdateFromGithub = catchAsyncError(async (req, res, next) => {
         return res.status(200).json({
             success: true,
             message: message,
+            isUpdateAvailable,
             data: {
                 currentVersion,
                 latestVersion,
                 changelog,
                 publishedAt,
-                isUpdateAvailable,
+                fileName: `${appName}.${ext}`,
+                downloadUrl
             }
         });
     }
@@ -72,12 +80,14 @@ const checkUpdateFromGithub = catchAsyncError(async (req, res, next) => {
             return res.status(200).json({
                 success: true,
                 message: message,
+                isUpdateAvailable,
                 data: {
                     currentVersion,
                     latestVersion,
                     changelog,
                     publishedAt,
-                    isUpdateAvailable,
+                    fileName: `${appName}.${ext}`,
+                    downloadUrl
                 }
             });
         }
@@ -92,12 +102,14 @@ const checkUpdateFromGithub = catchAsyncError(async (req, res, next) => {
             return res.status(200).json({
                 success: true,
                 message: message,
+                isUpdateAvailable,
                 data: {
                     currentVersion,
                     latestVersion,
                     changelog,
                     publishedAt,
-                    isUpdateAvailable,
+                    fileName: `${appName}.${ext}`,
+                    downloadUrl
                 }
             });
         }
@@ -113,27 +125,23 @@ const checkUpdateFromGithub = catchAsyncError(async (req, res, next) => {
             return res.status(200).json({
                 success: true,
                 message: message,
+                isUpdateAvailable,
                 data: {
                     currentVersion,
                     latestVersion,
                     changelog,
                     publishedAt,
-                    isUpdateAvailable,
+                    fileName: `${appName}.${ext}`,
+                    downloadUrl
                 }
             });
         }
     }
 
-    res.status(200).json({
+    res.status(400).json({
         success: true,
         message: message,
-        data: {
-            currentVersion,
-            latestVersion,
-            changelog,
-            publishedAt,
-            isUpdateAvailable,
-        }
+        isUpdateAvailable,
     });
 })
 
