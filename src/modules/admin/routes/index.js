@@ -178,4 +178,17 @@ adminRouter
   );
 // --------------------------------------------------------------------------------
 
+// --------------------------------------------------------------------------------
+// Get All Blue Tick Requests
+adminRouter
+  .route("/admin/get-blue-tick-requests")
+  .get(
+    isAuthenticatedUser,
+    authorizeRoles("admin"),
+    adminController.getAllRequests
+  );
+// --------------------------------------------------------------------------------
+
+
+
 export default adminRouter;
