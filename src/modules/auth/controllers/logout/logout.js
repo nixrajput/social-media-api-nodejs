@@ -1,3 +1,4 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
@@ -8,17 +9,18 @@ const logout = catchAsyncError(async (req, res, next) => {
   const user = await models.User.findById(req.user._id);
 
   if (!user) {
-    return next(new ErrorHandler("user not found", 404));
+    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
   }
 
-  user.token = undefined;
-  user.expiresAt = undefined;
+  const authToken = await models.AuthToken.findOne({ user: user._id });
 
-  await user.save();
+  if (authToken) {
+    await authToken.remove();
+  }
 
   res.status(200).json({
     success: true,
-    message: "logged out successfully",
+    message: ResponseMessages.LOGOUT_SUCCESS,
   });
 });
 

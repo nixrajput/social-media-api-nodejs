@@ -13,7 +13,7 @@ const authTokenSchema = new mongoose.Schema({
     },
 
     expiresAt: {
-        type: Date,
+        type: Number,
         required: true,
     },
 

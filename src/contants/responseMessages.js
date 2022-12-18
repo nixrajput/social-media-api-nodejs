@@ -261,6 +261,8 @@ ResponseMessages.NO_UPDATE_AVAILABLE = 'No update available';
 ResponseMessages.UPDATE_ERROR = 'Update error';
 ResponseMessages.UPDATE_AVAILABLE = 'Update available';
 
+ResponseMessages.AUTH_TOKEN_NOT_FOUND = 'Auth token not found';
+
 ResponseMessages.INELIGIBLE_FOR_VERIFICATION = 'You are not eligible for verification';
 
 /// Invalid Response Messages

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import models from "../index.js";
 
 const userSchema = new mongoose.Schema({
   fname: {
@@ -169,18 +170,14 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Update UpdatedAt
-userSchema.pre("save", function (next) {
-  this.updatedAt = Date.now();
-  next();
-});
 
-// Encrypt Password
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
+    this.updatedAt = Date.now();
     next();
   }
 
+  this.updatedAt = Date.now();
   this.password = await bcrypt.hash(this.password, 16);
 });
 
@@ -191,10 +188,17 @@ userSchema.methods.generateToken = async function () {
   });
 
   const decodedData = jwt.decode(token);
-  this.token = token;
-  this.expiresAt = decodedData.exp;
 
-  return token;
+  const authToken = await models.AuthToken.create({
+    token: token,
+    user: this._id,
+    expiresAt: decodedData.exp
+  });
+
+  // this.token = token;
+  // this.expiresAt = decodedData.exp;
+
+  return authToken;
 };
 
 // Match Password

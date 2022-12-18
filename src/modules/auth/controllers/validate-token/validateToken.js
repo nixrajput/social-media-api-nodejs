@@ -12,14 +12,17 @@ const validateToken = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
 
-    const user = await models.User.findById(req.user._id);
+    const authToken = await models.AuthToken.findOne({
+        token: token,
+        user: req.user._id,
+    });
 
-    if (!user) {
-        return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+    if (!authToken) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_TOKEN, 400));
     }
 
-    if (user.token !== token) {
-        return next(new ErrorHandler(ResponseMessages.INVALID_TOKEN, 400));
+    if (authToken.expiresAt < new Date().getTime() / 1000) {
+        return next(new ErrorHandler(ResponseMessages.EXPIRED_TOKEN, 400));
     }
 
     res.status(200).json({

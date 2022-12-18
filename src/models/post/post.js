@@ -7,7 +7,10 @@ const postSchema = new mongoose.Schema({
 
   postType: {
     type: String,
-    enum: ["media", "poll", "text"],
+    enum: [
+      "media", "poll", "text",
+      "question", "link", "event"
+    ],
     default: "media",
   },
 

@@ -1,5 +1,6 @@
 import sgMail from "@sendgrid/mail";
 import twilio from "twilio";
+import jwt from "jsonwebtoken";
 import optGenerator from "otp-generator";
 import models from "../models/index.js";
 import ResponseMessages from "../contants/responseMessages.js";
@@ -33,6 +34,22 @@ utility.checkUsernameAvailable = async (uname) => {
 
   return true;
 };
+
+utility.generateAuthToken = async (user) => {
+  const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+
+  const decodedData = jwt.decode(token);
+
+  const authToken = await models.AuthToken.create({
+    token: token,
+    user: user._id,
+    expiresAt: decodedData.exp
+  });
+
+  return authToken;
+}
 
 // Delete All expired OTPs
 utility.deleteExpiredOTPs = async () => {

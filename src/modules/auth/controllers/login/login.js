@@ -57,21 +57,29 @@ const login = catchAsyncError(async (req, res, next) => {
     });
   }
 
-  let token = user.token;
-  let expiresAt = user.expiresAt;
+  const authToken = await models.AuthToken.findOne({ user: user._id });
 
-  if (token && expiresAt) {
-    if (expiresAt < new Date().getTime() / 1000) {
-      token = await user.generateToken();
-      await user.save();
-      const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-      expiresAt = decodedData.exp;
-    }
-  } else {
-    token = await user.generateToken();
-    await user.save();
-    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-    expiresAt = decodedData.exp;
+  if (!authToken) {
+    const tokenObj = await utility.generateAuthToken(user);
+
+    return res.status(200).json({
+      success: true,
+      message: ResponseMessages.LOGIN_SUCCESS,
+      accountStatus: user.accountStatus,
+      token: tokenObj.token,
+      expiresAt: tokenObj.expiresAt,
+    });
+  }
+
+  let token = authToken.token;
+  let expiresAt = authToken.expiresAt;
+
+  if (expiresAt < new Date().getTime() / 1000) {
+    await authToken.remove();
+    const tokenObj = await utility.generateAuthToken(user);
+
+    token = tokenObj.token;
+    expiresAt = tokenObj.expiresAt;
   }
 
   res.status(200).json({

@@ -50,10 +50,20 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.INCORRECT_OTP, 400));
   }
 
-  const message = await utility.checkUserAccountStatus(user.accountStatus);
+  if (!user.isValid) {
+    return res.status(401).json({
+      success: false,
+      accountStatus: "unverified",
+      message: ResponseMessages.INVALID_ACCOUNT_VALIDATION,
+    });
+  }
 
-  if (message) {
-    return next(new ErrorHandler(message, 400));
+  if (user.accountStatus !== "active") {
+    return res.status(401).json({
+      success: false,
+      accountStatus: user.accountStatus,
+      message: ResponseMessages.ACCOUNT_NOT_ACTIVE,
+    });
   }
 
   user.password = newPassword;

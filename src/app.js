@@ -71,6 +71,14 @@ export const runApp = () => {
   //     //   }
   //     // });
 
+  //     // if (user.token && user.expiresAt) {
+  //     //   await models.AuthToken.create({
+  //     //     token: user.token,
+  //     //     user: user._id,
+  //     //     expiresAt: user.expiresAt
+  //     //   })
+  //     // }
+
   //   }
 
 

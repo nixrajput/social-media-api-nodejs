@@ -7,14 +7,14 @@ import ResponseMessages from "../contants/responseMessages.js";
 const authMiddleware = {};
 
 authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
-  const bearerHeader = req.headers.authorization;
+  const authorization = req.headers.authorization;
 
-  if (!bearerHeader) {
+  if (!authorization) {
     return next(new ErrorHandler(ResponseMessages.AUTH_PARAM_REQUIRED, 400));
   }
 
-  const bearer = bearerHeader.split(" ");
-  const token = bearer[1];
+  const authorizationHeader = authorization.split(" ");
+  const token = authorizationHeader[1];
 
   if (!token) {
     return next(new ErrorHandler(ResponseMessages.AUTH_TOKEN_REQUIRED, 400));
@@ -27,11 +27,16 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
 
     // console.log(decodedData);
 
-    const user = await models.User.findById(decodedData.id);
+    const authToken = await models.AuthToken.findOne({
+      token: token,
+      user: decodedData.id
+    });
 
-    if (token !== user.token) {
+    if (!authToken) {
       return next(new ErrorHandler(ResponseMessages.INVALID_EXPIRED_TOKEN, 400));
     }
+
+    const user = await models.User.findById(decodedData.id);
 
     if (!user.isValid) {
       return res.status(401).json({
@@ -69,9 +74,7 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
 authMiddleware.authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorHandler(`User is not allowed to access this resource.`, 403)
-      );
+      return next(new ErrorHandler('Access Denied!', 403));
     }
 
     next();

@@ -88,7 +88,7 @@ const register = catchAsyncError(async (req, res, next) => {
 
   user.accountCreatedIp = ip;
 
-  if (isValidated === "true") {
+  if (isValidated === "true" || isValidated === true) {
     user.emailVerified = true;
     user.isValid = true;
   }
@@ -116,7 +116,7 @@ const register = catchAsyncError(async (req, res, next) => {
   try {
     await utility.sendEmail({
       email: user.email,
-      subject: `Welcome to NixLab Technologies`,
+      subject: `Welcome to NixLab`,
       htmlMessage: htmlMessage,
     });
   } catch (err) {
