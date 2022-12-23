@@ -3,7 +3,10 @@ import mongoose from "mongoose";
 const postSchema = new mongoose.Schema({
   tempId: String,
 
-  caption: String,
+  caption: {
+    type: String,
+    maxlength: 1000,
+  },
 
   postType: {
     type: String,
@@ -36,6 +39,7 @@ const postSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
+    required: true,
   },
 
   likesCount: {
@@ -48,6 +52,49 @@ const postSchema = new mongoose.Schema({
     default: 0,
   },
 
+  repostsCount: {
+    type: Number,
+    default: 0,
+  },
+
+  sharesCount: {
+    type: Number,
+    default: 0,
+  },
+
+  savesCount: {
+    type: Number,
+    default: 0,
+  },
+
+  pollQuestion: {
+    type: String,
+    maxlength: 1000,
+  },
+
+  pollOptions: [
+    {
+      option: {
+        type: String,
+        maxlength: 30,
+      },
+      votes: {
+        type: Number,
+        default: 0,
+      },
+    }
+  ],
+
+  totalVotes: {
+    type: Number,
+    default: 0,
+  },
+
+  pollLength: {
+    type: Number,
+    default: 0,
+  },
+
   postStatus: {
     type: String,
     enum: [
@@ -56,11 +103,6 @@ const postSchema = new mongoose.Schema({
       "banned", "muted", "verified", "unverified",
     ],
     default: "active",
-  },
-
-  isArchived: {
-    type: Boolean,
-    default: false,
   },
 
   visibility: {

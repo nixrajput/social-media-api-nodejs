@@ -62,7 +62,8 @@ export const runApp = () => {
 
   //     // await models.User.updateOne({ _id: user._id }, {
   //     //   $unset: {
-  //     //     fcmToken: 0,
+  //     //     token: 0,
+  //     //     expiresAt: 0,
   //     //     // deleted: 0,
   //     //     //deletedAt: 0,
   //     //     // resetPasswordToken: "",

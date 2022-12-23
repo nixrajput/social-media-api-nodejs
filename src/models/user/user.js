@@ -153,10 +153,6 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
 
-  token: String,
-
-  expiresAt: Number,
-
   accountCreatedIp: String,
 
   createdAt: {
