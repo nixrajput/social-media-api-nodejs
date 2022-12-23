@@ -409,7 +409,7 @@ utility.getPostData = async (postId, reqUser) => {
   postData.likesCount = post.likesCount;
   postData.commentsCount = post.commentsCount;
   postData.isLiked = isLiked;
-  postData.isArchived = post.isArchived;
+  postData.isArchived = false;
   postData.visibility = post.visibility;
   postData.allowComments = post.allowComments;
   postData.allowLikes = post.allowLikes;
