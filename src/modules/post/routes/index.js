@@ -17,6 +17,20 @@ postRouter
   );
 
 postRouter
+  .route("/create-poll")
+  .post(
+    isAuthenticatedUser,
+    postController.createPoll
+  );
+
+postRouter
+  .route("/vote-to-poll")
+  .post(
+    isAuthenticatedUser,
+    postController.voteToPoll
+  );
+
+postRouter
   .route("/create-upload-post")
   .post(
     multerMiddleware.array("mediaFiles"),

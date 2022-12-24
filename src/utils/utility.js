@@ -351,8 +351,8 @@ utility.getUserData = async (userId, reqUser) => {
   return userData;
 };
 
-utility.getHashTags = (caption) => {
-  const hashtags = caption.match(/#[a-zA-Z0-9]+/g);
+utility.getHashTags = (text) => {
+  const hashtags = text.match(/#[a-zA-Z0-9]+/g);
 
   if (hashtags) {
     return hashtags.map((hashtag) => hashtag.replace("#", ""));
@@ -361,8 +361,8 @@ utility.getHashTags = (caption) => {
   return [];
 };
 
-utility.getMentions = (caption) => {
-  const mentions = caption.match(/@[a-zA-Z0-9_]+/g);
+utility.getMentions = (text) => {
+  const mentions = text.match(/@[a-zA-Z0-9_]+/g);
 
   if (mentions) {
     return mentions.map((mention) => mention.replace("@", ""));
@@ -385,39 +385,125 @@ utility.getPostLikeData = async (postLikeId, reqUser) => {
   return postLikeData;
 };
 
+utility.checkIfPollVoted = async (postId, user) => {
+  const isVoted = await models.PollVote.findOne({ poll: postId, user: user._id });
+
+  if (isVoted) {
+    return true;
+  }
+
+  return false;
+};
+
 utility.getPostData = async (postId, reqUser) => {
-  const post = await models.Post
-    .findOne({ _id: postId, isArchived: false });
+  const post = await models.Post.findOne({ _id: postId, postStatus: "active" });
 
   if (!post) {
     return null;
   }
 
-  const postData = {};
   const ownerData = await utility.getOwnerData(post.owner, reqUser);
   const isLiked = await utility.checkIfPostLiked(post._id, reqUser);
-  const hashtags = await utility.getHashTags(post.caption);
-  const mentions = await utility.getMentions(post.caption);
+
+  const postType = post.postType;
+
+  if (postType === "poll") {
+    const postData = {};
+    const hashtags = await utility.getHashTags(post.pollQuestion);
+    const mentions = await utility.getMentions(post.pollQuestion);
+    const isVoted = await utility.checkIfPollVoted(post._id, reqUser);
+
+    const postOptions = [];
+
+    for (let i = 0; i < post.pollOptions.length; i++) {
+      const option = post.pollOptions[i];
+      const optionData = await models.PollOption.findById(option).select("-__v");
+
+      postOptions.push(optionData);
+    }
+
+    postData._id = post._id;
+    postData.postType = post.postType;
+
+    postData.pollQuestion = post.pollQuestion;
+    postData.pollOptions = postOptions;
+    postData.pollEndsAt = post.pollEndsAt;
+    postData.totalVotes = post.totalVotes;
+
+    postData.owner = ownerData;
+
+    postData.hashtags = hashtags;
+    postData.userMentions = mentions;
+
+    postData.likesCount = post.likesCount;
+    postData.commentsCount = post.commentsCount;
+    postData.repostsCount = post.repostsCount;
+    postData.sharesCount = post.sharesCount;
+    postData.savesCount = post.savesCount;
+
+    postData.isLiked = isLiked;
+    postData.isVoted = isVoted;
+
+    // To delete in next update
+    postData.isArchived = false;
+
+    postData.allowComments = post.allowComments;
+    postData.allowLikes = post.allowLikes;
+    postData.allowReposts = post.allowReposts;
+    postData.allowShare = post.allowShare;
+    postData.allowSave = post.allowSave;
+    postData.allowDownload = post.allowDownload;
+
+    postData.visibility = post.visibility;
+    postData.postStatus = post.postStatus;
+
+    postData.createdAt = post.createdAt;
+    postData.updatedAt = post.updatedAt;
+
+    return postData;
+  }
+
+  const postData = {};
+  let hashtags = [];
+  let mentions = [];
+
+  if (post.caption) {
+    hashtags = await utility.getHashTags(post.caption);
+    mentions = await utility.getMentions(post.caption);
+  }
 
   postData._id = post._id;
+  postData.postType = post.postType;
+
   postData.caption = post.caption;
   postData.mediaFiles = post.mediaFiles;
+
   postData.owner = ownerData;
+
   postData.hashtags = hashtags;
   postData.userMentions = mentions;
-  postData.postType = post.postType;
+
   postData.likesCount = post.likesCount;
   postData.commentsCount = post.commentsCount;
+  postData.repostsCount = post.repostsCount;
+  postData.sharesCount = post.sharesCount;
+  postData.savesCount = post.savesCount;
+
   postData.isLiked = isLiked;
+
+  // To delete in next update
   postData.isArchived = false;
-  postData.visibility = post.visibility;
+
   postData.allowComments = post.allowComments;
   postData.allowLikes = post.allowLikes;
   postData.allowReposts = post.allowReposts;
   postData.allowShare = post.allowShare;
   postData.allowSave = post.allowSave;
   postData.allowDownload = post.allowDownload;
+
+  postData.visibility = post.visibility;
   postData.postStatus = post.postStatus;
+
   postData.createdAt = post.createdAt;
   postData.updatedAt = post.updatedAt;
 

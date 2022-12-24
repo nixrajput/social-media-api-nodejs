@@ -41,6 +41,7 @@ const createPost = catchAsyncError(async (req, res, next) => {
     caption: caption,
     mediaFiles: mediaFiles,
     visibility: visibility,
+    postType: "media",
   };
 
   const post = await models.Post.create(newPost);

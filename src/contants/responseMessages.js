@@ -61,6 +61,15 @@ ResponseMessages.FEATURED_IN_ARTICLES_REQUIRED = 'Featured in articles is requir
 ResponseMessages.ARTICLE_LINKS_REQUIRED = 'Article links is required';
 ResponseMessages.REPO_NAME_REQUIRED = 'Repo name is required';
 ResponseMessages.CURRENT_VERSION_REQUIRED = 'Current version is required';
+ResponseMessages.POLL_QUESTION_REQUIRED = 'Poll question is required';
+ResponseMessages.POLL_OPTIONS_REQUIRED = 'Poll options is required';
+ResponseMessages.POLL_OPTION_REQUIRED = 'Poll option is required';
+ResponseMessages.POLL_LENGTH_REQUIRED = 'Poll length is required';
+ResponseMessages.POLL_OPTIONS_MIN = 'Poll options must be at least 2';
+ResponseMessages.POLL_OPTIONS_MAX = 'Poll options must be at most 4';
+ResponseMessages.POLL_ID_REQUIRED = 'Poll id is required';
+ResponseMessages.POLL_OPTION_ID_REQUIRED = 'Poll option id is required';
+ResponseMessages.POLL_OPTION_VOTE_ID_REQUIRED = 'Poll option vote id is required';
 
 /// Incorrect Response Messages
 ResponseMessages.INCORRECT_EMAIL = 'Incorrect email';
@@ -90,9 +99,11 @@ ResponseMessages.ACCOUNT_DEACTIVATE_SUCCESS = 'Account deactivated successfully'
 ResponseMessages.PROFILE_PICTURE_UPLOAD_SUCCESS = 'Profile picture uploaded successfully';
 ResponseMessages.PROFILE_PICTURE_REMOVE_SUCCESS = 'Profile picture removed successfully';
 ResponseMessages.PROFILE_UPDATE_SUCCESS = 'Profile updated successfully';
-ResponseMessages.POST_CREATE_SUCCESS = 'Post created successfully';
+ResponseMessages.POST_CREATE_SUCCESS = 'Post created successfully'
 ResponseMessages.POST_UPDATE_SUCCESS = 'Post updated successfully';
 ResponseMessages.POST_DELETE_SUCCESS = 'Post deleted successfully';
+ResponseMessages.POLL_CREATE_SUCCESS = 'Poll created successfully';
+ResponseMessages.POLL_DELETE_SUCCESS = 'Poll deleted successfully';
 ResponseMessages.COMMENT_ADD_SUCCESS = 'Comment added successfully';
 ResponseMessages.COMMENT_UPDATE_SUCCESS = 'Comment updated successfully';
 ResponseMessages.COMMENT_DELETE_SUCCESS = 'Comment deleted successfully';
@@ -182,6 +193,13 @@ ResponseMessages.POST_LIKED = 'Post liked';
 ResponseMessages.POST_UNLIKED = 'Post unliked';
 ResponseMessages.POST_DELETED = 'Post deleted';
 ResponseMessages.POST_ALREADY_DELETED = 'Post already deleted';
+
+ResponseMessages.POLL_NOT_FOUND = 'Poll not found';
+ResponseMessages.POLL_EXPIRED = 'Poll expired';
+ResponseMessages.POLL_ALREADY_VOTED = 'You have already voted';
+ResponseMessages.POLL_VOTED = 'Poll voted';
+ResponseMessages.POLL_NOT_VOTED = 'Poll not voted';
+ResponseMessages.POLL_OPTION_NOT_FOUND = 'Poll option not found';
 
 ResponseMessages.COMMENT_NOT_FOUND = 'Comment not found';
 ResponseMessages.COMMENT_LIKED = 'Comment liked';

@@ -1,4 +1,6 @@
 import createPost from "./post/createPost.js";
+import createPoll from "./poll/createPoll.js";
+import voteToPoll from "./poll/voteToPoll.js";
 import getPosts from "./post/getPosts.js";
 import likeUnlikePost from "./post/likeUnlikePost.js";
 import deletePost from "./post/deletePost.js";
@@ -17,6 +19,8 @@ import reportComment from "./comment/reportComment.js";
 const postController = {};
 
 postController.createPost = createPost;
+postController.createPoll = createPoll;
+postController.voteToPoll = voteToPoll;
 postController.getPosts = getPosts;
 postController.likeUnlikePost = likeUnlikePost;
 postController.deletePost = deletePost;

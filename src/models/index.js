@@ -1,13 +1,13 @@
 import LoginInfo from "./login-info/loginInfo.js";
 import User from "./user/user.js";
 import Notification from "./notification/notification.js";
-import Post from "./post/post.js";
+import Post from "./post/Post.js";
 import Comment from "./comment/comment.js";
 import CommentLike from "./comment/commentLike.js";
 import CommentReply from "./comment/commentReply.js";
-import OTP from "./otp/otp.js";
+import Otp from "./otp/Otp.js";
 import Tag from "./hashtag/tag.js";
-import PostLike from "./post/postLike.js";
+import PostLike from "./post/PostLike.js";
 import Follower from "./user/follower.js";
 import FollowRequest from "./requests/followRequest.js";
 import ChatMessage from "./chat/chatMessage.js";
@@ -20,6 +20,8 @@ import UserReport from "./reports/userReport.js";
 import IssueReport from "./reports/issueReport.js";
 import VerificationRequest from "./requests/verificationRequest.js";
 import AuthToken from "./user/authToken.js";
+import PollVote from "./post/PollVote.js";
+import PollOption from "./post/PollOption.js";
 
 const models = {};
 
@@ -27,12 +29,14 @@ models.Comment = Comment;
 models.CommentLike = CommentLike;
 models.CommentReply = CommentReply;
 
-models.OTP = OTP;
+models.OTP = Otp;
 
 models.Tag = Tag;
 
 models.Post = Post;
 models.PostLike = PostLike;
+models.PollOption = PollOption;
+models.PollVote = PollVote;
 
 models.AuthToken = AuthToken;
 models.User = User;
