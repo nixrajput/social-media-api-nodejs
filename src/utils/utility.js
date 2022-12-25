@@ -427,6 +427,16 @@ utility.getPostData = async (postId, reqUser) => {
 
     postData.pollQuestion = post.pollQuestion;
     postData.pollOptions = postOptions;
+
+    if (isVoted) {
+      const pollVote = await models.PollVote.findOne({ poll: post._id, user: reqUser._id })
+        .select("-__v");
+
+      if (pollVote) {
+        postData.votedOption = pollVote.option;
+      }
+    }
+
     postData.pollEndsAt = post.pollEndsAt;
     postData.totalVotes = post.totalVotes;
 

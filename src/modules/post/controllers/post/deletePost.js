@@ -22,19 +22,43 @@ const deletePost = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 401));
   }
 
-  for (let i = 0; i < post.mediaFiles.length; i++) {
-    let publicId = post.mediaFiles[i].public_id;
-    let mediaType = post.mediaFiles[i].mediaType;
+  const postType = post.postType;
 
-    if (mediaType === "video") {
-      let thumbnailPublicId = post.mediaFiles[i].thumbnail.public_id;
-      if (thumbnailPublicId) {
-        await cloudinary.v2.uploader.destroy(thumbnailPublicId);
-      }
-      await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
-    } else {
-      await cloudinary.v2.uploader.destroy(publicId);
+  if (postType === "poll") {
+    const pollOptions = await models.PollOption.find({ post: post._id }).select("_id");
+
+    if (pollOptions.length > 0) {
+      await models.PollOption.deleteMany({ _id: { $in: pollOptions } });
     }
+
+    const pollVotes = await models.PollVote.find({ poll: post._id }).select("_id");
+
+    if (pollVotes.length > 0) {
+      await models.PollVote.deleteMany({ _id: { $in: pollVotes } });
+    }
+  }
+
+  if (postType === "media") {
+    for (let i = 0; i < post.mediaFiles.length; i++) {
+      let publicId = post.mediaFiles[i].public_id;
+      let mediaType = post.mediaFiles[i].mediaType;
+
+      if (mediaType === "video") {
+        let thumbnailPublicId = post.mediaFiles[i].thumbnail.public_id;
+        if (thumbnailPublicId) {
+          await cloudinary.v2.uploader.destroy(thumbnailPublicId);
+        }
+        await cloudinary.v2.uploader.destroy(publicId, { resource_type: "video" });
+      } else {
+        await cloudinary.v2.uploader.destroy(publicId);
+      }
+    }
+  }
+
+  const likes = await models.PostLike.find({ post: post._id }).select("_id");
+
+  if (likes.length > 0) {
+    await models.PostLike.deleteMany({ _id: { $in: likes } });
   }
 
   const comments = await models.Comment.find({ post: post._id }).select("_id");

@@ -21,6 +21,14 @@ dateUtility.compare = function (a, b) {
     : NaN;
 };
 
+dateUtility.isAfter = function (a, b) {
+  return this.compare(a, b) === 1;
+};
+
+dateUtility.isBefore = function (a, b) {
+  return this.compare(a, b) === -1;
+};
+
 const monthNames = [
   "January",
   "February",
@@ -76,6 +84,16 @@ dateUtility.getFirstDayOfMonth = (date) => {
 // Get Last Day of Month
 dateUtility.getLastDayOfMonth = (date) => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+};
+
+dateUtility.isDateExpired = (date) => {
+  const currentDate = new Date();
+
+  if (currentDate > date) {
+    return true;
+  }
+
+  return false;
 };
 
 export default dateUtility;

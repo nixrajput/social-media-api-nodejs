@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
 const pollOptionSchema = new mongoose.Schema({
+    post: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Post",
+        required: true,
+    },
+
     option: {
         type: String,
         maxlength: 30,

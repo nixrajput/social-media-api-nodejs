@@ -25,24 +25,29 @@ const createPoll = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.POLL_LENGTH_REQUIRED, 400));
     }
 
-    const pollOps = [];
-
-    for (let i = 0; i < pollOptions.length; i++) {
-        let option = await models.PollOption.create({ option: pollOptions[i] });
-
-        pollOps.push(option._id);
-    }
-
     const newPoll = {
         owner: req.user._id,
         pollQuestion: pollQuestion,
-        pollOptions: pollOps,
         pollEndsAt: pollEndsAt,
         visibility: visibility,
         postType: "poll",
     }
 
     const post = await models.Post.create(newPoll);
+
+    const pollOps = [];
+
+    for (let i = 0; i < pollOptions.length; i++) {
+        let option = await models.PollOption.create({
+            option: pollOptions[i],
+            post: post._id,
+        });
+
+        pollOps.push(option._id);
+    }
+
+    post.pollOptions = pollOps;
+    await post.save();
 
     const user = await models.User.findById(req.user._id).select("_id postsCount");
     user.postsCount++;
