@@ -9,16 +9,24 @@ const getTrendingPosts = catchAsyncError(async (req, res, next) => {
     const posts = await models.Post.find({
         visibility: "public",
         postStatus: "active",
-        owner: { $ne: req.user._id },
+        // owner: { $ne: req.user._id },
+        createdAt: {
+            $gte: currentTimestamp - 60 * 24 * 60 * 60 * 1000,
+        },
+    }).select("_id").sort({ createdAt: -1 });
+
+    const totalPosts = await models.Post.find({
+        visibility: "public",
+        postStatus: "active",
+        // owner: { $ne: req.user._id },
         createdAt: {
             $gte: currentTimestamp - 30 * 24 * 60 * 60 * 1000,
         },
-    }).select("_id").sort({ createdAt: -1 });
+    }).countDocuments();
 
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 20;
 
-    let totalPosts = posts.length;
     let totalPages = Math.ceil(totalPosts / limit);
 
     if (currentPage < 1) {
@@ -59,7 +67,18 @@ const getTrendingPosts = catchAsyncError(async (req, res, next) => {
         nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
     }
 
-    const slicedPosts = posts.slice(skip, skip + limit);
+    const slicedPosts = await models.Post.find({
+        visibility: "public",
+        postStatus: "active",
+        // owner: { $ne: req.user._id },
+        createdAt: {
+            $gte: currentTimestamp - 30 * 24 * 60 * 60 * 1000,
+        },
+    })
+        .select("_id")
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 });
 
     const results = [];
 

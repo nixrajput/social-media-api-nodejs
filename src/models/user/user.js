@@ -191,9 +191,6 @@ userSchema.methods.generateToken = async function () {
     expiresAt: decodedData.exp
   });
 
-  // this.token = token;
-  // this.expiresAt = decodedData.exp;
-
   return authToken;
 };
 
