@@ -7,9 +7,7 @@ import models from "../../../../models/index.js";
 
 const deleteComment = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
-    return next(
-      new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400)
-    );
+    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
   const comment = await models.Comment.findById(req.query.id);

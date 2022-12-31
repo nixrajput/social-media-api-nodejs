@@ -33,8 +33,8 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
     });
   } else {
     await models.PostLike.create({ post: post._id, user: req.user._id });
-    post.likesCount++;
 
+    post.likesCount++;
     await post.save();
 
     const notification = await models.Notification.findOne({
@@ -61,15 +61,20 @@ const likeUnlikePost = catchAsyncError(async (req, res, next) => {
         .select("token");
 
       if (fcmToken) {
+        let image = null;
+        if (post.postType === "media") {
+          image = post.mediaFiles[0].mediaType === "image" ?
+            post.mediaFiles[0].url :
+            post.mediaFiles[0].thumbnail.url;
+        }
+
         await sendNotification(
           fcmToken.token,
           {
             title: "New Like",
             body: `${notificationData.from.uname} liked your post.`,
             type: "Likes",
-            image: post.mediaFiles[0].mediaType === "image" ?
-              post.mediaFiles[0].url :
-              post.mediaFiles[0].thumbnail.url,
+            image: image,
           }
         );
       }

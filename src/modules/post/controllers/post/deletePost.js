@@ -38,7 +38,7 @@ const deletePost = catchAsyncError(async (req, res, next) => {
     }
   }
 
-  if (postType === "media") {
+  if (postType === "media" && post.mediaFiles.length > 0) {
     for (let i = 0; i < post.mediaFiles.length; i++) {
       let publicId = post.mediaFiles[i].public_id;
       let mediaType = post.mediaFiles[i].mediaType;
@@ -52,6 +52,8 @@ const deletePost = catchAsyncError(async (req, res, next) => {
       } else {
         await cloudinary.v2.uploader.destroy(publicId);
       }
+
+      await models.PostMedia.deleteOne({ post: post._id, publicId: publicId });
     }
   }
 

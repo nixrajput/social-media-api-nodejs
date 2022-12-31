@@ -14,10 +14,11 @@ const getComments = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 20;
 
-  const comments = await models.Comment.find({ post: req.query.postId })
-    .select("_id").sort({ createdAt: -1 });
+  const totalComments = await models.Comment.find({
+    post: req.query.postId,
+    commentStatus: "active",
+  }).countDocuments();
 
-  let totalComments = comments.length;
   let totalPages = Math.ceil(totalComments / limit);
 
   if (currentPage < 1) {
@@ -58,7 +59,14 @@ const getComments = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const slicedComments = comments.slice(skip, skip + limit);
+  const slicedComments = await models.Comment.find({
+    post: req.query.postId,
+    commentStatus: "active",
+  })
+    .select("_id")
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
   const results = [];
 

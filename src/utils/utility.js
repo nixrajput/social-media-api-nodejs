@@ -281,7 +281,10 @@ utility.checkIfPostLiked = async (postId, user) => {
 };
 
 utility.checkIfCommentLiked = async (commentId, user) => {
-  const isLiked = await models.CommentLike.findOne({ comment: commentId, user: user._id });
+  const isLiked = await models.CommentLike.findOne({
+    comment: commentId,
+    user: user._id
+  });
 
   if (isLiked) {
     return true;
@@ -424,12 +427,16 @@ utility.getPostData = async (postId, reqUser) => {
 
     postData._id = post._id;
     postData.postType = post.postType;
+    postData.type = post.postType;
 
     postData.pollQuestion = post.pollQuestion;
     postData.pollOptions = postOptions;
 
     if (isVoted) {
-      const pollVote = await models.PollVote.findOne({ poll: post._id, user: reqUser._id })
+      const pollVote = await models.PollVote.findOne({
+        poll: post._id,
+        user: reqUser._id
+      })
         .select("-__v");
 
       if (pollVote) {
@@ -454,9 +461,6 @@ utility.getPostData = async (postId, reqUser) => {
     postData.isLiked = isLiked;
     postData.isVoted = isVoted;
 
-    // To delete in next update
-    postData.isArchived = false;
-
     postData.allowComments = post.allowComments;
     postData.allowLikes = post.allowLikes;
     postData.allowReposts = post.allowReposts;
@@ -466,6 +470,7 @@ utility.getPostData = async (postId, reqUser) => {
 
     postData.visibility = post.visibility;
     postData.postStatus = post.postStatus;
+    postData.status = post.postStatus;
 
     postData.createdAt = post.createdAt;
     postData.updatedAt = post.updatedAt;
@@ -484,6 +489,7 @@ utility.getPostData = async (postId, reqUser) => {
 
   postData._id = post._id;
   postData.postType = post.postType;
+  postData.type = post.postType;
 
   postData.caption = post.caption;
   postData.mediaFiles = post.mediaFiles;
@@ -501,9 +507,6 @@ utility.getPostData = async (postId, reqUser) => {
 
   postData.isLiked = isLiked;
 
-  // To delete in next update
-  postData.isArchived = false;
-
   postData.allowComments = post.allowComments;
   postData.allowLikes = post.allowLikes;
   postData.allowReposts = post.allowReposts;
@@ -513,6 +516,7 @@ utility.getPostData = async (postId, reqUser) => {
 
   postData.visibility = post.visibility;
   postData.postStatus = post.postStatus;
+  postData.status = post.postStatus;
 
   postData.createdAt = post.createdAt;
   postData.updatedAt = post.updatedAt;
@@ -525,13 +529,28 @@ utility.getCommentData = async (commentId, reqUser) => {
   const commentData = {};
 
   const ownerData = await utility.getOwnerData(comment.user, reqUser);
+  const isLiked = await utility.checkIfCommentLiked(comment._id, reqUser);
 
   commentData._id = comment._id;
+  commentData.type = comment.type;
+
   commentData.comment = comment.comment;
   commentData.post = comment.post;
+
   commentData.user = ownerData;
+
   commentData.likesCount = comment.likesCount;
+  commentData.repliesCount = comment.repliesCount;
+
+  commentData.isLiked = isLiked;
+
+  commentData.allowLikes = comment.allowLikes;
+  commentData.allowReplies = comment.allowReplies;
+
+  commentData.visibility = comment.visibility;
   commentData.commentStatus = comment.commentStatus;
+  commentData.status = comment.commentStatus;
+
   commentData.createdAt = comment.createdAt;
   commentData.updatedAt = comment.updatedAt;
 

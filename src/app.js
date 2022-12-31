@@ -41,7 +41,7 @@ export const runApp = () => {
   });
 
   // (async () => {
-  //   const users = await models.User.find();
+  //   const users = await models.Post.find();
   //   console.log(users.length);
   //   // for (let i = 0; i < 10; i++) {
   //   //   if (users[i]._id.toString() !== "622cd2a8bf28bebb45f64b68") {
@@ -54,6 +54,35 @@ export const runApp = () => {
   //   // }
 
   //   for (let user of users) {
+
+  //     // if (user.postType === "media") {
+  //     //   if (user.mediaFiles.length > 0) {
+  //     //     for (let media of user.mediaFiles) {
+  //     //       if (media.mediaType === "video") {
+  //     //         await models.PostMedia.create({
+  //     //           post: user._id,
+  //     //           type: "video",
+  //     //           publicId: media.public_id,
+  //     //           url: media.url,
+  //     //           thumbnail: {
+  //     //             url: media.thumbnail?.url,
+  //     //             publicId: media.thumbnail?.public_id,
+  //     //           },
+  //     //         });
+  //     //       }
+  //     //       else if (media.mediaType === "image") {
+  //     //         await models.PostMedia.create({
+  //     //           post: user._id,
+  //     //           type: "image",
+  //     //           publicId: media.public_id,
+  //     //           url: media.url,
+  //     //         });
+  //     //       }
+  //     //     }
+  //     //   }
+  //     // }
+
+
   //     //   // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
   //     //   // console.log("done");
 

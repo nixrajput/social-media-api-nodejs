@@ -70,15 +70,20 @@ const addComment = catchAsyncError(async (req, res, next) => {
       .select("token");
 
     if (fcmToken) {
+      let image = null;
+      if (post.postType === "media") {
+        image = post.mediaFiles[0].mediaType === "image" ?
+          post.mediaFiles[0].url :
+          post.mediaFiles[0].thumbnail.url;
+      }
+
       await sendNotification(
         fcmToken.token,
         {
           title: "New Comment",
           body: `${notificationData.from.uname} commented on your post.`,
           type: "Comments",
-          image: post.mediaFiles[0].mediaType === "image" ?
-            post.mediaFiles[0].url :
-            post.mediaFiles[0].thumbnail.url,
+          image: image,
         }
       );
     }

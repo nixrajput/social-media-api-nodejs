@@ -17,10 +17,10 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
   }
 
   const userToFollow = await models.User.findById(req.query.id)
-    .select("_id followersCount followingCount isPrivate");
+    .select("_id followersCount followingCount isPrivate uname");
 
   const user = await models.User.findById(req.user._id)
-    .select("_id followersCount followingCount isPrivate");
+    .select("_id followersCount followingCount isPrivate uname");
 
   if (!userToFollow) {
     return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
@@ -40,7 +40,7 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: ResponseMessages.UNFOLLOWED_USER,
+      message: `You are no longer following ${userToFollow.uname}`,
     });
   } else {
     if (userToFollow.isPrivate) {
@@ -95,7 +95,7 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
 
       res.status(200).json({
         success: true,
-        message: ResponseMessages.FOLLOW_REQUEST_SENT,
+        message: `Follow request sent to ${userToFollow.uname}`,
       });
     } else {
       await models.Follower.create({
@@ -148,7 +148,7 @@ const followUnfollowUser = catchAsyncError(async (req, res, next) => {
 
       res.status(200).json({
         success: true,
-        message: ResponseMessages.FOLLOWED_USER,
+        message: `You are now following ${userToFollow.uname}`,
       });
     }
   }

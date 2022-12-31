@@ -2,9 +2,9 @@ import LoginInfo from "./login-info/loginInfo.js";
 import User from "./user/user.js";
 import Notification from "./notification/notification.js";
 import Post from "./post/Post.js";
-import Comment from "./comment/comment.js";
-import CommentLike from "./comment/commentLike.js";
-import CommentReply from "./comment/commentReply.js";
+import Comment from "./comment/Comment.js";
+import CommentLike from "./comment/CommentLike.js";
+import CommentReply from "./comment/CommentReply.js";
 import Otp from "./otp/Otp.js";
 import Tag from "./hashtag/tag.js";
 import PostLike from "./post/PostLike.js";
@@ -22,12 +22,15 @@ import VerificationRequest from "./requests/verificationRequest.js";
 import AuthToken from "./user/authToken.js";
 import PollVote from "./post/PollVote.js";
 import PollOption from "./post/PollOption.js";
+import PostMedia from "./media/PostMedia.js";
 
 const models = {};
 
 models.Comment = Comment;
 models.CommentLike = CommentLike;
 models.CommentReply = CommentReply;
+
+models.PostMedia = PostMedia;
 
 models.OTP = Otp;
 

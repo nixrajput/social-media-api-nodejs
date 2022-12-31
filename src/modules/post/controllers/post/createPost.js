@@ -9,42 +9,72 @@ import utility from "../../../../utils/utility.js";
 const createPost = catchAsyncError(async (req, res, next) => {
   let { mediaFiles, caption, visibility } = req.body;
 
-  if (!mediaFiles || mediaFiles?.length <= 0) {
+  if (!mediaFiles) {
     return next(new ErrorHandler(ResponseMessages.MEDIA_FILES_REQUIRED, 400));
   }
 
-  for (let i = 0; i < mediaFiles.length; i++) {
-    if (!mediaFiles[i].public_id) {
-      return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
-    }
-    if (!mediaFiles[i].url) {
-      return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
-    }
-    if (!mediaFiles[i].mediaType) {
-      return next(new ErrorHandler(ResponseMessages.MEDIA_TYPE_REQUIRED, 400));
-    }
-    if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail) {
-      return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_REQUIRED, 400));
-    }
+  if (mediaFiles && mediaFiles.length > 0) {
+    for (let i = 0; i < mediaFiles.length; i++) {
+      if (!mediaFiles[i].mediaType) {
+        return next(new ErrorHandler(ResponseMessages.MEDIA_TYPE_REQUIRED, 400));
+      }
 
-    if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.public_id) {
-      return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED, 400));
-    }
+      if (!mediaFiles[i].public_id) {
+        return next(new ErrorHandler(ResponseMessages.PUBLIC_ID_REQUIRED, 400));
+      }
 
-    if (mediaFiles[i].mediaType === "video" && !mediaFiles[i].thumbnail.url) {
-      return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED, 400));
+      if (!mediaFiles[i].url) {
+        return next(new ErrorHandler(ResponseMessages.URL_REQUIRED, 400));
+      }
+
+      if (mediaFiles[i].mediaType === "video") {
+        if (!mediaFiles[i].thumbnail) {
+          return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_REQUIRED, 400));
+        }
+
+        if (!mediaFiles[i].thumbnail.public_id) {
+          return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_PUBLIC_ID_REQUIRED, 400));
+        }
+
+        if (!mediaFiles[i].thumbnail.url) {
+          return next(new ErrorHandler(ResponseMessages.VIDEO_THUMBNAIL_URL_REQUIRED, 400));
+        }
+      }
     }
   }
 
-  const newPost = {
+  const post = await models.Post.create({
+    postType: "media",
     owner: req.user._id,
     caption: caption,
     mediaFiles: mediaFiles,
     visibility: visibility,
-    postType: "media",
-  };
+  });
 
-  const post = await models.Post.create(newPost);
+  if (mediaFiles.length > 1) {
+    for (let i = 0; i < mediaFiles.length; i++) {
+      if (mediaFiles[i].mediaType === "image") {
+        await models.PostMedia.create({
+          post: post._id,
+          type: "image",
+          publicId: mediaFiles[i].public_id,
+          url: mediaFiles[i].url,
+        });
+      }
+      else if (mediaFiles[i].mediaType === "video") {
+        await models.PostMedia.create({
+          post: post._id,
+          type: "video",
+          publicId: mediaFiles[i].public_id,
+          url: mediaFiles[i].url,
+          thumbnail: {
+            publicId: mediaFiles[i].thumbnail.public_id,
+            url: mediaFiles[i].thumbnail.url,
+          },
+        });
+      }
+    }
+  }
 
   const user = await models.User.findById(req.user._id).select("_id postsCount");
   user.postsCount++;

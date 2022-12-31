@@ -1,13 +1,19 @@
 import mongoose from "mongoose";
 
 const postMediaSchema = new mongoose.Schema({
-    mediaType: {
+    type: {
         type: String,
         enum: ["image", "video", "gif"],
         default: "image",
     },
 
-    public_id: {
+    post: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Post",
+        required: true,
+    },
+
+    publicId: {
         type: String,
         required: true,
     },
@@ -18,7 +24,7 @@ const postMediaSchema = new mongoose.Schema({
     },
 
     thumbnail: {
-        public_id: String,
+        publicId: String,
         url: String,
     },
 

@@ -3,14 +3,13 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
+import { sendNotification } from "../../../../firebase/index.js";
 
 /// LIKE/UNLIKE COMMENT ///
 
 const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
-    return next(
-      new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400)
-    );
+    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
   }
 
   const comment = await models.Comment.findById(req.query.id);
@@ -22,7 +21,10 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
   const isLiked = await utility.checkIfCommentLiked(comment._id, req.user);
 
   if (isLiked) {
-    await models.CommentLike.findOneAndDelete({ comment: comment._id, user: req.user._id });
+    await models.CommentLike.findOneAndDelete({
+      comment: comment._id,
+      user: req.user._id
+    });
     comment.likesCount--;
 
     await comment.save();
@@ -32,8 +34,13 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
       message: ResponseMessages.COMMENT_UNLIKED,
     });
   } else {
-    await models.CommentLike.create({ comment: comment._id, user: req.user._id });
+    await models.CommentLike.create({
+      comment: comment._id,
+      user: req.user._id
+    });
+
     comment.likesCount++;
+    await comment.save();
 
     const notification = await models.Notification.findOne({
       to: comment.owner,
@@ -44,22 +51,35 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
     const isCommentOwner = await utility.checkIfCommentOwner(comment._id, req.user);
 
     if (!notification && !isCommentOwner) {
-      await models.Notification.create({
-        to: comment.owner,
+      const noti = await models.Notification.create({
+        to: comment.user,
         from: req.user._id,
         body: "liked your comment",
         refId: comment._id,
         type: "commentLike",
       });
 
-      await comment.save();
+      const notificationData = await utility.getNotificationData(noti._id, req.user);
 
-      res.status(200).json({
-        success: true,
-        message: ResponseMessages.COMMENT_LIKED,
-      });
+      const fcmToken = await models.FcmToken.findOne({ user: comment.user })
+        .select("token");
 
+      if (fcmToken) {
+        await sendNotification(
+          fcmToken.token,
+          {
+            title: "New Like",
+            body: `${notificationData.from.uname} liked your comment.`,
+            type: "Likes",
+          }
+        );
+      }
     }
+
+    res.status(200).json({
+      success: true,
+      message: ResponseMessages.COMMENT_LIKED,
+    });
   }
 });
 
