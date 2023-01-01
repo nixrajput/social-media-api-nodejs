@@ -9,20 +9,23 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
 
-    const postLikes = await models.PostLike.find({ post: req.query.id })
-        .sort({ createdAt: -1 });
-
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 20;
 
-    let totalLikes = postLikes.length;
+    let totalLikes = await models.PostLike.find({ post: req.query.id })
+        .countDocuments();
+
     let totalPages = Math.ceil(totalLikes / limit);
 
-    if (currentPage < 1) {
+    if (totalPages <= 0) {
+        totalPages = 1;
+    }
+
+    if (currentPage <= 1) {
         currentPage = 1;
     }
 
-    if (currentPage > totalPages) {
+    if (totalPages > 1 && currentPage > totalPages) {
         currentPage = totalPages;
     }
 
@@ -56,7 +59,11 @@ const getLikedUsers = catchAsyncError(async (req, res, next) => {
         nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
     }
 
-    const slicedPostLikes = postLikes.slice(skip, skip + limit);
+    const slicedPostLikes = await models.PostLike.find({ post: req.query.id })
+        .select("_id")
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 });
 
     const results = [];
 

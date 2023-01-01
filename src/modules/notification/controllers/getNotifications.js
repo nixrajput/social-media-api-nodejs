@@ -14,17 +14,21 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 20;
 
-  const notifications = await models.Notification.find({ to: userId })
-    .select("_id").sort({ createdAt: -1 });
+  let totalNotifications = await models.Notification.find({
+    to: userId
+  }).countDocuments();
 
-  let totalNotifications = notifications.length;
   let totalPages = Math.ceil(totalNotifications / limit);
 
-  if (currentPage < 1) {
+  if (totalPages <= 0) {
+    totalPages = 1;
+  }
+
+  if (currentPage <= 1) {
     currentPage = 1;
   }
 
-  if (currentPage > totalPages) {
+  if (totalPages > 1 && currentPage > totalPages) {
     currentPage = totalPages;
   }
 
@@ -58,7 +62,13 @@ const getNotifications = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const slicedNotifications = notifications.slice(skip, skip + limit);
+  const slicedNotifications = await models.Notification.find({
+    to: userId
+  })
+    .select("_id")
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
   const results = [];
 

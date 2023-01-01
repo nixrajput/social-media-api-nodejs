@@ -22,11 +22,15 @@ const getPosts = catchAsyncError(async (req, res, next) => {
 
   let totalPages = Math.ceil(totalPosts / limit);
 
-  if (currentPage < 1) {
+  if (totalPages <= 0) {
+    totalPages = 1;
+  }
+
+  if (currentPage <= 1) {
     currentPage = 1;
   }
 
-  if (currentPage > totalPages) {
+  if (totalPages > 1 && currentPage > totalPages) {
     currentPage = totalPages;
   }
 
