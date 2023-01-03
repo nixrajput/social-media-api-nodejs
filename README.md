@@ -1,6 +1,18 @@
-# Social Media API - By NixLab
+# Social Media API
 
 An open source social media API built with Node.js, Express, and MongoDB. This API is built for developers to use in their projects. It is not meant to be used as a standalone social media platform. This API is still in development and is not ready for production use.
+
+[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
+[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
+[![Watchers](https://img.shields.io/github/watchers/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
+[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
+
+[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
+[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-api-nodejs?style=flat-square)][issues]
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-api-nodejs?style=flat-square)][pulls]
+[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-api-nodejs?style=flat-square)][license]
+
+* This project is powered by [NixLab Technologies][website].
 
 * If you would like to contribute to this project, please see the [contributing guidelines](CONTRIBUTING.md).
 
@@ -143,17 +155,11 @@ This project is licensed under the GPL-3.0 License - see the
 
 ## Connect With Me
 
-[<img align="left" alt="nixrajput | Website" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/globe-icon.svg" />][website]
-
-[<img align="left" alt="nixrajput | GitHub" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/github-brands.svg" />][github]
-
-[<img align="left" alt="nixrajput | Instagram" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/instagram-brands.svg" />][instagram]
-
-[<img align="left" alt="nixrajput | Facebook" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/facebook-brands.svg" />][facebook]
-
-[<img align="left" alt="nixrajput | Twitter" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/twitter-brands.svg" />][twitter]
-
-[<img align="left" alt="nixrajput | LinkedIn" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/linkedin-in-brands.svg" />][linkedin]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Linkedin&logoColor=fff)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Github&logoColor=fff)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Twitter&logoColor=fff)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Facebook&logoColor=fff)][facebook]
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in
@@ -162,3 +168,7 @@ This project is licensed under the GPL-3.0 License - see the
 [instagram]: https://instagram.com/nixrajput
 [linkedin]: https://linkedin.com/in/nixrajput
 [portfolio]: https://nixrajput.nixlab.co.in
+[repo]: https://github.com/nixrajput/social-media-api-nodejs
+[issues]: https://github.com/nixrajput/social-media-api-nodejs/issues
+[pulls]: https://github.com/nixrajput/social-media-api-nodejs/pulls
+[license]: https://github.com/nixrajput/social-media-api-nodejs/blob/master/LICENSE.md
