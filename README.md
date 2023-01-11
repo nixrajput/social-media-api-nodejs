@@ -2,15 +2,15 @@
 
 An open source social media API built with Node.js, Express, and MongoDB. This API is built for developers to use in their projects. It is not meant to be used as a standalone social media platform. This API is still in development and is not ready for production use.
 
-[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
-[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
-[![Watchers](https://img.shields.io/github/watchers/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
-[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
+[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-api-nodejs?label=Stars)][repo]
+[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-api-nodejs?label=Forks)][repo]
+[![Watchers](https://img.shields.io/github/watchers/nixrajput/social-media-api-nodejs?label=Watchers)][repo]
+[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-api-nodejs?label=Contributors)][repo]
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-api-nodejs?style=flat-square)][repo]
-[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-api-nodejs?style=flat-square)][issues]
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-api-nodejs?style=flat-square)][pulls]
-[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-api-nodejs?style=flat-square)][license]
+[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-api-nodejs?label=Last+Commit)][repo]
+[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-api-nodejs?label=Issues)][issues]
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-api-nodejs?label=Pull+Requests)][pulls]
+[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-api-nodejs?label=Licence)][license]
 
 * This project is powered by [NixLab Technologies][website].
 
@@ -18,27 +18,17 @@ An open source social media API built with Node.js, Express, and MongoDB. This A
 
 * We are open to suggestions and contributions. Feel free to open an [issue](https://github.com/nixrajput/social-media-api-nodejs/issues) or a [pull request](https://github.com/nixrajput/social-media-api-nodejs/pulls). If you like the project, please consider giving it a star.
 
-* Due to server limitations, the API is currently hosted on a free tier of Cyclic. So, it may take a few seconds to respond to your request. Please be patient.
-
-* Due to the same reason, the API may be down for a few minutes every day. We are working on a solution to this problem.
-
 * Due to database limitations, the API is currently hosted on a free tier of MongoDB Atlas. So, it may take a few seconds to respond to your request. Please be patient.
 
-* This API is currently in development. So, after releasing the production version, we will be adding more features to it. You can check the progress of the project here. If you have any suggestions, feel free to open an issue.
+* This API is currently in development stage. So, after releasing the production version, we will be adding more features to it. You can check the progress of the project here. If you have any suggestions, feel free to open an issue.
 
-* For the production version, we are planning to host the API on a paid tier of Cyclic and MongoDB Atlas. So, it will be more reliable and faster.
+* For the production version, we are planning to host the API on AWS and a paid tier of MongoDB Atlas. So, it will be more reliable and faster.
 
 * After releasing the production version, we may delete some of the data in the database for better and faster performance. Data will be deleted only if it is not required for the project or it may cause any issues or conflicts.
 
 If you would like to contribute, please read the [contribution guidelines](CONTRIBUTING.md).
 
->Note: Due to significant updates and changes in database and API structure, the API is no longer compatible with the previous version. Please refer to the documentation for more details.
-> It is possible that your old version of the API may not work with the new version. In that case, you can refer to the documentation for the new version.
-
 ## Documentation
-
-[`Documentation`](https://app.swaggerhub.com/apis-docs/nixrajput-apis/social-media-api/1.0.0)
-----------------
 
 ## Contributing
 
@@ -57,12 +47,12 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 * [x] Post Deletion
 * [x] Post Liking
 * [x] Post Commenting
-* [ ] Post Sharing
-* [ ] Post Searching
+* [x] Post Sharing
+* [x] Post Searching
 * [ ] Post Filtering
 * [ ] Post Sorting
-* [ ] Post Reporting
-* [ ] Post Blocking
+* [x] Post Reporting
+* [x] Post Blocking
 * [ ] Post Muting
 * [x] Profile Creation
 * [x] Profile Editing
@@ -71,12 +61,12 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 * [x] User Unfollowing
 * [ ] User Blocking
 * [ ] User Muting
-* [ ] User Searching
-* [ ] User Filtering
-* [ ] Trending Posts
-* [ ] Hash Tagging
-* [ ] Post Tagging
-* [ ] User Tagging
+* [x] User Searching
+* [x] User Filtering
+* [x] Trending Posts
+* [x] Hash Tagging
+* [x] Post Tagging
+* [x] User Tagging
 * [x] Recommendations
 * [ ] Search Suggestions
 
@@ -155,11 +145,11 @@ This project is licensed under the GPL-3.0 License - see the
 
 ## Connect With Me
 
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Instagram&logoColor=fff)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Linkedin&logoColor=fff)][linkedin]
-[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Github&logoColor=fff)][github]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Twitter&logoColor=fff)][twitter]
-[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Facebook&logoColor=fff)][facebook]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Linkedin&logoColor=fff)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Github&logoColor=fff)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Twitter&logoColor=fff)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Facebook&logoColor=fff)][facebook]
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in
