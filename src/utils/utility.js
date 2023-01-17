@@ -684,6 +684,120 @@ utility.getChatData = async (chatId) => {
   return chatData;
 };
 
+utility.getProjectOwnerData = async (ownerId) => {
+  const user = await models.User.findById(ownerId)
+    .select([
+      "_id", "fname", "lname", "email", "uname", "avatar", "profession",
+      "isPrivate", "accountStatus", "isVerified", "createdAt",
+      "updatedAt"
+    ]);
+
+  const userData = {};
+
+  // const followingStatus = await utility.getFollowingStatus(reqUser, user._id);
+
+  userData._id = user._id;
+  userData.fname = user.fname;
+  userData.lname = user.lname;
+  userData.email = user.email;
+  userData.uname = user.uname;
+  userData.avatar = user.avatar;
+  userData.profession = user.profession;
+  // userData.followingStatus = followingStatus;
+  userData.accountStatus = user.accountStatus;
+  userData.isPrivate = user.isPrivate;
+  userData.isValid = user.isValid;
+  userData.isVerified = user.isVerified;
+  userData.createdAt = user.createdAt;
+  userData.updatedAt = user.updatedAt;
+
+  return userData;
+};
+
+utility.getScrrenshotData = async (screenshotId) => {
+  const screenshot = await models.ProjectScreenshot.findById(screenshotId);
+
+  const screenshotData = {};
+
+  screenshotData._id = screenshot._id;
+  screenshotData.publicId = screenshot.publicId;
+  screenshotData.url = screenshot.url;
+
+  return screenshotData;
+};
+
+utility.getProjectData = async (projectId) => {
+  const project = await models.Project.findById(projectId);
+
+  const projectData = {};
+
+  const ownerData = await utility.getProjectOwnerData(project.owner);
+
+  projectData._id = project._id;
+  projectData.slug = project.slug;
+  projectData.title = project.title;
+  projectData.description = project.description;
+  projectData.icon = project.icon;
+  projectData.owner = ownerData;
+  projectData.category = project.category;
+  projectData.projectType = project.projectType;
+
+  if (project.screenshots.length > 0) {
+    const screenshotsData = await Promise.all(project.screenshots.map(async (screenshotId) => {
+      const screenshotData = await utility.getScrrenshotData(screenshotId);
+      return screenshotData;
+    }));
+
+    projectData.screenshots = screenshotsData;
+  }
+
+  projectData.features = project.features;
+  projectData.tags = project.tags;
+  projectData.downloadUrl = project.downloadUrl;
+  projectData.demoUrl = project.demoUrl;
+  projectData.githubUrl = project.githubUrl;
+  projectData.websiteUrl = project.websiteUrl;
+  projectData.rating = project.rating;
+  projectData.likesCount = project.likesCount;
+  projectData.reviewsCount = project.reviewsCount;
+  projectData.downloadsCount = project.downloadsCount;
+  projectData.viewsCount = project.viewsCount;
+  projectData.projectStatus = project.projectStatus;
+  projectData.createdAt = project.createdAt;
+  projectData.updatedAt = project.updatedAt;
+
+  return projectData;
+};
+
+utility.generateRandomString = (length) => {
+  let stringLength = length || 10;
+  const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  let result = "";
+
+  for (let i = stringLength; i > 0; --i) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  return result;
+};
+
+utility.generateSlug = async (title) => {
+  if (!title) return;
+
+  const slug = title.toLowerCase().replace(/ /g, "-");
+
+  const isSlugExists = await models.Project.findOne({ slug });
+
+  if (isSlugExists) {
+    const random = utility.generateRandomString();
+
+    return `${slug}-${random}`;
+  }
+
+  return slug;
+};
+
 utility.getStats = async (startDate, endDate) => {
   const users = await models.User.countDocuments({
     createdAt: {

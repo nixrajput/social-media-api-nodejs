@@ -4,7 +4,7 @@ import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 
-/// GET POST DETAILS ///
+/// @route GET /api/v1/get-post-details
 
 const getPostDetails = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {

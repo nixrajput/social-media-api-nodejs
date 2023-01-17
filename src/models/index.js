@@ -23,6 +23,8 @@ import AuthToken from "./user/authToken.js";
 import PollVote from "./post/PollVote.js";
 import PollOption from "./post/PollOption.js";
 import PostMedia from "./media/PostMedia.js";
+import Project from "./project/Project.js";
+import ProjectScreenshot from "./media/ProjectScreenshot.js";
 
 const models = {};
 
@@ -60,5 +62,8 @@ models.IssueReport = IssueReport;
 
 models.FollowRequest = FollowRequest;
 models.VerificationRequest = VerificationRequest;
+
+models.Project = Project;
+models.ProjectScreenshot = ProjectScreenshot;
 
 export default models;

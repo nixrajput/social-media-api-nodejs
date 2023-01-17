@@ -71,6 +71,12 @@ ResponseMessages.POLL_ID_REQUIRED = 'Poll id is required';
 ResponseMessages.POLL_OPTION_ID_REQUIRED = 'Poll option id is required';
 ResponseMessages.POLL_OPTION_VOTE_ID_REQUIRED = 'Poll option vote id is required';
 
+ResponseMessages.ICON_REQUIRED = 'Icon is required';
+ResponseMessages.TITLE_REQUIRED = 'Title is required';
+ResponseMessages.DESCRIPTION_REQUIRED = 'Description is required';
+ResponseMessages.FEATURES_REQUIRED = 'Features is required';
+ResponseMessages.SCREENSHOTS_REQUIRED = 'Screenshots is required';
+
 /// Incorrect Response Messages
 ResponseMessages.INCORRECT_EMAIL = 'Incorrect email';
 ResponseMessages.INCORRECT_USERNAME = 'Incorrect username';
@@ -339,5 +345,29 @@ ResponseMessages.NOTIFICATION_NOT_FOUND = 'Notification not found';
 ResponseMessages.NOTIFICATION_MARKED_READ = 'Notification marked read';
 ResponseMessages.NOTIFICATION_ALREADY_READ = 'Notification already read';
 ResponseMessages.NOTIFICATION_DELETED = 'Notification deleted';
+
+/// Project Response Messages
+
+ResponseMessages.PROJECT_NOT_FOUND = 'Project not found';
+ResponseMessages.PROJECT_ALREADY_EXISTS = 'Project already exists';
+ResponseMessages.PROJECT_CREATED = 'Project created';
+ResponseMessages.PROJECT_UPDATED = 'Project updated';
+ResponseMessages.PROJECT_DELETED = 'Project deleted';
+ResponseMessages.PROJECT_NOT_DELETED = 'Project not deleted';
+ResponseMessages.PROJECT_NOT_UPDATED = 'Project not updated';
+ResponseMessages.PROJECT_NOT_CREATED = 'Project not created';
+
+ResponseMessages.INVALID_DOWNLOAD_URL = 'Invalid download url';
+ResponseMessages.INVALID_GITHUB_URL = 'Invalid github url';
+ResponseMessages.INVALID_DEMO_URL = 'Invalid demo url';
+ResponseMessages.INVALID_WEBSITE_URL = 'Invalid website url';
+ResponseMessages.INVALID_ICON_URL = 'Invalid icon url';
+ResponseMessages.INVALID_SCREENSHOT_URL = 'Invalid screenshot url';
+
+ResponseMessages.INVALID_PROJECT_NAME = 'Invalid project name';
+ResponseMessages.SLUG_NOT_GENERATED = 'Slug not generated';
+ResponseMessages.PROJECT_ID_REQUIRED = 'Project id required';
+ResponseMessages.VIEWS_COUNT_INCREMENTED_SUCCESSFULLY = 'Views count incremented successfully';
+ResponseMessages.DOWNLOADS_COUNT_INCREMENTED_SUCCESSFULLY = 'Downloads count incremented successfully';
 
 export default ResponseMessages;
