@@ -5,6 +5,7 @@ import incrementViewsCount from "./incrementViewsCount.js";
 import getProjectDetails from "./getProjectDetails.js";
 import updateProject from "./updateProject.js";
 import deleteProject from "./deleteProject.js";
+import searchProjects from "./searchProjects.js";
 
 const projectControllers = {};
 
@@ -15,5 +16,6 @@ projectControllers.incrementViewsCount = incrementViewsCount;
 projectControllers.getProjectDetails = getProjectDetails;
 projectControllers.updateProject = updateProject;
 projectControllers.deleteProject = deleteProject;
+projectControllers.searchProjects = searchProjects;
 
 export default projectControllers;

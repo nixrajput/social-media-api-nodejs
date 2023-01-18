@@ -3,7 +3,6 @@ import catchAsyncError from "../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
 import ResponseMessages from "../../../contants/responseMessages.js";
-import utility from "../../../utils/utility.js";
 
 /// @route DELETE /api/v1/delete-project
 
@@ -27,7 +26,8 @@ const deleteProject = catchAsyncError(async (req, res, next) => {
     if (project.screenshots.length > 0) {
         for (let i = 0; i < project.screenshots.length; i++) {
 
-            var screenshot = await models.ProjectScreenshot.findById(project.screenshots[i]);
+            var screenshot = await models.ProjectScreenshot
+                .findById(project.screenshots[i]);
 
             let publicId = screenshot.publicId;
 

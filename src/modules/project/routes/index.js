@@ -34,5 +34,9 @@ projectRouter.route("/increment-views-count")
 projectRouter.route("/get-project-details")
     .get(projectControllers.getProjectDetails);
 
+/// @route GET /api/v1/search-projects
+projectRouter.route("/search-projects")
+    .get(projectControllers.searchProjects);
+
 
 export default projectRouter;

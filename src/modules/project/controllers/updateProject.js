@@ -1,8 +1,10 @@
+import cloudinary from "cloudinary";
 import catchAsyncError from "../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
 import ResponseMessages from "../../../contants/responseMessages.js";
 import utility from "../../../utils/utility.js";
+import validators from "../../../utils/validators.js";
 
 /// @route PUT /api/v1/update-project
 
@@ -16,7 +18,7 @@ const updateProject = catchAsyncError(async (req, res, next) => {
     const {
         title, description, icon, tags, features, projectType,
         projectStatus, category, downloadUrl, demoUrl, githubUrl,
-        websiteUrl
+        websiteUrl, screenshots
     } = req.body;
 
     const project = await models.Project.findById(projectId);
@@ -41,6 +43,54 @@ const updateProject = catchAsyncError(async (req, res, next) => {
     if (demoUrl) project.demoUrl = demoUrl;
     if (githubUrl) project.githubUrl = githubUrl;
     if (websiteUrl) project.websiteUrl = websiteUrl;
+
+    if (screenshots) {
+        if (screenshots.length > 0) {
+            const screenshotIds = [];
+
+            const publicIds = screenshots.map(screenshot => screenshot.publicId);
+            const projectScreenshots = await models.ProjectScreenshot.find
+                ({ project: projectId });
+
+            const screenshotsToDelete = projectScreenshots.filter(projectScreenshot => {
+                return !publicIds.includes(projectScreenshot.publicId);
+            });
+
+            const screenshotsToNotDelete = projectScreenshots.filter(projectScreenshot => {
+                return publicIds.includes(projectScreenshot.publicId);
+            });
+
+            for (let i = 0; i < screenshotsToNotDelete.length; i++) {
+                const screenshotToNotDelete = screenshotsToNotDelete[i];
+                screenshotIds.push(screenshotToNotDelete._id);
+            }
+
+            for (let i = 0; i < screenshotsToDelete.length; i++) {
+                const screenshotToDelete = screenshotsToDelete[i];
+                await cloudinary.v2.uploader.destroy(screenshotToDelete.publicId);
+                await screenshotToDelete.remove();
+            }
+
+            const screenshotsToCreate = screenshots.filter(screenshot => {
+                return !projectScreenshots.map(projectScreenshot => projectScreenshot.publicId)
+                    .includes(screenshot.publicId);
+            });
+
+            for (let i = 0; i < screenshotsToCreate.length; i++) {
+                const screenshotToCreate = screenshotsToCreate[i];
+
+                const projectScreenshot = await models.ProjectScreenshot.create({
+                    project: projectId,
+                    publicId: screenshotToCreate.publicId,
+                    url: screenshotToCreate.url,
+                });
+
+                screenshotIds.push(projectScreenshot._id);
+            }
+
+            project.screenshots = screenshotIds;
+        }
+    }
 
     await project.save();
 

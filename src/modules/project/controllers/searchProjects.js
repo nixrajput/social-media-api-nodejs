@@ -1,15 +1,29 @@
+import ResponseMessages from "../../../contants/responseMessages.js";
 import catchAsyncError from "../../../helpers/catchAsyncError.js";
+import ErrorHandler from "../../../helpers/errorHandler.js";
 import models from "../../../models/index.js";
 import utility from "../../../utils/utility.js";
 
-/// @route GET /api/v1/get-projects
+/// @route GET /api/v1/search-projects
 
-const getProjects = catchAsyncError(async (req, res, next) => {
+const searchProjects = catchAsyncError(async (req, res, next) => {
+    const { q } = req.query;
+
+    if (!q) {
+        return next(new ErrorHandler(ResponseMessages.SEARCH_QUERY_REQUIRED, 400));
+    }
+
     let currentPage = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 20;
 
     const totalProjects = await models.Project.find({
         projectStatus: "active",
+        $or: [
+            { title: new RegExp(q, "gi") },
+            { description: new RegExp(q, "gi") },
+            { tags: new RegExp(q, "gi") },
+            { slug: new RegExp(q, "gi") },
+        ],
     }).countDocuments();
 
     let totalPages = Math.ceil(totalProjects / limit);
@@ -58,6 +72,12 @@ const getProjects = catchAsyncError(async (req, res, next) => {
 
     const slicedProjects = await models.Project.find({
         projectStatus: "active",
+        $or: [
+            { title: new RegExp(q, "gi") },
+            { description: new RegExp(q, "gi") },
+            { tags: new RegExp(q, "gi") },
+            { slug: new RegExp(q, "gi") },
+        ],
     })
         .select("_id")
         .skip(skip)
@@ -94,4 +114,4 @@ const getProjects = catchAsyncError(async (req, res, next) => {
     });
 });
 
-export default getProjects;
+export default searchProjects;

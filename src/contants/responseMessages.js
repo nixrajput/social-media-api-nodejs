@@ -76,6 +76,7 @@ ResponseMessages.TITLE_REQUIRED = 'Title is required';
 ResponseMessages.DESCRIPTION_REQUIRED = 'Description is required';
 ResponseMessages.FEATURES_REQUIRED = 'Features is required';
 ResponseMessages.SCREENSHOTS_REQUIRED = 'Screenshots is required';
+ResponseMessages.SEARCH_QUERY_REQUIRED = 'Search query is required';
 
 /// Incorrect Response Messages
 ResponseMessages.INCORRECT_EMAIL = 'Incorrect email';

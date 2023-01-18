@@ -141,6 +141,10 @@ projectSchema.pre("save", function (next) {
     next();
 });
 
+projectSchema.index({
+    title: "text", description: "text",
+    tags: "text", slug: "text"
+});
 const Project = mongoose.model("Project", projectSchema);
 
 export default Project;
