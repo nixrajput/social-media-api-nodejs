@@ -10,7 +10,8 @@ import utility from "../../../utils/utility.js";
 const createProject = catchAsyncError(async (req, res, next) => {
     const {
         title, description, icon, category, projectType, screenshots,
-        features, tags, downloadUrl, demoUrl, githubUrl, websiteUrl
+        features, tags, downloadUrl, demoUrl, githubUrl, websiteUrl,
+        slug
     } = req.body;
 
     if (!title) {
@@ -81,12 +82,8 @@ const createProject = catchAsyncError(async (req, res, next) => {
 
     const tempSlug = await utility.generateSlug(title);
 
-    if (!tempSlug) {
-        return next(new ErrorHandler(ResponseMessages.SLUG_NOT_GENERATED, 400));
-    }
-
     const newProject = {
-        slug: tempSlug,
+        slug: slug || tempSlug,
         title: title,
         description: description,
         icon: icon,

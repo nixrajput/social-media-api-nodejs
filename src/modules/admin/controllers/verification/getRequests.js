@@ -1,14 +1,14 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import models from "../../../../models/index.js";
 
-/// GET ALL POSTS -- ADMIN ///
+/// @route   GET api/v1/admin/verification-requests
 
-const getAllPosts = catchAsyncError(async (req, res, next) => {
+const getAllRequests = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 20;
 
-  const totalUsers = await models.Post.countDocuments();
-  let totalPages = Math.ceil(totalUsers / limit);
+  const totalRequests = await models.VerificationRequest.countDocuments();
+  let totalPages = Math.ceil(totalRequests / limit);
 
   if (currentPage < 1) {
     currentPage = 1;
@@ -48,7 +48,7 @@ const getAllPosts = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const results = await models.Post.find()
+  const results = await models.VerificationRequest.find()
     .select("-__v")
     .skip(skip)
     .limit(limit)
@@ -67,4 +67,4 @@ const getAllPosts = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export default getAllPosts;
+export default getAllRequests;

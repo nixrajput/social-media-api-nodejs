@@ -4,7 +4,7 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 import models from "../../../../models/index.js";
 import validators from "../../../../utils/validators.js";
 
-/// REQUEST BLUE TICK ///
+/// @route   POST api/v1/request-verification
 
 const requestVerification = catchAsyncError(async (req, res, next) => {
     let {
@@ -130,10 +130,11 @@ const requestVerification = catchAsyncError(async (req, res, next) => {
     });
 
     user.verificationRequestedAt = Date.now();
+    await user.save();
 
     res.status(200).json({
         success: true,
-        message: ResponseMessages.BLUE_TICK_REQUEST_SUCCESS,
+        message: ResponseMessages.VERIFICATION_REQUEST_SUCCESS,
         request: blueTickRequest,
     });
 });

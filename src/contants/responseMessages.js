@@ -121,11 +121,6 @@ ResponseMessages.REPORT_USER_SUCCESS = 'User reported successfully';
 ResponseMessages.REPORT_POST_SUCCESS = 'Post reported successfully';
 ResponseMessages.REPORT_COMMENT_SUCCESS = 'Comment reported successfully';
 ResponseMessages.REPORT_CHAT_MESSAGE_SUCCESS = 'Chat message reported successfully';
-ResponseMessages.BLUE_TICK_REQUEST_SUCCESS = 'Request has been sent successfully';
-ResponseMessages.BLUE_TICK_REQUEST_ACCEPT_SUCCESS = 'Blue tick request accepted successfully';
-ResponseMessages.BLUE_TICK_REQUEST_REJECT_SUCCESS = 'Blue tick request rejected successfully';
-ResponseMessages.BLUE_TICK_REQUEST_CANCEL_SUCCESS = 'Blue tick request cancelled successfully';
-ResponseMessages.BLUE_TICK_REQUEST_DELETE_SUCCESS = 'Blue tick request deleted successfully';
 ResponseMessages.LOGOUT_OTHER_DEVICES_SUCCESS = 'Other devices logged out successfully';
 
 
@@ -370,5 +365,19 @@ ResponseMessages.SLUG_NOT_GENERATED = 'Slug not generated';
 ResponseMessages.PROJECT_ID_REQUIRED = 'Project id required';
 ResponseMessages.VIEWS_COUNT_INCREMENTED_SUCCESSFULLY = 'Views count incremented successfully';
 ResponseMessages.DOWNLOADS_COUNT_INCREMENTED_SUCCESSFULLY = 'Downloads count incremented successfully';
+
+/// Verification Request Response Messages
+ResponseMessages.VERIFICATION_REQUEST_ID_REQUIRED = 'Verification request id required';
+ResponseMessages.VERIFICATION_REQUEST_NOT_FOUND = 'Verification request not found';
+ResponseMessages.VERIFICATION_REQUEST_ALREADY_EXISTS = 'Verification request already exists';
+ResponseMessages.VERIFICATION_REQUEST_SUCCESS = 'Request has been sent successfully';
+ResponseMessages.VERIFICATION_REQUEST_ALREADY_PROCESSED = 'Verification request already processed';
+ResponseMessages.VERIFICATION_REQUEST_APPROVED = 'Verification request approved';
+ResponseMessages.VERIFICATION_REQUEST_REJECTED = 'Verification request rejected';
+ResponseMessages.VERIFICATION_REQUEST_REJECTION_REASON_REQUIRED = 'Verification request rejection reason is required';
+ResponseMessages.USER_NOT_VERIFIED = 'User not verified';
+ResponseMessages.USER_ALREADY_VERIFIED = 'User already verified';
+ResponseMessages.VERIFICATION_REMOVED = 'Verification removed';
+ResponseMessages.VERIFICATION_REQUEST_DETAILS = 'Verification request details';
 
 export default ResponseMessages;

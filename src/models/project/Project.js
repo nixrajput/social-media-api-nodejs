@@ -119,6 +119,36 @@ const projectSchema = new mongoose.Schema({
         default: 0,
     },
 
+    isFeatured: {
+        type: Boolean,
+        default: false,
+    },
+
+    isTrending: {
+        type: Boolean,
+        default: false,
+    },
+
+    isPopular: {
+        type: Boolean,
+        default: false,
+    },
+
+    isTopRated: {
+        type: Boolean,
+        default: false,
+    },
+
+    isFree: {
+        type: Boolean,
+        default: false,
+    },
+
+    isPremium: {
+        type: Boolean,
+        default: false,
+    },
+
     createdAt: {
         type: Date,
         default: Date.now,

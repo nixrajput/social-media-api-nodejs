@@ -3,10 +3,11 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
+import validators from "../../../../utils/validators.js";
 
-/// @route GET /api/v1/search-user
+/// @route GET /api/v1/admin/search-users
 
-const searchUser = catchAsyncError(async (req, res, next) => {
+const searchUsers = catchAsyncError(async (req, res, next) => {
   const { q } = req.query;
 
   if (!q) {
@@ -16,9 +17,18 @@ const searchUser = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 20;
 
+  if (limit > 100) {
+    limit = 100;
+  }
+
+  const isValidMongoId = validators.isValidObjectId(q);
+
   const totalUsers = await models.User.find(
     {
       $or: [
+        {
+          _id: isValidMongoId ? q : null,
+        },
         {
           uname: new RegExp(q, "gi"),
         },
@@ -79,6 +89,9 @@ const searchUser = catchAsyncError(async (req, res, next) => {
     {
       $or: [
         {
+          _id: isValidMongoId ? q : null,
+        },
+        {
           uname: new RegExp(q, "gi"),
         },
         {
@@ -116,4 +129,4 @@ const searchUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export default searchUser;
+export default searchUsers;

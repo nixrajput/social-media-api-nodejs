@@ -1,10 +1,9 @@
-import getAllUsers from "./user/getAllUsers.js";
+import getUsers from "./user/getUsers.js";
 import deleteUser from "./user/deleteUser.js";
 import updateAccountStatus from "./user/updateAccountStatus.js";
-import searchUser from "./user/searchUser.js";
 import updateUserRole from "./user/updateUserRole.js";
 import getUserDetails from "./user/getUserDetails.js";
-import getAllPosts from "./post/getAllPosts.js";
+import getPosts from "./post/getPosts.js";
 import updateVerificationStatus from "./user/updateVerificationStatus.js";
 import getAllComments from "./comment/getAllComments.js";
 import adminLogin from "./auth/login.js";
@@ -18,30 +17,53 @@ import getRecentUsers from "./user/getRecentUsers.js";
 import getVerifiedUsersStats from "./user/getVerifiedUsersStats.js";
 import getMonthlyStats from "./stats/monthlyStats.js";
 import getPostDetails from "./post/getPostDetails.js";
-import getAllRequests from "./blue-tick-request/getAllRequests.js";
+import getVerificationRequests from "./verification/getRequests.js";
+import approveVerificationRequest from "./verification/approveRequest.js";
+import rejectVerificationRequest from "./verification/rejectRequest.js";
+import removeVerificationStatus from "./verification/removeVerificationStatus.js";
+import getVerificationRequestDetails from "./verification/getRequestDetails.js";
+import searchUsers from "./user/searchUsers.js";
+import getProjects from "./projects/getProjects.js";
+import getProjectDetails from "./projects/getProjectDetails.js";
+import searchProjects from "./projects/searchProjects.js";
+import updateProject from "./projects/updateProject.js";
 
 const adminController = {};
 
 adminController.adminLogin = adminLogin;
-adminController.getAllUsers = getAllUsers;
+
+adminController.getUsers = getUsers;
+adminController.searchUsers = searchUsers;
 adminController.deleteUser = deleteUser;
 adminController.updateAccountStatus = updateAccountStatus;
-adminController.searchUser = searchUser;
 adminController.updateUserRole = updateUserRole;
 adminController.getUserDetails = getUserDetails;
-adminController.getAllPosts = getAllPosts;
+
+adminController.getPosts = getPosts;
 adminController.updateVerificationStatus = updateVerificationStatus;
 adminController.getAllComments = getAllComments;
+
 adminController.getProgress = getProgress;
 adminController.getStats = getStats;
 adminController.adminForgotPassword = forgotAdminPassword;
 adminController.adminResetPassword = resetAdminPassword;
 adminController.changeAdminPassword = changeAdminPassword;
+
 adminController.getRecentPosts = getRecentPosts;
 adminController.getRecentUsers = getRecentUsers;
 adminController.getVerifiedUsers = getVerifiedUsersStats;
 adminController.getMonthlyStats = getMonthlyStats;
 adminController.getPostDetails = getPostDetails;
-adminController.getAllRequests = getAllRequests;
+
+adminController.getVerificationRequests = getVerificationRequests;
+adminController.approveVerificationRequest = approveVerificationRequest;
+adminController.rejectVerificationRequest = rejectVerificationRequest;
+adminController.removeVerificationStatus = removeVerificationStatus;
+adminController.getVerificationRequestDetails = getVerificationRequestDetails;
+
+adminController.getProjects = getProjects;
+adminController.getProjectDetails = getProjectDetails;
+adminController.searchProjects = searchProjects;
+adminController.updateProject = updateProject;
 
 export default adminController;

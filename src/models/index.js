@@ -1,5 +1,5 @@
 import LoginInfo from "./login-info/loginInfo.js";
-import User from "./user/user.js";
+import User from "./user/User.js";
 import Notification from "./notification/notification.js";
 import Post from "./post/Post.js";
 import Comment from "./comment/Comment.js";
@@ -18,7 +18,7 @@ import PostReport from "./reports/postReport.js";
 import CommentReport from "./reports/commentReport.js";
 import UserReport from "./reports/userReport.js";
 import IssueReport from "./reports/issueReport.js";
-import VerificationRequest from "./requests/verificationRequest.js";
+import VerificationRequest from "./requests/VerificationRequest.js";
 import AuthToken from "./user/authToken.js";
 import PollVote from "./post/PollVote.js";
 import PollOption from "./post/PollOption.js";

@@ -73,7 +73,14 @@ authMiddleware.isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
 // AUthorize Roles
 authMiddleware.authorizeRoles = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    const { role } = req.user;
+    let authorizedRoles = roles;
+
+    if (typeof roles === "string") {
+      authorizedRoles = roles.split(",");
+    }
+
+    if (!authorizedRoles.includes(role)) {
       return next(new ErrorHandler('Access Denied!', 403));
     }
 

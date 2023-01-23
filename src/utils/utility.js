@@ -298,8 +298,8 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   const owner = await models.User.findById(ownerId)
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
-      "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt"
+      "isPrivate", "accountStatus", "isVerified", "verifiedCategory",
+      "createdAt", "updatedAt"
     ]);
 
   const ownerData = {};
@@ -318,6 +318,7 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.isPrivate = owner.isPrivate;
   ownerData.isValid = owner.isValid;
   ownerData.isVerified = owner.isVerified;
+  ownerData.verifiedCategory = owner.verifiedCategory;
   ownerData.createdAt = owner.createdAt;
   ownerData.updatedAt = owner.updatedAt;
 
@@ -328,8 +329,8 @@ utility.getUserData = async (userId, reqUser) => {
   const user = await models.User.findById(userId)
     .select([
       "_id", "fname", "lname", "email", "uname", "avatar", "profession",
-      "isPrivate", "accountStatus", "isVerified", "createdAt",
-      "updatedAt"
+      "isPrivate", "accountStatus", "isVerified", "verifiedCategory",
+      "createdAt", "updatedAt"
     ]);
 
   const userData = {};
@@ -348,6 +349,7 @@ utility.getUserData = async (userId, reqUser) => {
   userData.isPrivate = user.isPrivate;
   userData.isValid = user.isValid;
   userData.isVerified = user.isVerified;
+  userData.verifiedCategory = user.verifiedCategory;
   userData.createdAt = user.createdAt;
   userData.updatedAt = user.updatedAt;
 

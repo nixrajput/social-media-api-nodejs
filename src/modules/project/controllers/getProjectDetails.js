@@ -7,16 +7,26 @@ import utility from "../../../utils/utility.js";
 /// @route GET /api/v1/get-project-details
 
 const getProjectDetails = catchAsyncError(async (req, res, next) => {
-    const { projectId } = req.query;
+    const { projectId, slug } = req.query;
 
-    if (!projectId) {
-        return next(new ErrorHandler(ResponseMessages.PROJECT_ID_REQUIRED, 400));
+    if (!projectId && !slug) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
     }
 
-    const project = await models.Project.findOne({
-        _id: projectId,
-        projectStatus: "active",
-    }).select("_id");
+    let project = null;
+
+    if (projectId) {
+        project = await models.Project.findOne({
+            _id: projectId,
+            projectStatus: "active",
+        }).select("_id");
+    }
+    else if (slug) {
+        project = await models.Project.findOne({
+            slug,
+            projectStatus: "active",
+        }).select("_id");
+    }
 
     if (!project) {
         return next(new ErrorHandler(ResponseMessages.PROJECT_NOT_FOUND, 404));

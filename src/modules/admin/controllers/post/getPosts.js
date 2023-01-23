@@ -1,20 +1,25 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import models from "../../../../models/index.js";
 
-/// GET ALL USERS  -- ADMIN ///
+/// @route   GET /api/v1/admin/posts
 
-const getAllUsers = catchAsyncError(async (req, res, next) => {
+const getPosts = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 20;
 
-  const totalUsers = await models.User.countDocuments();
+  const totalUsers = await models.Post.countDocuments();
+
   let totalPages = Math.ceil(totalUsers / limit);
 
-  if (currentPage < 1) {
+  if (totalPages <= 0) {
+    totalPages = 1;
+  }
+
+  if (currentPage <= 1) {
     currentPage = 1;
   }
 
-  if (currentPage > totalPages) {
+  if (totalPages > 1 && currentPage > totalPages) {
     currentPage = totalPages;
   }
 
@@ -48,8 +53,15 @@ const getAllUsers = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const results = await models.User.find()
-    .select("-__v -password")
+  const results = await models.Post.find()
+    .select("-__v")
+    .populate("owner", [
+      "fname", "lname", "uname", "email", "avatar",
+      "accountStatus", "isVerified", "verificationRequestedAt",
+      "verifiedAt", "role", "createdAt", "updatedAt"
+    ],
+    )
+    .populate("pollOptions", "-__v")
     .skip(skip)
     .limit(limit)
     .sort({ createdAt: -1 });
@@ -67,4 +79,4 @@ const getAllUsers = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export default getAllUsers;
+export default getPosts;
