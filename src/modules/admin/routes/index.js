@@ -266,5 +266,14 @@ adminRouter
     adminController.updateProject
   );
 
+// Update Project Screenshots
+adminRouter
+  .route("/admin/update-project-screenshots")
+  .put(
+    isAuthenticatedUser,
+    validRoles,
+    adminController.updateProjectScreenshots
+  );
+
 
 export default adminRouter;

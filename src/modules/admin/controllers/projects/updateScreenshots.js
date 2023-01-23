@@ -28,20 +28,13 @@ const updateProjectScreenshots = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.PROJECT_NOT_FOUND, 404));
     }
 
-    if (project.owner.toString() !== req.user._id.toString()
-        || req.user.role !== "admin" || req.user.role !== "superadmin"
-        || req.user.role !== "moderator"
-    ) {
-        return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 401));
-    }
-
     if (screenshots) {
         if (screenshots.length > 0) {
             const screenshotIds = [];
 
             const publicIds = screenshots.map(screenshot => screenshot.publicId);
             const projectScreenshots = await models.ProjectScreenshot.find
-                ({ project: projectId });
+                ({ project: id });
 
             const screenshotsToDelete = projectScreenshots.filter(projectScreenshot => {
                 return !publicIds.includes(projectScreenshot.publicId);
@@ -71,7 +64,7 @@ const updateProjectScreenshots = catchAsyncError(async (req, res, next) => {
                 const screenshotToCreate = screenshotsToCreate[i];
 
                 const projectScreenshot = await models.ProjectScreenshot.create({
-                    project: projectId,
+                    project: id,
                     publicId: screenshotToCreate.publicId,
                     url: screenshotToCreate.url,
                 });

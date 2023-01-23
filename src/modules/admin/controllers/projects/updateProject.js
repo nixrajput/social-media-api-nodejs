@@ -24,10 +24,6 @@ const updateProject = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.PROJECT_NOT_FOUND, 404));
     }
 
-    if (project.owner.toString() !== req.user._id.toString()) {
-        return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 401));
-    }
-
     if (title) project.title = title;
     if (description) project.description = description;
     if (icon) project.icon = icon;

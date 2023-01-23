@@ -27,6 +27,7 @@ import getProjects from "./projects/getProjects.js";
 import getProjectDetails from "./projects/getProjectDetails.js";
 import searchProjects from "./projects/searchProjects.js";
 import updateProject from "./projects/updateProject.js";
+import updateProjectScreenshots from './projects/updateScreenshots.js';
 
 const adminController = {};
 
@@ -65,5 +66,6 @@ adminController.getProjects = getProjects;
 adminController.getProjectDetails = getProjectDetails;
 adminController.searchProjects = searchProjects;
 adminController.updateProject = updateProject;
+adminController.updateProjectScreenshots = updateProjectScreenshots;
 
 export default adminController;
