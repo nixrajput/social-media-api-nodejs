@@ -5,7 +5,7 @@ import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 import { sendNotification } from "../../../../firebase/index.js";
 
-/// ADD NEW COMMENT ///
+/// @route POST  /api/v1/add-comment
 
 const addComment = catchAsyncError(async (req, res, next) => {
   if (!req.query.postId) {

@@ -5,7 +5,7 @@ import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 import { sendNotification } from "../../../../firebase/index.js";
 
-/// LIKE/UNLIKE COMMENT ///
+/// @route GET /api/v1/post/like-comment
 
 const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
