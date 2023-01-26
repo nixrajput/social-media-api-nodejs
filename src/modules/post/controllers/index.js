@@ -15,6 +15,10 @@ import getTrendingPosts from "./post/getTrendingPosts.js";
 import searchPosts from "./post/searchPost.js";
 import reportPost from "./post/reportPost.js";
 import reportComment from "./comment/reportComment.js";
+import addCommentReply from "./comment/addCommentReply.js";
+import likeUnlikeCommentReply from "./comment/likeUnlikeCommentReply.js";
+import getCommentReplies from "./comment/getCommentReplies.js";
+import deleteCommentReply from "./comment/deleteCommentReply.js";
 
 const postController = {};
 
@@ -36,5 +40,10 @@ postController.searchPosts = searchPosts;
 
 postController.reportPost = reportPost;
 postController.reportComment = reportComment;
+
+postController.addCommentReply = addCommentReply;
+postController.likeUnlikeCommentReply = likeUnlikeCommentReply;
+postController.getCommentReplies = getCommentReplies;
+postController.deleteCommentReply = deleteCommentReply;
 
 export default postController;

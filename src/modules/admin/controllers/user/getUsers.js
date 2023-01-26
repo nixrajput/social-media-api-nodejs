@@ -1,7 +1,7 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import models from "../../../../models/index.js";
 
-/// @route   GET /api/v1/admin/users
+/// @route  GET /api/v1/admin/users
 
 const getUsers = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;

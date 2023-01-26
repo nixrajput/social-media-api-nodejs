@@ -8,11 +8,13 @@ import { sendNotification } from "../../../../firebase/index.js";
 /// @route GET /api/v1/post/like-comment
 
 const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
-  if (!req.query.id) {
-    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
+  const commentId = req.query.id;
+
+  if (!commentId) {
+    return next(new ErrorHandler(ResponseMessages.COMMENT_ID_REQUIRED, 400));
   }
 
-  const comment = await models.Comment.findById(req.query.id);
+  const comment = await models.Comment.findById(commentId);
 
   if (!comment) {
     return next(new ErrorHandler(ResponseMessages.COMMENT_NOT_FOUND, 404));
@@ -22,7 +24,7 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
 
   if (isLiked) {
     await models.CommentLike.findOneAndDelete({
-      comment: comment._id,
+      comment: commentId,
       user: req.user._id
     });
     comment.likesCount--;
@@ -35,7 +37,7 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
     });
   } else {
     await models.CommentLike.create({
-      comment: comment._id,
+      comment: commentId,
       user: req.user._id
     });
 
@@ -43,9 +45,9 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
     await comment.save();
 
     const notification = await models.Notification.findOne({
-      to: comment.owner,
+      to: comment.user,
       from: req.user._id,
-      refId: comment._id,
+      refId: commentId,
     });
 
     const isCommentOwner = await utility.checkIfCommentOwner(comment._id, req.user);
@@ -55,7 +57,7 @@ const likeUnlikeComment = catchAsyncError(async (req, res, next) => {
         to: comment.user,
         from: req.user._id,
         body: "liked your comment",
-        refId: comment._id,
+        refId: commentId,
         type: "commentLike",
       });
 

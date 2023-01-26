@@ -176,5 +176,19 @@ userRouter
 //   .route("/get-user-activity")
 //   .get(isAuthenticatedUser, userController.getUserActivity);
 
+/// @route  GET api/v1/block-user
+/// @desc   Block User
+/// @access Private
+userRouter
+  .route("/block-user")
+  .get(isAuthenticatedUser, userController.blockUser);
+
+
+/// @route  GET api/v1/unblock-user
+/// @desc   Unblock User
+/// @access Private
+userRouter
+  .route("/unblock-user")
+  .get(isAuthenticatedUser, userController.unblockUser);
 
 export default userRouter;

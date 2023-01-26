@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 
-const followerSchema = new mongoose.Schema({
+const CommentReplyLikeSchema = new mongoose.Schema({
+    commentReply: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CommentReply",
+    },
+
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    },
 
-    follower: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
     },
 
     createdAt: {
@@ -20,14 +21,13 @@ const followerSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-
 });
 
-followerSchema.pre("save", function (next) {
+CommentReplyLikeSchema.pre("save", function (next) {
     this.updatedAt = Date.now();
     next();
 });
 
-const Follower = mongoose.model("Follower", followerSchema);
+const CommentReplyLike = mongoose.model("CommentReplyLike", CommentReplyLikeSchema);
 
-export default Follower;
+export default CommentReplyLike;

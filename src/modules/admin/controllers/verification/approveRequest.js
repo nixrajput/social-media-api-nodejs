@@ -34,6 +34,7 @@ const approveVerificationRequest = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
     }
 
+    user.isValid = true;
     user.isVerified = true;
     user.verifiedCategory = verificationRequest.category;
     user.verifiedAt = Date.now();

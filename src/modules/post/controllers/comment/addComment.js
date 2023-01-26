@@ -8,17 +8,19 @@ import { sendNotification } from "../../../../firebase/index.js";
 /// @route POST  /api/v1/add-comment
 
 const addComment = catchAsyncError(async (req, res, next) => {
-  if (!req.query.postId) {
-    return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
-  }
+  const { comment, postId } = req.body;
 
-  const { comment } = req.body;
+  const id = postId || req.query.postId;
+
+  if (!id) {
+    return next(new ErrorHandler(ResponseMessages.POST_ID_REQUIRED, 400));
+  }
 
   if (!comment) {
     return next(new ErrorHandler(ResponseMessages.COMMENT_REQUIRED, 400));
   }
 
-  const post = await models.Post.findById(req.query.postId)
+  const post = await models.Post.findById(id)
     .select("_id owner commentsCount mediaFiles");
 
   if (!post) {
@@ -28,7 +30,7 @@ const addComment = catchAsyncError(async (req, res, next) => {
   const newComment = await models.Comment.create({
     comment: comment,
     user: req.user._id,
-    post: post._id,
+    post: id,
   });
 
   post.commentsCount++;
@@ -44,13 +46,30 @@ const addComment = catchAsyncError(async (req, res, next) => {
       const isPostOwner = await utility.checkIfPostOwner(post._id, mentionedUser);
 
       if (mentionedUser && !isPostOwner) {
-        await models.Notification.create({
+        const mentionNotif = await models.Notification.create({
           to: mentionedUser._id,
           from: req.user._id,
           refId: newComment._id,
-          body: `mentioned you in a comment`,
+          body: `mentioned you in a comment.`,
           type: "commentMention"
         });
+
+        const notificationData = await utility
+          .getNotificationData(mentionNotif._id, req.user);
+
+        const fcmToken = await models.FcmToken.findOne({ user: mentionedUser._id })
+          .select("token");
+
+        if (fcmToken) {
+          await sendNotification(
+            fcmToken.token,
+            {
+              title: "New Mention",
+              body: `${notificationData.from.uname} mentioned you in a comment.`,
+              type: "Mentions",
+            }
+          );
+        }
       }
     }
   }
@@ -70,20 +89,12 @@ const addComment = catchAsyncError(async (req, res, next) => {
       .select("token");
 
     if (fcmToken) {
-      let image = null;
-      if (post.postType === "media") {
-        image = post.mediaFiles[0].mediaType === "image" ?
-          post.mediaFiles[0].url :
-          post.mediaFiles[0].thumbnail.url;
-      }
-
       await sendNotification(
         fcmToken.token,
         {
           title: "New Comment",
           body: `${notificationData.from.uname} commented on your post.`,
           type: "Comments",
-          image: image,
         }
       );
     }

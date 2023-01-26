@@ -169,6 +169,13 @@ ResponseMessages.ACCOUNT_NOT_FOUND = 'Account not found';
 ResponseMessages.ACCOUNT_NOT_VERIFIED = 'Account not verified';
 ResponseMessages.ACCOUNT_ALREADY_VERIFIED = 'Account already verified';
 ResponseMessages.CANNOT_FOLLOW_YOURSELF = 'You cannot follow yourself';
+ResponseMessages.CANNOT_UNFOLLOW_YOURSELF = 'You cannot unfollow yourself';
+ResponseMessages.CANNOT_BLOCK_YOURSELF = 'You cannot block yourself';
+ResponseMessages.CANNOT_UNBLOCK_YOURSELF = 'You cannot unblock yourself';
+ResponseMessages.USER_ALREADY_BLOCKED = 'User already blocked';
+ResponseMessages.BLOCKED = 'Blocked';
+ResponseMessages.USER_NOT_BLOCKED = 'User not blocked';
+ResponseMessages.UNBLOCKED = 'Unblocked';
 
 ResponseMessages.ACCOUNT_SUPERADMIN = 'Superadmin account';
 ResponseMessages.ACCOUNT_ADMIN = 'Admin account';
@@ -341,6 +348,18 @@ ResponseMessages.NOTIFICATION_NOT_FOUND = 'Notification not found';
 ResponseMessages.NOTIFICATION_MARKED_READ = 'Notification marked read';
 ResponseMessages.NOTIFICATION_ALREADY_READ = 'Notification already read';
 ResponseMessages.NOTIFICATION_DELETED = 'Notification deleted';
+ResponseMessages.USER_DETAILS_FETCHED = 'User details fetched';
+ResponseMessages.USER_DETAILS_NOT_FETCHED = 'User details not fetched';
+ResponseMessages.USER_PROFILE_DETAILS_FETCHED = 'User profile details fetched';
+ResponseMessages.USER_PROFILE_DETAILS_NOT_FETCHED = 'User profile details not fetched';
+ResponseMessages.COMMENT_REPLIES_FETCHED = 'Comment replies fetched';
+ResponseMessages.COMMENT_REPLIES_NOT_FETCHED = 'Comment replies not fetched';
+ResponseMessages.LIKED = 'Liked';
+ResponseMessages.UNLIKED = 'Unliked';
+ResponseMessages.LIKE_FAILED = 'Like failed';
+ResponseMessages.UNLIKE_FAILED = 'Unlike failed';
+ResponseMessages.USER_ALREADY_LIKED = 'User already liked';
+ResponseMessages.USER_ALREADY_UNLIKED = 'User already unliked';
 
 /// Project Response Messages
 
@@ -379,5 +398,20 @@ ResponseMessages.USER_NOT_VERIFIED = 'User not verified';
 ResponseMessages.USER_ALREADY_VERIFIED = 'User already verified';
 ResponseMessages.VERIFICATION_REMOVED = 'Verification removed';
 ResponseMessages.VERIFICATION_REQUEST_DETAILS = 'Verification request details';
+
+/// Comment Reply Response Messages
+ResponseMessages.REPLY_REQUIRED = 'Reply is required';
+ResponseMessages.COMMENT_REPLY_NOT_FOUND = 'Comment reply not found';
+ResponseMessages.COMMENT_REPLY_ALREADY_EXISTS = 'Comment reply already exists';
+ResponseMessages.COMMENT_REPLY_CREATED = 'Comment reply created';
+ResponseMessages.COMMENT_REPLY_UPDATED = 'Comment reply updated';
+ResponseMessages.COMMENT_REPLY_DELETED = 'Comment reply deleted';
+ResponseMessages.COMMENT_REPLY_NOT_DELETED = 'Comment reply not deleted';
+ResponseMessages.COMMENT_REPLY_NOT_UPDATED = 'Comment reply not updated';
+ResponseMessages.COMMENT_REPLY_NOT_CREATED = 'Comment reply not created';
+ResponseMessages.COMMENT_REPLY_ID_REQUIRED = 'Comment reply id required';
+ResponseMessages.COMMENT_REPLY_NOT_FOUND = 'Comment reply not found';
+ResponseMessages.COMMENT_REPLY_ADD_SUCCESS = 'Comment reply added successfully';
+ResponseMessages.COMMENT_REPLY_DELETE_SUCCESS = 'Comment reply deleted successfully';
 
 export default ResponseMessages;

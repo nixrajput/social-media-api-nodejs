@@ -1,3 +1,4 @@
+import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
@@ -9,22 +10,25 @@ const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
   let currentPage = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 20;
 
-  const users = await models.User.find(
-    {
-      _id: {
-        $nin: [req.user._id],
-      },
+  let totalUsers = await models.User.countDocuments({
+    _id: {
+      $nin: [req.user._id],
     },
-  ).select("_id").sort({ createdAt: -1 });
+    accountStatus: "active",
+    isValid: true,
+  });
 
-  let totalUsers = users.length;
   let totalPages = Math.ceil(totalUsers / limit);
 
-  if (currentPage < 1) {
+  if (totalPages <= 0) {
+    totalPages = 1;
+  }
+
+  if (currentPage <= 1) {
     currentPage = 1;
   }
 
-  if (currentPage > totalPages) {
+  if (totalPages > 1 && currentPage > totalPages) {
     currentPage = totalPages;
   }
 
@@ -58,18 +62,31 @@ const getRecommendedUsers = catchAsyncError(async (req, res, next) => {
     nextPage = `${baseUrl}?page=${nextPageIndex}&limit=${limit}`;
   }
 
-  const slicedUsers = users.slice(skip, skip + limit);
+  const slicedUsers = await models.User.find(
+    {
+      _id: {
+        $nin: [req.user._id],
+      },
+      accountStatus: "active",
+      isValid: true,
+    },
+  )
+    .select("_id")
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
 
   const results = [];
 
-  for (let user of slicedUsers) {
-    const userData = await utility.getUserData(user._id, req.user);
+  for (let i = 0; i < slicedUsers.length; i++) {
+    const userData = await utility.getUserData(slicedUsers[i]._id, req.user);
 
     results.push(userData);
   }
 
   res.status(200).json({
     success: true,
+    message: ResponseMessages.USER_DETAILS_FETCHED,
     currentPage,
     totalPages,
     limit,

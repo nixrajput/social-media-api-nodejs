@@ -90,4 +90,27 @@ postRouter
   .route("/report-comment")
   .post(isAuthenticatedUser, postController.reportComment);
 
+
+/// Comment Reply
+
+/// @route POST /api/v1/add-comment-reply
+postRouter
+  .route("/add-comment-reply")
+  .post(isAuthenticatedUser, postController.addCommentReply);
+
+/// @route GET /api/v1/post/like-comment-reply
+postRouter
+  .route("/like-comment-reply")
+  .get(isAuthenticatedUser, postController.likeUnlikeCommentReply);
+
+/// @route GET /api/v1/post/get-comment-replies
+postRouter
+  .route("/get-comment-replies")
+  .get(isAuthenticatedUser, postController.getCommentReplies);
+
+/// @route DELETE /api/v1/post/delete-comment-reply
+postRouter
+  .route("/delete-comment-reply")
+  .delete(isAuthenticatedUser, postController.deleteCommentReply);
+
 export default postRouter;

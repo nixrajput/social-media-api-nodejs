@@ -6,10 +6,15 @@ const commentReplySchema = new mongoose.Schema({
         required: true,
     },
 
-    commentId: {
+    comment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
         required: true,
+    },
+
+    post: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
     },
 
     user: {
@@ -21,6 +26,20 @@ const commentReplySchema = new mongoose.Schema({
     likesCount: {
         type: Number,
         default: 0,
+    },
+
+    visibility: {
+        type: String,
+        enum: [
+            "public", "private", "followers",
+            "mutual", "close_friends",
+        ],
+        default: "public",
+    },
+
+    allowLikes: {
+        type: Boolean,
+        default: true,
     },
 
     replyStatus: {

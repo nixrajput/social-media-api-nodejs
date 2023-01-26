@@ -54,14 +54,13 @@ utility.generateAuthToken = async (user) => {
 // Delete All expired OTPs
 utility.deleteExpiredOTPs = async () => {
   console.log("[cron] task to delete expired OTPs has started.");
-  const otps = await models.OTP.find({ isUsed: true });
+  const otps = await models.OTP.find({ expiresAt: { $lte: Date.now() } });
 
   if (otps.length > 0) {
     for (let i = 0; i < otps.length; i++) {
-      if (otps[i].expiresAt < Date.now()) {
-        await otps[i].remove();
-      }
+      await otps[i].remove();
     }
+    console.log("[cron] Expired OTPs deleted.");
   } else {
     console.log("[cron] No OTPs found.");
   }
@@ -217,36 +216,29 @@ utility.checkUserAccountType = async (type) => {
   }
 };
 
-utility.getFollowingStatus = async (reqUser, followUser) => {
+utility.getFollowingStatus = async (reqUser, user) => {
 
-  const isSameUser = await utility.checkIfSameUser(reqUser, followUser);
+  const isSameUser = await utility.checkIfSameUser(reqUser, user);
 
   if (isSameUser) {
     return "self";
   }
 
   const isFollowing = await models.Follower
-    .findOne({ user: followUser, follower: reqUser }).select("_id");
+    .findOne({ user: user, follower: reqUser })
+    .select("_id");
 
   if (isFollowing) return "following";
 
   const followRequest = await models.FollowRequest.findOne({
     from: reqUser._id,
-    to: followUser,
+    to: user,
   });
 
   if (followRequest) return "requested";
 
   return "notFollowing";
 }
-
-utility.checkIfSameUser = async (user, userId) => {
-  if (user._id.toString() === userId.toString()) {
-    return true;
-  }
-
-  return false;
-};
 
 utility.checkIfPostOwner = async (postId, user) => {
   const post = await models.Post.findById(postId).select("owner");
@@ -267,7 +259,17 @@ utility.checkIfCommentOwner = async (commentId, user) => {
   }
 
   return false;
+};
 
+utility.checkIfCommentReplyOwner = async (commentReplyId, user) => {
+  const commentReply = await models.CommentReply.findById(commentReplyId).
+    select("user");
+
+  if (commentReply.user.toString() === user._id.toString()) {
+    return true;
+  }
+
+  return false;
 };
 
 utility.checkIfPostLiked = async (postId, user) => {
@@ -293,6 +295,54 @@ utility.checkIfCommentLiked = async (commentId, user) => {
   return false;
 };
 
+utility.checkIfCommentReplyLiked = async (commentReplyId, user) => {
+  const isLiked = await models.CommentReplyLike.findOne({
+    commentReply: commentReplyId,
+    user: user._id
+  });
+
+  if (isLiked) {
+    return true;
+  }
+
+  return false;
+};
+
+utility.checkIfSameUser = async (reqUser, otherUserId) => {
+  if (reqUser._id.toString() === otherUserId.toString()) {
+    return true;
+  }
+
+  return false;
+};
+
+utility.checkIfSameUserId = async (userId, otherUserId) => {
+  if (userId.toString() === otherUserId.toString()) {
+    return true;
+  }
+
+  return false;
+};
+
+utility.checkIfUserBlocked = async (userId, reqUserId) => {
+  const isSameUser = await utility.checkIfSameUserId(userId, reqUserId);
+
+  if (isSameUser) {
+    return false;
+  }
+
+  const isBlocked = await models.BlockedUser.findOne({
+    user: reqUserId,
+    blockedUser: userId,
+  });
+
+  if (isBlocked) {
+    return true;
+  }
+
+  return false;
+};
+
 
 utility.getOwnerData = async (ownerId, reqUser) => {
   const owner = await models.User.findById(ownerId)
@@ -305,6 +355,8 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   const ownerData = {};
 
   const followingStatus = await utility.getFollowingStatus(reqUser, owner._id);
+  const isBlockedByYou = await utility.checkIfUserBlocked(owner._id, reqUser._id);
+  const isBlockedByUser = await utility.checkIfUserBlocked(reqUser._id, owner._id);
 
   ownerData._id = owner._id;
   ownerData.fname = owner.fname;
@@ -319,6 +371,8 @@ utility.getOwnerData = async (ownerId, reqUser) => {
   ownerData.isValid = owner.isValid;
   ownerData.isVerified = owner.isVerified;
   ownerData.verifiedCategory = owner.verifiedCategory;
+  ownerData.isBlockedByYou = isBlockedByYou;
+  ownerData.isBlockedByUser = isBlockedByUser;
   ownerData.createdAt = owner.createdAt;
   ownerData.updatedAt = owner.updatedAt;
 
@@ -336,6 +390,8 @@ utility.getUserData = async (userId, reqUser) => {
   const userData = {};
 
   const followingStatus = await utility.getFollowingStatus(reqUser, user._id);
+  const isBlockedByYou = await utility.checkIfUserBlocked(user._id, reqUser._id);
+  const isBlockedByUser = await utility.checkIfUserBlocked(reqUser._id, user._id);
 
   userData._id = user._id;
   userData.fname = user.fname;
@@ -350,13 +406,114 @@ utility.getUserData = async (userId, reqUser) => {
   userData.isValid = user.isValid;
   userData.isVerified = user.isVerified;
   userData.verifiedCategory = user.verifiedCategory;
+  userData.isBlockedByYou = isBlockedByYou;
+  userData.isBlockedByUser = isBlockedByUser;
   userData.createdAt = user.createdAt;
   userData.updatedAt = user.updatedAt;
 
   return userData;
 };
 
+utility.getProfileData = async (reqUser) => {
+  const user = await models.User.findById(reqUser._id)
+    .select([
+      "_id", "fname", "lname", "email", "uname", "avatar",
+      "dob", "gender", "about", "profession", "website", "location",
+      "postsCount", "followersCount", "followingCount", "isValid",
+      "isPrivate", "accountStatus", "isVerified", "verifiedCategory",
+      "verifiedAt", "role", "emailVerified", "phone", "countryCode",
+      "phoneVerified", "showOnlineStatus", "lastSeen",
+      "createdAt", "updatedAt",
+    ]);
+
+  const profileDetails = {};
+
+  profileDetails._id = user._id;
+  profileDetails.fname = user.fname;
+  profileDetails.lname = user.lname;
+  profileDetails.email = user.email;
+  profileDetails.emailVerified = user.emailVerified;
+  profileDetails.uname = user.uname;
+  profileDetails.avatar = user.avatar;
+  profileDetails.phone = user.phone;
+  profileDetails.countryCode = user.countryCode;
+  profileDetails.phoneVerified = user.phoneVerified;
+  profileDetails.dob = user.dob;
+  profileDetails.gender = user.gender;
+  profileDetails.about = user.about;
+  profileDetails.profession = user.profession;
+  profileDetails.website = user.website;
+  profileDetails.location = user.location;
+  profileDetails.postsCount = user.postsCount;
+  profileDetails.followersCount = user.followersCount;
+  profileDetails.followingCount = user.followingCount;
+  profileDetails.accountStatus = user.accountStatus;
+  profileDetails.isPrivate = user.isPrivate;
+  profileDetails.isValid = user.isValid;
+  profileDetails.isVerified = user.isVerified;
+  profileDetails.verifiedCategory = user.verifiedCategory;
+  profileDetails.verifiedAt = user.verifiedAt;
+  profileDetails.role = user.role;
+  profileDetails.showOnlineStatus = user.showOnlineStatus;
+  profileDetails.lastSeen = user.lastSeen;
+  profileDetails.createdAt = user.createdAt;
+  profileDetails.updatedAt = user.updatedAt;
+
+  return profileDetails;
+};
+
+utility.getUserProfileData = async (userId, reqUser) => {
+  const user = await models.User.findById(userId)
+    .select([
+      "_id", "fname", "lname", "email", "uname", "avatar", "profession",
+      "postsCount", "followersCount", "followingCount", "about", "dob",
+      "gender", "website", "isPrivate", "isValid", "role", "accountStatus",
+      "isPrivate", "isVerified", "verifiedCategory", "createdAt", "updatedAt"
+    ]);
+
+  const followingStatus = await utility.getFollowingStatus(reqUser, user._id);
+  const isBlockedByYou = await utility.checkIfUserBlocked(user._id, reqUser._id);
+  const isBlockedByUser = await utility.checkIfUserBlocked(reqUser._id, user._id);
+
+  const userDetails = {};
+
+  userDetails._id = user._id;
+  userDetails.fname = user.fname;
+  userDetails.lname = user.lname;
+  userDetails.email = user.email;
+  userDetails.uname = user.uname;
+  userDetails.followersCount = user.followersCount;
+  userDetails.followingCount = user.followingCount;
+  userDetails.postsCount = user.postsCount;
+  userDetails.followingStatus = followingStatus;
+  userDetails.avatar = user.avatar;
+  userDetails.about = user.about;
+  userDetails.dob = user.dob;
+  userDetails.gender = user.gender;
+  userDetails.profession = user.profession;
+  userDetails.website = user.website;
+  userDetails.accountStatus = user.accountStatus;
+  userDetails.isPrivate = user.isPrivate;
+  userDetails.isValid = user.isValid;
+  userDetails.isVerified = user.isVerified;
+  userDetails.verifiedCategory = user.verifiedCategory;
+  userDetails.isBlockedByYou = isBlockedByYou;
+  userDetails.isBlockedByUser = isBlockedByUser;
+  userDetails.role = user.role;
+  userDetails.createdAt = user.createdAt;
+  userDetails.updatedAt = user.updatedAt;
+
+  return userDetails;
+};
+
 utility.getHashTags = (text) => {
+  if (!text) return [];
+
+  if (typeof text !== "string") return [];
+
+  if (text.length === 0) return [];
+
+  if (!text.includes("#")) return [];
   const hashtags = text.match(/#[a-zA-Z0-9]+/g);
 
   if (hashtags) {
@@ -367,6 +524,13 @@ utility.getHashTags = (text) => {
 };
 
 utility.getMentions = (text) => {
+  if (!text) return [];
+
+  if (typeof text !== "string") return [];
+
+  if (text.length === 0) return [];
+
+  if (!text.includes("@")) return [];
   const mentions = text.match(/@[a-zA-Z0-9_]+/g);
 
   if (mentions) {
@@ -414,8 +578,8 @@ utility.getPostData = async (postId, reqUser) => {
 
   if (postType === "poll") {
     const postData = {};
-    const hashtags = await utility.getHashTags(post.pollQuestion);
-    const mentions = await utility.getMentions(post.pollQuestion);
+    const hashtags = utility.getHashTags(post.pollQuestion);
+    const mentions = utility.getMentions(post.pollQuestion);
     const isVoted = await utility.checkIfPollVoted(post._id, reqUser);
 
     const postOptions = [];
@@ -485,8 +649,8 @@ utility.getPostData = async (postId, reqUser) => {
   let mentions = [];
 
   if (post.caption) {
-    hashtags = await utility.getHashTags(post.caption);
-    mentions = await utility.getMentions(post.caption);
+    hashtags = utility.getHashTags(post.caption);
+    mentions = utility.getMentions(post.caption);
   }
 
   postData._id = post._id;
@@ -557,6 +721,38 @@ utility.getCommentData = async (commentId, reqUser) => {
   commentData.updatedAt = comment.updatedAt;
 
   return commentData;
+};
+
+utility.getCommentReplyData = async (replyId, reqUser) => {
+  const commentReply = await models.CommentReply.findById(replyId);
+  const commentReplyData = {};
+
+  const ownerData = await utility.getOwnerData(commentReply.user, reqUser);
+  const isLiked = await utility.checkIfCommentReplyLiked(commentReply._id, reqUser);
+
+  commentReplyData._id = commentReply._id;
+
+  commentReplyData.reply = commentReply.reply;
+
+  commentReplyData.comment = commentReply.comment;
+  commentReplyData.post = commentReply.post;
+
+  commentReplyData.user = ownerData;
+
+  commentReplyData.likesCount = commentReply.likesCount;
+
+  commentReplyData.isLiked = isLiked;
+
+  commentReplyData.allowLikes = commentReply.allowLikes;
+  commentReplyData.visibility = commentReply.visibility;
+
+  commentReplyData.replyStatus = commentReply.replyStatus;
+  commentReplyData.status = commentReply.replyStatus;
+
+  commentReplyData.createdAt = commentReply.createdAt;
+  commentReplyData.updatedAt = commentReply.updatedAt;
+
+  return commentReplyData;
 };
 
 utility.getNotificationData = async (notificationId, reqUser) => {
@@ -716,7 +912,7 @@ utility.getProjectOwnerData = async (ownerId) => {
   return userData;
 };
 
-utility.getScrrenshotData = async (screenshotId) => {
+utility.getScreenshotData = async (screenshotId) => {
   const screenshot = await models.ProjectScreenshot.findById(screenshotId);
 
   const screenshotData = {};
@@ -746,7 +942,7 @@ utility.getProjectData = async (projectId) => {
 
   if (project.screenshots.length > 0) {
     const screenshotsData = await Promise.all(project.screenshots.map(async (screenshotId) => {
-      const screenshotData = await utility.getScrrenshotData(screenshotId);
+      const screenshotData = await utility.getScreenshotData(screenshotId);
       return screenshotData;
     }));
 

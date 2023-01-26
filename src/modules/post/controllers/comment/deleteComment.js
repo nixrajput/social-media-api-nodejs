@@ -3,7 +3,7 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 
-/// DELETE COMMENT ///
+/// @route DELETE /api/v1/delete-comment
 
 const deleteComment = catchAsyncError(async (req, res, next) => {
   if (!req.query.id) {
@@ -25,6 +25,28 @@ const deleteComment = catchAsyncError(async (req, res, next) => {
 
   if (comment.user.toString() !== req.user._id.toString()) {
     return next(new ErrorHandler(ResponseMessages.UNAUTHORIZED, 401));
+  }
+
+  if (comment.repliesCount > 0) {
+    const replies = await models.CommentReply.find({ comment: comment._id });
+
+    for (let i = 0; i < replies.length; i++) {
+      await models.CommentReplyLike
+        .findOneAndDelete({ commentReply: replies[i]._id });
+      await replies[i].remove();
+    }
+
+    comment.repliesCount = 0;
+  }
+
+  if (comment.likesCount > 0) {
+    const likes = await models.CommentLike.find({ comment: comment._id });
+
+    for (let i = 0; i < likes.length; i++) {
+      await likes[i].remove();
+    }
+
+    comment.likesCount = 0;
   }
 
   await comment.remove();

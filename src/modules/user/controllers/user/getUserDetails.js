@@ -4,7 +4,7 @@ import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 
-/// GET USER DETAILS ///
+/// @route GET /api/v1/user-details
 
 const getUserDetails = catchAsyncError(async (req, res, next) => {
 
@@ -26,64 +26,43 @@ const getUserDetails = catchAsyncError(async (req, res, next) => {
     searchQuery = { uname: req.query.username };
   }
 
-  const user = await models.User.findOne(searchQuery)
-    .select({
-      _id: 1,
-      fname: 1,
-      lname: 1,
-      email: 1,
-      uname: 1,
-      postsCount: 1,
-      followersCount: 1,
-      followingCount: 1,
-      avatar: 1,
-      about: 1,
-      dob: 1,
-      gender: 1,
-      profession: 1,
-      website: 1,
-      isPrivate: 1,
-      isValid: 1,
-      role: 1,
-      accountStatus: 1,
-      isVerified: 1,
-      createdAt: 1,
-      updatedAt: 1,
-    });
+  const user = await models.User.findOne(searchQuery).select("_id");
 
   if (!user) {
     return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
   }
 
-  const followingStatus = await utility.getFollowingStatus(req.user, user._id);
+  const userDetails = await utility.getUserProfileData(user._id, req.user);
 
-  const userDetails = {};
+  // const userDetails = {};
 
-  userDetails._id = user._id;
-  userDetails.fname = user.fname;
-  userDetails.lname = user.lname;
-  userDetails.email = user.email;
-  userDetails.uname = user.uname;
-  userDetails.followersCount = user.followersCount;
-  userDetails.followingCount = user.followingCount;
-  userDetails.postsCount = user.postsCount;
-  userDetails.followingStatus = followingStatus;
-  userDetails.avatar = user.avatar;
-  userDetails.about = user.about;
-  userDetails.dob = user.dob;
-  userDetails.gender = user.gender;
-  userDetails.profession = user.profession;
-  userDetails.website = user.website;
-  userDetails.accountStatus = user.accountStatus;
-  userDetails.isPrivate = user.isPrivate;
-  userDetails.isValid = user.isValid;
-  userDetails.isVerified = user.isVerified;
-  userDetails.role = user.role;
-  userDetails.createdAt = user.createdAt;
-  userDetails.updatedAt = user.updatedAt;
+  // userDetails._id = user._id;
+  // userDetails.fname = user.fname;
+  // userDetails.lname = user.lname;
+  // userDetails.email = user.email;
+  // userDetails.uname = user.uname;
+  // userDetails.followersCount = user.followersCount;
+  // userDetails.followingCount = user.followingCount;
+  // userDetails.postsCount = user.postsCount;
+  // userDetails.followingStatus = followingStatus;
+  // userDetails.avatar = user.avatar;
+  // userDetails.about = user.about;
+  // userDetails.dob = user.dob;
+  // userDetails.gender = user.gender;
+  // userDetails.profession = user.profession;
+  // userDetails.website = user.website;
+  // userDetails.accountStatus = user.accountStatus;
+  // userDetails.isPrivate = user.isPrivate;
+  // userDetails.isValid = user.isValid;
+  // userDetails.isVerified = user.isVerified;
+  // userDetails.verifiedCategory = user.verifiedCategory;
+  // userDetails.role = user.role;
+  // userDetails.createdAt = user.createdAt;
+  // userDetails.updatedAt = user.updatedAt;
 
   res.status(200).json({
     success: true,
+    message: ResponseMessages.USER_DETAILS_FETCHED,
     user: userDetails,
   });
 });

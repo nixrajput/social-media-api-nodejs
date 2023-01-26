@@ -1,55 +1,19 @@
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
-import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
+import ResponseMessages from "../../../../contants/responseMessages.js";
 
-/// GET PROFILE DETAILS
+/// @route GET /api/v1/me
 
 const getProfileDetails = catchAsyncError(async (req, res, next) => {
-  const user = await models.User.findById(req.user._id)
-    .select([
-      "_id", "fname", "lname", "email", "uname", "avatar",
-      "dob", "gender", "about", "profession", "website", "location",
-      "postsCount", "followersCount", "followingCount", "isValid",
-      "isPrivate", "accountStatus", "isVerified", "verifiedCategory",
-      "verifiedAt", "role", "emailVerified", "phone", "countryCode",
-      "phoneVerified", "showOnlineStatus", "lastSeen",
-      "createdAt", "updatedAt",
-    ]);
+  if (!req.user) {
+    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 404));
+  }
 
-  const profileDetails = {};
-
-  profileDetails._id = user._id;
-  profileDetails.fname = user.fname;
-  profileDetails.lname = user.lname;
-  profileDetails.email = user.email;
-  profileDetails.emailVerified = user.emailVerified;
-  profileDetails.uname = user.uname;
-  profileDetails.avatar = user.avatar;
-  profileDetails.phone = user.phone;
-  profileDetails.countryCode = user.countryCode;
-  profileDetails.phoneVerified = user.phoneVerified;
-  profileDetails.dob = user.dob;
-  profileDetails.gender = user.gender;
-  profileDetails.about = user.about;
-  profileDetails.profession = user.profession;
-  profileDetails.website = user.website;
-  profileDetails.location = user.location;
-  profileDetails.postsCount = user.postsCount;
-  profileDetails.followersCount = user.followersCount;
-  profileDetails.followingCount = user.followingCount;
-  profileDetails.accountStatus = user.accountStatus;
-  profileDetails.isPrivate = user.isPrivate;
-  profileDetails.isValid = user.isValid;
-  profileDetails.isVerified = user.isVerified;
-  profileDetails.verifiedCategory = user.verifiedCategory;
-  profileDetails.verifiedAt = user.verifiedAt;
-  profileDetails.role = user.role;
-  profileDetails.showOnlineStatus = user.showOnlineStatus;
-  profileDetails.lastSeen = user.lastSeen;
-  profileDetails.createdAt = user.createdAt;
-  profileDetails.updatedAt = user.updatedAt;
+  const profileDetails = await utility.getProfileData(req.user);
 
   res.status(200).json({
     success: true,
+    message: ResponseMessages.USER_PROFILE_DETAILS_FETCHED,
     user: profileDetails,
   });
 });
