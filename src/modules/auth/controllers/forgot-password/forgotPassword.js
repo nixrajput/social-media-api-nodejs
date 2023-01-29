@@ -5,7 +5,7 @@ import models from "../../../../models/index.js";
 import utility from "../../../../utils/utility.js";
 import validators from "../../../../utils/validators.js";
 
-/// FORGOT PASSWORD ///
+/// @route  POST /api/v1/forgot-password
 
 const forgotPassword = catchAsyncError(async (req, res, next) => {
   const { email } = req.body;
@@ -21,18 +21,10 @@ const forgotPassword = catchAsyncError(async (req, res, next) => {
   const user = await models.User.findOne({ email });
 
   if (!user) {
-    return next(new ErrorHandler(ResponseMessages.INCORRECT_EMAIL, 400));
+    return next(new ErrorHandler(ResponseMessages.USER_NOT_FOUND, 400));
   }
 
-  if (!user.isValid) {
-    return res.status(401).json({
-      success: false,
-      accountStatus: "unverified",
-      message: ResponseMessages.INVALID_ACCOUNT_VALIDATION,
-    });
-  }
-
-  if (user.accountStatus !== "active") {
+  if (user.accountStatus !== "active" && user.accountStatus !== "deactivated") {
     return res.status(401).json({
       success: false,
       accountStatus: user.accountStatus,

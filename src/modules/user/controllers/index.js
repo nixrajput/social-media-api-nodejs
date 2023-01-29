@@ -44,6 +44,7 @@ import requestVerification from "./requests/requestVerification.js";
 import logoutOtherDevices from "./login-info/logoutOtherDevices.js";
 import blockUser from "./block/blockUser.js";
 import unblockUser from "./block/unblockUser.js";
+import getBlockedUsers from "./block/getBlockedUsers.js";
 
 const userController = {};
 
@@ -98,5 +99,6 @@ userController.requestVerification = requestVerification;
 
 userController.blockUser = blockUser;
 userController.unblockUser = unblockUser;
+userController.getBlockedUsers = getBlockedUsers;
 
 export default userController;

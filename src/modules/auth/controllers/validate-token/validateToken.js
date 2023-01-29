@@ -3,13 +3,13 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 
-/// VALIDATE TOKEN ///
+/// @route  GET api/v1/validate-token
 
 const validateToken = catchAsyncError(async (req, res, next) => {
     const { token } = req.query;
 
     if (!token) {
-        return next(new ErrorHandler(ResponseMessages.INVALID_QUERY_PARAMETERS, 400));
+        return next(new ErrorHandler(ResponseMessages.TOKEN_REQUIRED));
     }
 
     const authToken = await models.AuthToken.findOne({

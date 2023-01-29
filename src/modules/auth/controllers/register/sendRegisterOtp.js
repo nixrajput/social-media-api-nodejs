@@ -5,9 +5,9 @@ import validators from "../../../../utils/validators.js";
 import utility from "../../../../utils/utility.js";
 import models from "../../../../models/index.js";
 
-/// @route   POST /api/v1/send-verify-email-otp
+/// @route  POST /api/v1/send-verify-email-otp
 
-const sendVerifyEmailOtp = catchAsyncError(async (req, res, next) => {
+const sendRegisterOtp = catchAsyncError(async (req, res, next) => {
     const { email } = req.body;
 
     if (!email) {
@@ -66,4 +66,4 @@ const sendVerifyEmailOtp = catchAsyncError(async (req, res, next) => {
     }
 });
 
-export default sendVerifyEmailOtp;
+export default sendRegisterOtp;

@@ -8,7 +8,8 @@ import sendOtpToEmail from "./verify-otp/sendOtpToEmail.js";
 import verifyEmailOtp from "./verify-otp/verifyEmailOtp.js";
 import sendOtpToPhone from "./verify-otp/sendOtpToPhone.js";
 import verifyPhoneOtp from "./verify-otp/verifyPhoneOtp.js";
-import sendVerifyEmailOtp from "./verify-email/sendVerifyEmailOtp.js";
+import sendRegisterOtp from "./register/sendRegisterOtp.js";
+import validateUser from "./validate-user/validateUser.js";
 
 const authController = {};
 
@@ -22,6 +23,7 @@ authController.sendOtpToEmail = sendOtpToEmail;
 authController.verifyEmailOtp = verifyEmailOtp;
 authController.sendOtpToPhone = sendOtpToPhone;
 authController.verifyPhoneOtp = verifyPhoneOtp;
-authController.sendVerifyEmailOtp = sendVerifyEmailOtp;
+authController.sendRegisterOtp = sendRegisterOtp;
+authController.validateUser = validateUser;
 
 export default authController;

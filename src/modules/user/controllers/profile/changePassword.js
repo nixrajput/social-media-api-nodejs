@@ -2,8 +2,9 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
+import utility from "../../../../utils/utility.js";
 
-/// CHANGE PASSWORD ///
+/// @route  POST /api/v1/change-password
 
 const changePassword = catchAsyncError(async (req, res, next) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
@@ -34,9 +35,9 @@ const changePassword = catchAsyncError(async (req, res, next) => {
 
   user.password = newPassword;
   user.passwordChangedAt = Date.now();
-
-  await user.generateToken();
   await user.save();
+
+  await utility.generateAuthToken(user);
 
   res.status(200).json({
     success: true,

@@ -172,10 +172,6 @@ userRouter
   .route("/request-verification")
   .post(isAuthenticatedUser, userController.requestVerification);
 
-// userRouter
-//   .route("/get-user-activity")
-//   .get(isAuthenticatedUser, userController.getUserActivity);
-
 /// @route  GET api/v1/block-user
 /// @desc   Block User
 /// @access Private
@@ -190,5 +186,12 @@ userRouter
 userRouter
   .route("/unblock-user")
   .get(isAuthenticatedUser, userController.unblockUser);
+
+/// @route GET api/v1/get-blocked-users
+/// @desc Get Blocked Users
+/// @access Private
+userRouter
+  .route("/get-blocked-users")
+  .get(isAuthenticatedUser, userController.getBlockedUsers);
 
 export default userRouter;

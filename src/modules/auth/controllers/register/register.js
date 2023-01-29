@@ -5,7 +5,7 @@ import utility from "../../../../utils/utility.js";
 import validators from "../../../../utils/validators.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
 
-/// REGISTER USER ///
+/// @route  POST /api/v1/register
 
 const register = catchAsyncError(async (req, res, next) => {
   let {
@@ -23,7 +23,7 @@ const register = catchAsyncError(async (req, res, next) => {
   }
 
   if (fname && !validators.validateName(fname)) {
-    return next(new ErrorHandler(ResponseMessages.INVALID_FIRST_NAME_LENGTH, 400));
+    return next(new ErrorHandler(ResponseMessages.INVALID_FIRST_NAME, 400));
   }
 
   if (!lname) {
@@ -31,7 +31,7 @@ const register = catchAsyncError(async (req, res, next) => {
   }
 
   if (lname && !validators.validateName(lname)) {
-    return next(new ErrorHandler(ResponseMessages.INVALID_LAST_NAME_LENGTH, 400));
+    return next(new ErrorHandler(ResponseMessages.INVALID_LAST_NAME, 400));
   }
 
   if (!email) {

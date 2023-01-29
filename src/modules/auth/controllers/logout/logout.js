@@ -3,7 +3,7 @@ import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
 
-/// LOGOUT ///
+/// @route  GET api/v1/logout
 
 const logout = catchAsyncError(async (req, res, next) => {
   const user = await models.User.findById(req.user._id);

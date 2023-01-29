@@ -70,13 +70,15 @@ ResponseMessages.POLL_OPTIONS_MAX = 'Poll options must be at most 4';
 ResponseMessages.POLL_ID_REQUIRED = 'Poll id is required';
 ResponseMessages.POLL_OPTION_ID_REQUIRED = 'Poll option id is required';
 ResponseMessages.POLL_OPTION_VOTE_ID_REQUIRED = 'Poll option vote id is required';
-
+ResponseMessages.EMAIL_OR_PHONE_REQUIRED = 'Email or phone is required';
 ResponseMessages.ICON_REQUIRED = 'Icon is required';
 ResponseMessages.TITLE_REQUIRED = 'Title is required';
 ResponseMessages.DESCRIPTION_REQUIRED = 'Description is required';
 ResponseMessages.FEATURES_REQUIRED = 'Features is required';
 ResponseMessages.SCREENSHOTS_REQUIRED = 'Screenshots is required';
 ResponseMessages.SEARCH_QUERY_REQUIRED = 'Search query is required';
+ResponseMessages.SEARCH_TYPE_REQUIRED = 'Search type is required';
+ResponseMessages.TOKEN_REQUIRED = 'Token is required';
 
 /// Incorrect Response Messages
 ResponseMessages.INCORRECT_EMAIL = 'Incorrect email';
@@ -86,6 +88,9 @@ ResponseMessages.INCORRECT_OTP = 'Incorrect OTP';
 ResponseMessages.INCORRECT_PHONE = 'Incorrect phone';
 ResponseMessages.INCORRECT_CURRENT_PASSWORD = 'Incorrect current password';
 ResponseMessages.INCORRECT_OLD_PASSWORD = 'Incorrect old password';
+ResponseMessages.INCORRECT_EMAIL_OR_USERNAME = 'Incorrect email or username';
+ResponseMessages.INCORRECT_EMAIL_OR_PHONE = 'Incorrect email or phone';
+ResponseMessages.INCORRECT_EMAIL_OR_USERNAME_OR_PHONE = 'Incorrect email or username or phone';
 
 /// Success Response Messages
 ResponseMessages.SUCCESS = 'Success';
@@ -328,7 +333,10 @@ ResponseMessages.INVALID_CHAT_ID = 'Invalid chat id';
 ResponseMessages.INVALID_USER_TYPE = 'Invalid user type';
 ResponseMessages.INVALID_USER_STATUS = 'Invalid user status';
 ResponseMessages.INVALID_USER_ACCOUNT_STATUS = 'Invalid user account status';
-ResponseMessages.INVALID_ACCOUNT_VALIDATION = 'Your account is not verified, please verify your account';
+ResponseMessages.INVALID_ACCOUNT_VALIDATION = 'Your account is not validated';
+ResponseMessages.ACCOUNT_VALIDATED = 'Your account is validated';
+ResponseMessages.ACCOUNT_ALREADY_VALIDATED = 'Your account is already validated';
+ResponseMessages.INVALID_ACCOUNT_STATUS = 'Invalid account status';
 ResponseMessages.UNAUTHORIZED = 'You are not authorized to perform this operation';
 ResponseMessages.NOT_FOUND = 'Not found';
 ResponseMessages.INVALID_REQUEST = 'Invalid request';
@@ -413,5 +421,9 @@ ResponseMessages.COMMENT_REPLY_ID_REQUIRED = 'Comment reply id required';
 ResponseMessages.COMMENT_REPLY_NOT_FOUND = 'Comment reply not found';
 ResponseMessages.COMMENT_REPLY_ADD_SUCCESS = 'Comment reply added successfully';
 ResponseMessages.COMMENT_REPLY_DELETE_SUCCESS = 'Comment reply deleted successfully';
+
+/// Block Response Messages
+ResponseMessages.BLOCKED_USERS_FETCHED = 'Blocked users fetched';
+
 
 export default ResponseMessages;

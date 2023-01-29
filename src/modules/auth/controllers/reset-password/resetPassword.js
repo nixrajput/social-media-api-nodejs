@@ -5,7 +5,7 @@ import models from "../../../../models/index.js";
 import dateUtility from "../../../../utils/dateUtil.js";
 import utility from "../../../../utils/utility.js";
 
-/// RESET PASSWORD ///
+/// @route  POST /api/v1/reset-password
 
 const resetPassword = catchAsyncError(async (req, res, next) => {
   const { otp, newPassword, confirmPassword } = req.body;
@@ -50,15 +50,7 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.INCORRECT_OTP, 400));
   }
 
-  if (!user.isValid) {
-    return res.status(401).json({
-      success: false,
-      accountStatus: "unverified",
-      message: ResponseMessages.INVALID_ACCOUNT_VALIDATION,
-    });
-  }
-
-  if (user.accountStatus !== "active") {
+  if (user.accountStatus !== "active" && user.accountStatus !== "deactivated") {
     return res.status(401).json({
       success: false,
       accountStatus: user.accountStatus,
@@ -68,12 +60,11 @@ const resetPassword = catchAsyncError(async (req, res, next) => {
 
   user.password = newPassword;
   user.passwordChangedAt = Date.now();
-
-  otpObj.isUsed = true;
-
-  await user.generateToken();
-  await otpObj.save();
   await user.save();
+
+  otpObj.remove();
+
+  await utility.generateAuthToken(user);
 
   res.status(200).json({
     success: true,

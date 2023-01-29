@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import catchAsyncError from "../../../../helpers/catchAsyncError.js";
 import ErrorHandler from "../../../../helpers/errorHandler.js";
 import models from "../../../../models/index.js";
@@ -6,7 +5,7 @@ import validators from "../../../../utils/validators.js";
 import ResponseMessages from "../../../../contants/responseMessages.js";
 import utility from "../../../../utils/utility.js";
 
-/// LOGIN USER ///
+/// @route  POST /api/v1/login
 
 const login = catchAsyncError(async (req, res, next) => {
   const { emailUname, password } = req.body;
@@ -24,14 +23,14 @@ const login = catchAsyncError(async (req, res, next) => {
   if (emailUname && validators.validateEmail(emailUname)) {
     user = await models.User.findOne({ email: emailUname }).select("+password");
     if (!user) {
-      return next(new ErrorHandler(ResponseMessages.INCORRECT_EMAIL, 400));
+      return next(new ErrorHandler(ResponseMessages.INCORRECT_EMAIL_OR_USERNAME, 400));
     }
   }
   else {
     user = await models.User.findOne({ uname: emailUname }).select("+password");
 
     if (!user) {
-      return next(new ErrorHandler(ResponseMessages.INCORRECT_USERNAME, 400));
+      return next(new ErrorHandler(ResponseMessages.INCORRECT_EMAIL_OR_USERNAME, 400));
     }
   }
 
