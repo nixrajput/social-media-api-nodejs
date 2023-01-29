@@ -172,20 +172,20 @@ userRouter
   .route("/request-verification")
   .post(isAuthenticatedUser, userController.requestVerification);
 
-/// @route  GET api/v1/block-user
+/// @route  POST api/v1/block-user
 /// @desc   Block User
 /// @access Private
 userRouter
   .route("/block-user")
-  .get(isAuthenticatedUser, userController.blockUser);
+  .post(isAuthenticatedUser, userController.blockUser);
 
 
-/// @route  GET api/v1/unblock-user
+/// @route  POST api/v1/unblock-user
 /// @desc   Unblock User
 /// @access Private
 userRouter
   .route("/unblock-user")
-  .get(isAuthenticatedUser, userController.unblockUser);
+  .post(isAuthenticatedUser, userController.unblockUser);
 
 /// @route GET api/v1/get-blocked-users
 /// @desc Get Blocked Users
