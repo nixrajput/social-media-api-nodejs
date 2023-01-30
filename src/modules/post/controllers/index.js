@@ -19,6 +19,7 @@ import addCommentReply from "./comment/addCommentReply.js";
 import likeUnlikeCommentReply from "./comment/likeUnlikeCommentReply.js";
 import getCommentReplies from "./comment/getCommentReplies.js";
 import deleteCommentReply from "./comment/deleteCommentReply.js";
+import reportCommentReply from "./comment/reportCommentReply.js";
 
 const postController = {};
 
@@ -45,5 +46,6 @@ postController.addCommentReply = addCommentReply;
 postController.likeUnlikeCommentReply = likeUnlikeCommentReply;
 postController.getCommentReplies = getCommentReplies;
 postController.deleteCommentReply = deleteCommentReply;
+postController.reportCommentReply = reportCommentReply;
 
 export default postController;

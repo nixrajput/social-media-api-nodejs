@@ -1,27 +1,22 @@
 import mongoose from "mongoose";
 
-const postReportSchema = new mongoose.Schema({
-    post: {
+const commentReplyReportSchema = new mongoose.Schema({
+    commentReply: {
         type: mongoose.Schema.ObjectId,
-        ref: "Post",
+        ref: "CommentReply",
+        required: true,
     },
 
     reporter: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-    },
-
-    reportType: {
-        type: String,
-        enum: [
-            "spam", "harassment", "inappropriate",
-            "violence", "other", "abuse"
-        ],
-        default: "spam",
+        required: true,
     },
 
     reportReason: {
         type: String,
+        required: true,
+        maxlength: 100,
     },
 
     reportStatus: {
@@ -53,24 +48,11 @@ const postReportSchema = new mongoose.Schema({
     },
 });
 
-postReportSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: "post",
-        select: "postType postContent postStatus visibility allowComments allowLikes allowReposts",
-    }).populate({
-        path: "reporter",
-        select: "username email avatar",
-    });
-
-    next();
-});
-
-postReportSchema.pre("save", function (next) {
+commentReplyReportSchema.pre("save", function (next) {
     this.updatedAt = Date.now();
-
     next();
 });
 
-const PostReport = mongoose.model("PostReport", postReportSchema);
+const CommentReplyReport = mongoose.model("CommentReplyReport", commentReplyReportSchema);
 
-export default PostReport;
+export default CommentReplyReport;

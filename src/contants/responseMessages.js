@@ -368,6 +368,8 @@ ResponseMessages.LIKE_FAILED = 'Like failed';
 ResponseMessages.UNLIKE_FAILED = 'Unlike failed';
 ResponseMessages.USER_ALREADY_LIKED = 'User already liked';
 ResponseMessages.USER_ALREADY_UNLIKED = 'User already unliked';
+ResponseMessages.METHOD_NOT_ALLOWED = 'Method not allowed';
+ResponseMessages.ACCOUNT_NOT_CREATED = 'Account not created';
 
 /// Project Response Messages
 
@@ -424,6 +426,24 @@ ResponseMessages.COMMENT_REPLY_DELETE_SUCCESS = 'Comment reply deleted successfu
 
 /// Block Response Messages
 ResponseMessages.BLOCKED_USERS_FETCHED = 'Blocked users fetched';
+
+/// Report Response Messages
+ResponseMessages.REPORT_ID_REQUIRED = 'Report id required';
+ResponseMessages.REPORT_NOT_FOUND = 'Report not found';
+ResponseMessages.REPORT_ALREADY_EXISTS = 'Report already exists';
+ResponseMessages.REPORT_CREATED = 'Report created';
+ResponseMessages.REPORT_UPDATED = 'Report updated';
+ResponseMessages.REPORT_DELETED = 'Report deleted';
+ResponseMessages.REPORT_NOT_DELETED = 'Report not deleted';
+ResponseMessages.REPORT_NOT_UPDATED = 'Report not updated';
+ResponseMessages.REPORT_NOT_CREATED = 'Report not created';
+ResponseMessages.REPORT_ADD_SUCCESS = 'Report added successfully';
+ResponseMessages.REPORT_DELETE_SUCCESS = 'Report deleted successfully';
+ResponseMessages.REPORTS_FETCHED = 'Reports fetched';
+ResponseMessages.REPORTS_NOT_FETCHED = 'Reports not fetched';
+ResponseMessages.REPORTS_FETCHED_SUCCESS = 'Reports fetched successfully';
+ResponseMessages.REPORTS_FETCHED_FAILED = 'Reports not fetched successfully';
+ResponseMessages.CANNOT_REPORT_YOURSELF = 'You cannot report yourself';
 
 
 export default ResponseMessages;

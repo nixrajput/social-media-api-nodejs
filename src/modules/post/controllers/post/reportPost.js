@@ -4,17 +4,13 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 import models from "../../../../models/index.js";
 import validators from "../../../../utils/validators.js";
 
-/// REPORT POST ///
+/// @route   POST api/v1/report-post
 
 const reportPost = catchAsyncError(async (req, res, next) => {
-    let { postId, reportType, reportReason } = req.body;
+    let { postId, reportReason } = req.body;
 
     if (!postId) {
         return next(new ErrorHandler(ResponseMessages.POST_ID_REQUIRED, 400));
-    }
-
-    if (!reportType) {
-        return next(new ErrorHandler(ResponseMessages.REPORT_TYPE_REQUIRED, 400));
     }
 
     if (!reportReason) {
@@ -30,14 +26,17 @@ const reportPost = catchAsyncError(async (req, res, next) => {
     const postReport = await models.PostReport.create({
         post: postId,
         reporter,
-        reportType,
         reportReason,
     });
 
+    if (!postReport) {
+        return next(new ErrorHandler(ResponseMessages.REPORT_NOT_CREATED, 500));
+    }
+
     res.status(200).json({
         success: true,
-        report: postReport,
-        message: ResponseMessages.REPORT_POST_SUCCESS,
+        message: ResponseMessages.REPORT_CREATED,
+        data: postReport,
     });
 });
 

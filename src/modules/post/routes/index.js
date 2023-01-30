@@ -113,4 +113,11 @@ postRouter
   .route("/delete-comment-reply")
   .delete(isAuthenticatedUser, postController.deleteCommentReply);
 
+/// @route POST /api/v1/post/report-comment-reply
+/// @desc Report Comment Reply
+/// @access Private
+postRouter
+  .route("/report-comment-reply")
+  .post(isAuthenticatedUser, postController.reportCommentReply);
+
 export default postRouter;

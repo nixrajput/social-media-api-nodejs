@@ -70,30 +70,43 @@ const register = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler(ResponseMessages.PASSWORDS_DO_NOT_MATCH, 400));
   }
 
-  let user = await models.User.findOne({ email });
+  let isUserExists = await models.User.findOne({ email });
 
-  if (user) {
+  if (isUserExists) {
     return next(new ErrorHandler(ResponseMessages.ACCOUNT_ALREADY_EXISTS, 400));
   }
 
-  user = await models.User.create({
+  const ip = utility.getIp(req);
+
+  const user = await models.User.create({
     fname,
     lname,
     email,
     uname,
     password,
+    accountCreatedIp: ip,
   });
 
-  const ip = utility.getIp(req);
+  if (!user) {
+    return next(new ErrorHandler(ResponseMessages.ACCOUNT_NOT_CREATED, 500));
+  }
 
-  user.accountCreatedIp = ip;
-
+  // TODO: Remove this in production
   if (isValidated === "true" || isValidated === true) {
     user.emailVerified = true;
     user.isValid = true;
   }
 
   await user.save();
+
+  // Generating OTP
+  const { otp, expiresAt } = await utility.generateOTP();
+
+  await models.OTP.create({
+    otp,
+    expiresAt,
+    email,
+  });
 
   const htmlMessage = `<p>Hi ${user.fname},</p>
   <p>
@@ -126,6 +139,10 @@ const register = catchAsyncError(async (req, res, next) => {
   res.status(201).json({
     success: true,
     message: ResponseMessages.SIGNUP_SUCCESS,
+    data: {
+      user: user._id,
+      otp: otp,
+    }
   });
 });
 

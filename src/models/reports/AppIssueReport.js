@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
 
-const issueReportSchema = new mongoose.Schema({
+const appIssueReportSchema = new mongoose.Schema({
     issue: {
         type: String,
-        required: [true, "Please enter an issue."],
+        required: true,
     },
 
     description: {
         type: String,
-        required: [true, "Please enter a description."],
+        required: true,
     },
 
     user: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        required: [true, "Please enter a user."],
+        required: true,
     },
 
     createdAt: {
@@ -28,11 +28,11 @@ const issueReportSchema = new mongoose.Schema({
     }
 });
 
-issueReportSchema.pre('save', function (next) {
+appIssueReportSchema.pre('save', function (next) {
     this.updatedAt = Date.now();
     next();
 });
 
-const IssueReport = mongoose.model("IssueReport", issueReportSchema);
+const AppIssueReport = mongoose.model("AppIssueReport", appIssueReportSchema);
 
-export default IssueReport;
+export default AppIssueReport;

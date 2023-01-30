@@ -4,44 +4,40 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 import models from "../../../../models/index.js";
 import validators from "../../../../utils/validators.js";
 
-/// @route   POST api/v1/report-user
+/// @route   POST api/v1/report-comment-reply
 
-const reportUser = catchAsyncError(async (req, res, next) => {
-    let { userId, reportReason } = req.body;
+const reportCommentReply = catchAsyncError(async (req, res, next) => {
+    let { commentReplyId, reportReason } = req.body;
 
-    if (!userId) {
-        return next(new ErrorHandler(ResponseMessages.USER_ID_REQUIRED, 400));
+    if (!commentReplyId) {
+        return next(new ErrorHandler(ResponseMessages.COMMENT_REPLY_ID_REQUIRED, 400));
     }
 
     if (!reportReason) {
         return next(new ErrorHandler(ResponseMessages.REPORT_REASON_REQUIRED, 400));
     }
 
-    if (!validators.isValidObjectId(userId)) {
-        return next(new ErrorHandler(ResponseMessages.INVALID_USER_ID, 400));
-    }
-
-    if (userId.toString() === req.user._id.toString()) {
-        return next(new ErrorHandler(ResponseMessages.CANNOT_REPORT_YOURSELF, 400));
+    if (!validators.isValidObjectId(commentReplyId)) {
+        return next(new ErrorHandler(ResponseMessages.INVALID_COMMENT_ID, 400));
     }
 
     const reporter = req.user._id;
 
-    const userReport = await models.UserReport.create({
-        user: userId,
+    const commentReplyReport = await models.CommentReplyReport.create({
+        commentReply: commentReplyId,
         reporter,
         reportReason,
     });
 
-    if (!userReport) {
+    if (!commentReplyReport) {
         return next(new ErrorHandler(ResponseMessages.REPORT_NOT_CREATED, 500));
     }
 
     res.status(200).json({
         success: true,
         message: ResponseMessages.REPORT_CREATED,
-        data: userReport,
+        data: commentReplyReport,
     });
 });
 
-export default reportUser;
+export default reportCommentReply;

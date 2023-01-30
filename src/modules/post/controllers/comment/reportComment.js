@@ -4,17 +4,13 @@ import ResponseMessages from "../../../../contants/responseMessages.js";
 import models from "../../../../models/index.js";
 import validators from "../../../../utils/validators.js";
 
-/// REPORT COMMENT ///
+/// @route   POST api/v1/report-comment
 
 const reportComment = catchAsyncError(async (req, res, next) => {
-    let { commentId, reportType, reportReason } = req.body;
+    let { commentId, reportReason } = req.body;
 
     if (!commentId) {
         return next(new ErrorHandler(ResponseMessages.COMMENT_ID_REQUIRED, 400));
-    }
-
-    if (!reportType) {
-        return next(new ErrorHandler(ResponseMessages.REPORT_TYPE_REQUIRED, 400));
     }
 
     if (!reportReason) {
@@ -30,14 +26,17 @@ const reportComment = catchAsyncError(async (req, res, next) => {
     const commentReport = await models.CommentReport.create({
         comment: commentId,
         reporter,
-        reportType,
         reportReason,
     });
 
+    if (!commentReport) {
+        return next(new ErrorHandler(ResponseMessages.REPORT_NOT_CREATED, 500));
+    }
+
     res.status(200).json({
         success: true,
-        report: commentReport,
-        message: ResponseMessages.REPORT_COMMENT_SUCCESS,
+        message: ResponseMessages.REPORT_CREATED,
+        data: commentReport,
     });
 });
 
