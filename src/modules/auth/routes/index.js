@@ -12,12 +12,6 @@ const authRouter = Router();
 authRouter.route("/register")
     .post(authController.register);
 
-/// @route  POST /api/v1/send-verify-email-otp
-/// @desc   Send verify email OTP
-/// @access Public
-authRouter.route("/send-verify-email-otp")
-    .post(authController.sendRegisterOtp);       // TODO: Delete this route
-
 /// @route  POST /api/v1/send-register-otp
 /// @desc   Send register OTP
 /// @access Public

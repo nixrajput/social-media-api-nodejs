@@ -15,7 +15,6 @@ const register = catchAsyncError(async (req, res, next) => {
     uname,
     password,
     confirmPassword,
-    isValidated,
   } = req.body;
 
   if (!fname) {
@@ -90,14 +89,6 @@ const register = catchAsyncError(async (req, res, next) => {
   if (!user) {
     return next(new ErrorHandler(ResponseMessages.ACCOUNT_NOT_CREATED, 500));
   }
-
-  // TODO: Remove this in production
-  if (isValidated === "true" || isValidated === true) {
-    user.emailVerified = true;
-    user.isValid = true;
-  }
-
-  await user.save();
 
   // Generating OTP
   const { otp, expiresAt } = await utility.generateOTP();
