@@ -6,49 +6,53 @@ import models from "../../../../models/index.js";
 /// CHANGE PASSWORD ///
 
 const changeAdminPassword = catchAsyncError(async (req, res, next) => {
-    const { oldPassword, newPassword, confirmPassword } = req.body;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
 
-    if (!oldPassword) {
-        return next(new ErrorHandler(ResponseMessages.OLD_PASSWORD_REQUIRED, 400));
-    }
+  if (!oldPassword) {
+    return next(new ErrorHandler(ResponseMessages.OLD_PASSWORD_REQUIRED, 400));
+  }
 
-    if (!newPassword) {
-        return next(new ErrorHandler(ResponseMessages.NEW_PASSWORD_REQUIRED, 400));
-    }
+  if (!newPassword) {
+    return next(new ErrorHandler(ResponseMessages.NEW_PASSWORD_REQUIRED, 400));
+  }
 
-    if (!confirmPassword) {
-        return next(new ErrorHandler(ResponseMessages.CONFIRM_PASSWORD_REQUIRED, 400));
-    }
+  if (!confirmPassword) {
+    return next(
+      new ErrorHandler(ResponseMessages.CONFIRM_PASSWORD_REQUIRED, 400)
+    );
+  }
 
-    if (newPassword !== confirmPassword) {
-        return next(new ErrorHandler(ResponseMessages.PASSWORDS_DO_NOT_MATCH, 400));
-    }
+  if (newPassword !== confirmPassword) {
+    return next(new ErrorHandler(ResponseMessages.PASSWORDS_DO_NOT_MATCH, 400));
+  }
 
-    const user = await models.User.findById(req.user._id).select("password");
+  const user = await models.User.findById(req.user._id).select("password");
 
-    if (user.role !== "admin") {
-        return res.status(401).json({
-            success: false,
-            accountStatus: user.accountStatus,
-            message: ResponseMessages.UNAUTHORIZED_ACCESS,
-        });
-    }
-
-    const isPasswordMatched = await user.matchPassword(oldPassword);
-
-    if (!isPasswordMatched) {
-        return next(new ErrorHandler(ResponseMessages.INCORRECT_CURRENT_PASSWORD, 400));
-    }
-
-    user.password = newPassword;
-
-    await user.generateToken();
-    await user.save();
-
-    res.status(200).json({
-        success: true,
-        message: ResponseMessages.PASSWORD_CHANGE_SUCCESS,
+  if (user.role !== "admin") {
+    return res.status(401).json({
+      success: false,
+      accountStatus: user.accountStatus,
+      message: ResponseMessages.UNAUTHORIZED_ACCESS,
     });
+  }
+
+  const isPasswordMatched = await user.matchPassword(oldPassword);
+
+  if (!isPasswordMatched) {
+    return next(
+      new ErrorHandler(ResponseMessages.INCORRECT_CURRENT_PASSWORD, 400)
+    );
+  }
+
+  user.password = newPassword;
+
+  await user.generateToken();
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: ResponseMessages.PASSWORD_CHANGE_SUCCESS,
+  });
 });
 
 export default changeAdminPassword;

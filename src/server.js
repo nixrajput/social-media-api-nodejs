@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { runApp, closeApp } from "./app.js";
 import initModules from "./initModules.js";
-import initWebSocket from "./webSocket.js";
 
 const app = runApp();
 
@@ -64,7 +63,6 @@ const connectToDatabase = function () {
           console.log(`[server] running on port: ${port}`);
         });
 
-
         setTimeout(() => {
           server.close();
           connectToDatabase();
@@ -98,8 +96,8 @@ const connectToDatabase = function () {
           console.log(`[server] running on port: ${port}`);
         });
 
-        // Init Web Socket
-        initWebSocket(server);
+        // // Init Web Socket
+        // initWebSocket(server);
 
         // Handling Uncaught Exception
         process.on("uncaughtException", (err) => {
@@ -149,9 +147,7 @@ const connectToDatabase = function () {
 
     app.listen(port, (err) => {
       if (err) {
-        console.log(
-          `[server] could not start http server on port: ${port}`
-        );
+        console.log(`[server] could not start http server on port: ${port}`);
         return;
       }
       console.log(`[server] running on port: ${port}`);
