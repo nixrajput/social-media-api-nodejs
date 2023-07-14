@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
-import path from 'path';
+import path from "path";
 import morgan from "morgan";
 import cron from "node-cron";
 import errorMiddleware from "./middlewares/errors.js";
@@ -82,7 +82,6 @@ export const runApp = () => {
   //     //   }
   //     // }
 
-
   //     //   // await models.Post.updateOne({ _id: post._id }, { $unset: { newLikes: 0 } });
   //     //   // console.log("done");
 
@@ -101,17 +100,7 @@ export const runApp = () => {
   //     //   }
   //     // });
 
-  //     // if (user.token && user.expiresAt) {
-  //     //   await models.AuthToken.create({
-  //     //     token: user.token,
-  //     //     user: user._id,
-  //     //     expiresAt: user.expiresAt
-  //     //   })
-  //     // }
-
   //   }
-
-
 
   //   //   // const posts = await models.Post.find({ owner: user._id })
   //   //   //   .select("_id").sort({ createdAt: -1 });
@@ -218,29 +207,9 @@ export const runApp = () => {
 
   //   //   //console.log(newFollowers)
 
-
   //   //   // user.followersCount = followersCount;
   //   //   // user.newF = followingCount;
 
-  //   //   // await user.save();
-
-  //   //   // for (let like of postLikes) {
-  //   //   //   console.log(like);
-  //   //   //   post.newLikes1.push({
-  //   //   //     likedBy: like.likedBy,
-  //   //   //     likedAt: like.likedAt,
-  //   //   //   });
-  //   //   // }
-  //   //   // let user = await models.User.findById(like.likedBy);
-  //   //   // user.likes.push(post._id);
-  //   //   // let postNewLikes = post.newLikes1;
-  //   //   // post.likes = postNewLikes;
-  //   //   // await post.save();
-
-  //   //   // post.likesCount = postLikesCount;
-  //   //   // post.commentsCount = postCommentsCount;
-  //   //   // await post.save();
-  //   // }
   //   console.log("operation done");
   // })();
 
