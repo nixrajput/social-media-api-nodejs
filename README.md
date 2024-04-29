@@ -28,7 +28,7 @@ A social media API built with Node.js, Express, and MongoDB. This API is built f
     - [Authentication](#authentication)
     - [Endpoints](#endpoints)
       - [Auth](#auth)
-      - [Profile](#profile)
+      - [Post](#post)
   - [Deployment](#deployment)
   - [Technologies Used](#technologies-used)
   - [Contributing](#contributing)
@@ -59,8 +59,8 @@ You can follow these instructions to get the project up and running on your loca
 
 You need to have the following software installed on your computer:
 
-- [Node.js](https://nodejs.org/) (LTS version recommended)
-- [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/) or [Yarn](https://yarnpkg.com/) package manager
+- [Bun](https://bun.sh/) (v1.1.0 or later) or [Node.js](https://nodejs.org/) (LTS version recommended)
+- [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [Yarn](https://yarnpkg.com/) or [Bun](https://bun.sh/) package manager
 
 ### Installation
 
@@ -155,13 +155,14 @@ Authorization: Bearer <token>
 
 #### Auth
 
-- **POST /api/v1/auth/register**: Create a new account.
-- **POST /api/v1/auth/login**: Login to the account.
+- **POST /api/v2/auth/register**: Create a new account.
+- **POST /api/v2/auth/login**: Login to the account.
+- **GET /api/v2/auth/me**: Get profile details.
 
-#### Profile
+#### Post
 
-- **GET /api/v1/profile/me**: Get profile details.
-- **GET /api/v1/profile/:id**: Get profile details by ID.
+- **GET /api/v2/post/create**: Create a new post.
+- **GET /api/v2/post/feed**: Get post feed.
 
 ## Deployment
 
@@ -199,8 +200,9 @@ This API can be deployed using various platforms such as Heroku, AWS, Google Clo
 
 - Node.js
 - Express.js
+- Bun
 - TypeScript
-- MongoDB (or any other database of your choice)
+- MongoDB
 
 ## Contributing
 
