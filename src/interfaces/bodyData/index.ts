@@ -2,10 +2,9 @@ export interface IRegisterBodyData {
   fname: string;
   lname: string;
   email: string;
+  username: string;
   password: string;
   confirmPassword?: string;
-  phone: string;
-  countryCode?: string;
   otp?: string;
 }
 

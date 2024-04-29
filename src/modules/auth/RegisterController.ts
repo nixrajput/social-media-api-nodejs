@@ -5,15 +5,14 @@ import ApiError from "../../exceptions/ApiError";
 import MailServiceHelper from "../../helpers/MailServiceHelper";
 import EmailTemplateHelper from "../../helpers/MailTemplateHelper";
 import OtpServiceHelper from "../../helpers/OtpServiceHelper";
-import type { IRegisterBodyData } from "../../interfaces/core/bodyData";
+import type { IRegisterBodyData } from "../../interfaces/bodyData";
 import type { IRequest, IResponse, INext } from "../../interfaces/core/express";
 import type { IUser } from "../../interfaces/entities/user";
 import Logger from "../../logger";
 import Otp from "../../models/Otp";
-import User from "../../models/User";
 import type UserService from "../../services/UserService";
 import Validators from "../../utils/validator";
-import { EHttpMethod, EUserType } from "../../enums";
+import { EHttpMethod } from "../../enums";
 
 class RegisterController {
   private readonly _userSvc: UserService;
@@ -48,25 +47,26 @@ class RegisterController {
 
     try {
       const {
-        userType,
-        name,
+        fname,
+        lname,
         email,
-        phone,
+        username,
         password,
         confirmPassword,
-        companyName,
-        designation,
       }: IRegisterBodyData = req.body;
 
-      if (!userType) {
+      if (!fname) {
         return next(
-          new ApiError(StringValues.USER_TYPE_REQUIRED, StatusCodes.BAD_REQUEST)
+          new ApiError(
+            StringValues.FIRST_NAME_REQUIRED,
+            StatusCodes.BAD_REQUEST
+          )
         );
       }
 
-      if (!name) {
+      if (!lname) {
         return next(
-          new ApiError(StringValues.FULL_NAME_REQUIRED, StatusCodes.BAD_REQUEST)
+          new ApiError(StringValues.LAST_NAME_REQUIRED, StatusCodes.BAD_REQUEST)
         );
       }
 
@@ -85,40 +85,19 @@ class RegisterController {
         );
       }
 
-      if (!phone) {
+      if (!username) {
         return next(
-          new ApiError(StringValues.PHONE_REQUIRED, StatusCodes.BAD_REQUEST)
+          new ApiError(StringValues.USERNAME_REQUIRED, StatusCodes.BAD_REQUEST)
         );
       }
 
-      if (!Validators.validatePhone(phone)) {
+      if (!Validators.validateUsername(username)) {
         return next(
           new ApiError(
-            StringValues.INVALID_PHONE_FORMAT,
+            StringValues.INVALID_USERNAME_FORMAT,
             StatusCodes.BAD_REQUEST
           )
         );
-      }
-
-      // If user type is recruiter
-      if (userType === EUserType.Recruiter) {
-        if (!companyName) {
-          return next(
-            new ApiError(
-              StringValues.COMPANY_NAME_REQUIRED,
-              StatusCodes.BAD_REQUEST
-            )
-          );
-        }
-
-        if (!designation) {
-          return next(
-            new ApiError(
-              StringValues.DESIGNATION_REQUIRED,
-              StatusCodes.BAD_REQUEST
-            )
-          );
-        }
       }
 
       if (!password) {
@@ -181,9 +160,10 @@ class RegisterController {
         );
       }
 
-      const _name = name?.trim();
+      const _fname = fname?.trim();
+      const _lname = lname?.trim();
       const _email = email?.toLowerCase().trim();
-      const _phone = phone?.trim();
+      const _username = username?.trim();
 
       const isEmailExists = await this._userSvc.checkIsEmailExistsExc(_email);
       if (isEmailExists) {
@@ -195,13 +175,15 @@ class RegisterController {
         });
       }
 
-      const isPhoneExists = await this._userSvc.checkIsPhoneExistsExc(_phone);
-      if (isPhoneExists) {
+      const isUsernameExists = await this._userSvc.checkIsUsernameExistsExc(
+        _username
+      );
+      if (isUsernameExists) {
         res.status(StatusCodes.BAD_REQUEST);
         return res.json({
           success: false,
-          message: StringValues.PHONE_ALREADY_USED,
-          isPhoneUsed: true,
+          message: StringValues.USERNAME_ALREADY_REGISTERED,
+          isUsernameUsed: true,
         });
       }
 
@@ -217,7 +199,7 @@ class RegisterController {
       // Sending Email
       const htmlMessage = await EmailTemplateHelper.getOtpEmail(
         newOtp.otp,
-        _name
+        `${_fname} ${_lname}`
       );
 
       if (htmlMessage) {
@@ -271,28 +253,27 @@ class RegisterController {
 
     try {
       const {
-        userType,
-        name,
+        fname,
+        lname,
         email,
-        countryCode,
-        phone,
-        whatsAppNo,
+        username,
         password,
         confirmPassword,
-        companyName,
-        designation,
         otp,
       }: IRegisterBodyData = req.body;
 
-      if (!userType) {
+      if (!fname) {
         return next(
-          new ApiError(StringValues.USER_TYPE_REQUIRED, StatusCodes.BAD_REQUEST)
+          new ApiError(
+            StringValues.FIRST_NAME_REQUIRED,
+            StatusCodes.BAD_REQUEST
+          )
         );
       }
 
-      if (!name) {
+      if (!lname) {
         return next(
-          new ApiError(StringValues.FULL_NAME_REQUIRED, StatusCodes.BAD_REQUEST)
+          new ApiError(StringValues.LAST_NAME_REQUIRED, StatusCodes.BAD_REQUEST)
         );
       }
 
@@ -311,40 +292,19 @@ class RegisterController {
         );
       }
 
-      if (!phone) {
+      if (!username) {
         return next(
-          new ApiError(StringValues.PHONE_REQUIRED, StatusCodes.BAD_REQUEST)
+          new ApiError(StringValues.USERNAME_REQUIRED, StatusCodes.BAD_REQUEST)
         );
       }
 
-      if (!Validators.validatePhone(phone)) {
+      if (!Validators.validateUsername(username)) {
         return next(
           new ApiError(
-            StringValues.INVALID_PHONE_FORMAT,
+            StringValues.INVALID_USERNAME_FORMAT,
             StatusCodes.BAD_REQUEST
           )
         );
-      }
-
-      // If user type is recruiter
-      if (userType === EUserType.Recruiter) {
-        if (!companyName) {
-          return next(
-            new ApiError(
-              StringValues.COMPANY_NAME_REQUIRED,
-              StatusCodes.BAD_REQUEST
-            )
-          );
-        }
-
-        if (!designation) {
-          return next(
-            new ApiError(
-              StringValues.DESIGNATION_REQUIRED,
-              StatusCodes.BAD_REQUEST
-            )
-          );
-        }
       }
 
       if (!password) {
@@ -419,12 +379,13 @@ class RegisterController {
         );
       }
 
-      const _name = name?.trim();
+      const _fname = fname?.trim();
+      const _lname = lname?.trim();
       const _email = email?.toLowerCase().trim();
-      const _phone = phone?.trim();
+      const _username = username?.trim();
       const _otp = otp?.trim();
 
-      const isEmailExists = await User.findOne({ email: _email });
+      const isEmailExists = await this._userSvc.checkIsEmailExistsExc(_email);
       if (isEmailExists) {
         res.status(StatusCodes.BAD_REQUEST);
         return res.json({
@@ -434,13 +395,15 @@ class RegisterController {
         });
       }
 
-      const isPhoneExists = await User.findOne({ phone: _phone });
-      if (isPhoneExists) {
+      const isUsernameExists = await this._userSvc.checkIsUsernameExistsExc(
+        _username
+      );
+      if (isUsernameExists) {
         res.status(StatusCodes.BAD_REQUEST);
         return res.json({
           success: false,
-          message: StringValues.PHONE_ALREADY_USED,
-          isPhoneUsed: true,
+          message: StringValues.USERNAME_ALREADY_REGISTERED,
+          isUsernameUsed: true,
         });
       }
 
@@ -468,16 +431,14 @@ class RegisterController {
 
       // Create User
       const newUserData: IUser = {
-        userType: userType,
-        name: _name,
+        fname: _fname,
+        lname: _lname,
         nameChangedAt: _currentDateTime,
         email: _email,
         isEmailVerified: true,
         emailChangedAt: _currentDateTime,
-        countryCode: countryCode?.trim(),
-        phone: _phone,
-        phoneChangedAt: _currentDateTime,
-        whatsAppNo: whatsAppNo?.trim(),
+        username: _username,
+        usernameChangedAt: _currentDateTime,
       };
 
       const newUser = await this._userSvc.createUserExc(newUserData);
@@ -486,13 +447,13 @@ class RegisterController {
       await newUser.setPassword(password.trim());
 
       // Create Recuiter Profile
-      if (userType === EUserType.Recruiter) {
-        await this._profileSvc.createRecruiterExc({
-          userId: newUser._id,
-          companyName: companyName.trim(),
-          designation: designation.trim(),
-        });
-      }
+      //  if (userType === EUserType.Recruiter) {
+      //   await this._profileSvc.createRecruiterExc({
+      //     userId: newUser._id,
+      //     companyName: companyName.trim(),
+      //     designation: designation.trim(),
+      //   });
+      // }
 
       // Send Welcome Email
       // const htmlMessage = await EmailTemplateHelper.getOtpEmail(_name);

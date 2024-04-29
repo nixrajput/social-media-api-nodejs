@@ -150,7 +150,7 @@ class PasswordController {
       // Sending Email
       const htmlMessage = await EmailTemplateHelper.getOtpEmail(
         newOtp.otp,
-        currentUser.name
+        `${currentUser.fname} ${currentUser.lname}`
       );
 
       if (htmlMessage) {

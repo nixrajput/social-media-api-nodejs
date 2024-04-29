@@ -74,6 +74,27 @@ class UserService {
     }
   };
 
+  // Check if `User` already registered with the username
+  public checkIsUsernameExistsExc = async (
+    _username: string
+  ): Promise<boolean> => {
+    try {
+      const user = await User.findOne({ username: _username });
+
+      if (!user) {
+        return Promise.resolve(false);
+      }
+
+      return Promise.resolve(true);
+    } catch (error) {
+      Logger.error(
+        "UserService: checkIsUsernameExistsExc",
+        "errorInfo:" + JSON.stringify(error)
+      );
+      return Promise.reject(error);
+    }
+  };
+
   // Check if `User` already registered with the phone number
   public checkIsPhoneExistsExc = async (_phone: string): Promise<boolean> => {
     try {

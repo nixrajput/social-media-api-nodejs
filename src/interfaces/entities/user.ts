@@ -23,7 +23,7 @@ export interface IUser {
   username: string;
   usernameChangedAt: Date;
   countryCode?: string;
-  phone: string;
+  phone?: string;
   isPhoneVerified?: boolean;
   phoneChangedAt?: Date;
   avatar?: IAvatar;
