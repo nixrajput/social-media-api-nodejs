@@ -10,7 +10,7 @@
     "dev": "bun --hot index.ts",
     "start": ".bun/bun index.ts",
     "lint": "eslint . --ext .ts",
-    "push": "git add -A && git commit -m \"initial commit\" && git push origin master"
+    "push": "git add -A && git commit -m \"Update Changes & Bug Fixes\" && git push origin master"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",

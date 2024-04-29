@@ -1,333 +1,63 @@
-# `Contributing Guidelines`  
+# Contributing to the Portfolio Website
 
-This documentation contains a set of guidelines to help you during the contribution process.
+We appreciate your interest in contributing to the Portfolio Website built with Next.js and Sass. By contributing, you help make this project better and more accessible for others. Please take a moment to review the following guidelines to ensure a smooth and collaborative development process.
 
-We are happy to welcome all the contributions from anyone willing to improve/add new scripts to this project. Thank you for helping out and remember, **no contribution is too small.**
+## Code of Conduct
 
-[`Code of Conduct`](CODE_OF_CONDUCT.md)
----------------
+Please review and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). We expect all contributors to be respectful, considerate, and inclusive when interacting with the project and its community.
 
-<details>
+## How to Contribute
 
-```css
-# Contributor Covenant Code of Conduct
+Here are the steps to contribute to this project:
 
-## Our Pledge
+1. Fork the Repository: Click the "Fork" button at the top right of this repository to create a copy in your GitHub account.
 
-We as members, contributors, and leaders pledge to make participation in our
-community a harassment-free experience for everyone, regardless of age, body
-size, visible or invisible disability, ethnicity, sex characteristics, gender
-identity and expression, level of experience, education, socio-economic status,
-nationality, personal appearance, race, religion, or sexual identity
-and orientation.
+2. Clone the Repository: Clone your forked repository to your local machine using the following command:
 
-We pledge to act and interact in ways that contribute to an open, welcoming,
-diverse, inclusive, and healthy community.
+   ```bash
+   git clone https://github.com/nixrajput/social-media-api-nodejs.git
+   ```
 
-## Our Standards
+3. Create a Branch: Create a new branch for your contributions. Make sure to choose a descriptive branch name that reflects the changes you intend to make.
 
-Examples of behavior that contributes to a positive environment for our
-community include:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
 
-* Demonstrating empathy and kindness toward other people
-* Being respectful of differing opinions, viewpoints, and experiences
-* Giving and gracefully accepting constructive feedback
-* Accepting responsibility and apologizing to those affected by our mistakes,
-  and learning from the experience
-* Focusing on what is best not just for us as individuals, but for the
-  overall community
+4. Make Changes: Implement your changes and improvements in your local repository. Follow the coding style and best practices of the project.
 
-Examples of unacceptable behavior include:
+5. Test Your Changes: Ensure that your changes do not introduce any errors or regressions. Test the website locally to verify that it functions as expected.
 
-* The use of sexualized language or imagery, and sexual attention or
-  advances of any kind
-* Trolling, insulting or derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or email
-  address, without their explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+6. Commit Changes: Commit your changes with a clear and descriptive commit message.
 
-## Enforcement Responsibilities
+   ```bash
+   git commit -m "Add feature/fix: Describe your changes here"
+   ```
 
-Community leaders are responsible for clarifying and enforcing our standards of
-acceptable behavior and will take appropriate and fair corrective action in
-response to any behavior that they deem inappropriate, threatening, offensive,
-or harmful.
+7. Push Changes: Push your changes to your forked repository on GitHub.
 
-Community leaders have the right and responsibility to remove, edit, or reject
-comments, commits, code, wiki edits, issues, and other contributions that are
-not aligned to this Code of Conduct, and will communicate reasons for moderation
-decisions when appropriate.
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 
-## Scope
+8. Create a Pull Request: Go to the original repository on GitHub and click the "New Pull Request" button. Provide a concise description of your changes, why they are necessary, and any relevant information.
 
-This Code of Conduct applies within all community spaces, and also applies when
-an individual is officially representing the community in public spaces.
-Examples of representing our community include using an official e-mail address,
-posting via an official social media account, or acting as an appointed
-representative at an online or offline event.
+9. Review and Collaboration: Contributors and maintainers will review your Pull Request. Be prepared to address any feedback or make additional changes as necessary.
 
-## Enforcement
+10. Merge: Once your Pull Request is approved and passes all checks, a maintainer will merge it into the main branch. Congratulations, your contribution is now part of the project!
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-nkr.nikhil.nkr@gmail.com.
-All complaints will be reviewed and investigated promptly and fairly.
+## Development Guidelines
 
-All community leaders are obligated to respect the privacy and security of the
-reporter of any incident.
+- Follow the project's coding style and guidelines.
+- Write clear and concise code with comments where necessary.
+- Test your changes thoroughly before submitting a Pull Request.
+- Keep Pull Requests focused on a single feature or bug fix.
+- Be responsive to feedback and be willing to make improvements as requested.
 
-## Enforcement Guidelines
+## Reporting Issues
 
-Community leaders will follow these Community Impact Guidelines in determining
-the consequences for any action they deem in violation of this Code of Conduct:
+If you encounter any issues or bugs while using the Portfolio Website, please report them on the [Issues](https://github.com/nixrajput/social-media-api-nodejs/issues) page of the repository. Provide as much detail as possible to help us understand and address the problem.
 
-### 1. Correction
+## Thank You
 
-**Community Impact**: Use of inappropriate language or other behavior deemed
-unprofessional or unwelcome in the community.
-
-**Consequence**: A private, written warning from community leaders, providing
-clarity around the nature of the violation and an explanation of why the
-behavior was inappropriate. A public apology may be requested.
-
-### 2. Warning
-
-**Community Impact**: A violation through a single incident or series
-of actions.
-
-**Consequence**: A warning with consequences for continued behavior. No
-interaction with the people involved, including unsolicited interaction with
-those enforcing the Code of Conduct, for a specified period of time. This
-includes avoiding interactions in community spaces as well as external channels
-like social media. Violating these terms may lead to a temporary or
-permanent ban.
-
-### 3. Temporary Ban
-
-**Community Impact**: A serious violation of community standards, including
-sustained inappropriate behavior.
-
-**Consequence**: A temporary ban from any sort of interaction or public
-communication with the community for a specified period of time. No public or
-private interaction with the people involved, including unsolicited interaction
-with those enforcing the Code of Conduct, is allowed during this period.
-Violating these terms may lead to a permanent ban.
-
-### 4. Permanent Ban
-
-**Community Impact**: Demonstrating a pattern of violation of community
-standards, including sustained inappropriate behavior,  harassment of an
-individual, or aggression toward or disparagement of classes of individuals.
-
-**Consequence**: A permanent ban from any sort of public interaction within
-the community.
-
-## Attribution
-
-This Code of Conduct is adapted from the [Contributor Covenant][homepage],
-version 2.0, available at
-https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
-
-Community Impact Guidelines were inspired by [Mozilla's code of conduct
-enforcement ladder](https://github.com/mozilla/diversity).
-
-[homepage]: https://www.contributor-covenant.org
-
-For answers to common questions about this code of conduct, see the FAQ at
-https://www.contributor-covenant.org/faq. Translations are available at
-https://www.contributor-covenant.org/translations.
-
-```
-
-</details>
-
-----------
-
-### Before contributing please ensure your **pull request** adheres to the following guidelines
-
-## STEP-0 : Key Points to remember
-
-- Look at the [previous](https://github.com/nixrajput/social-media-api-nodejs) work and get some idea from them.
-- Always maintain project folder architecture.
-- Don't delete/remove any existing file or folder.
-- Please don't add any License under your work. This repo already under `GPL-3.0 License`.
-  
-## STEP-1 : **Flow**
-
-### `Tree of Index`
-
-```js
-.
-├── src
-│   ├── config
-│   │   ├── config.env
-│   │
-│   ├── constants
-│   │   ├── responseMessages.js
-|   |
-│   ├── helpers
-│   │   ├── catchAsyncError.js
-│   │   ├── errorHandler.js
-│   │
-│   ├── middlewares
-│   │   ├── auth.js
-│   │   ├── error.js
-│   │   ├── multer.js
-|   |
-│   ├── models
-|   |   ├── index.js
-│   │   ├── comment
-│   │   │   ├── comment.js
-│   │   │
-│   │   ├── device-info
-│   │   │   ├── deviceInfo.js
-│   │   │
-│   │   ├── post
-│   │   │   ├── post.js
-│   │   │
-│   │   ├── user
-│   │   │   ├── user.js
-│   │   │
-│   │   ├── notification
-│   │   │   ├── notification.js
-│   │   │
-│   │   ├── otp
-│   │   │   ├── otp.js
-│   │   │
-│   │   ├── hashtag
-│   │   │   ├── hashtag.js
-│   │   │
-│   │   ├── report
-│   │   │   ├── report.js
-│   │ 
-│   ├── modules
-│   │   ├── auth
-│   │   │   ├── index.js
-│   │   │   ├── controllers
-│   │   │   │   ├── index.js
-│   │   │   │   ├── forgot-password
-│   │   │   │   │   ├── forgotPassword.js
-│   │   │   │   │ 
-│   │   │   │   ├── login
-│   │   │   │   │   ├── login.js
-│   │   │   │   │
-│   │   │   │   ├── logout
-│   │   │   │   │   ├── logout.js
-│   │   │   │   │
-│   │   │   │   ├── register
-│   │   │   │   │   ├── register.js
-│   │   │   │   │
-│   │   │   │   ├── reset-password
-│   │   │   │   │   ├── resetPassword.js
-│   │   │   │   │
-│   │   │   │   ├── verify-account
-│   │   │   │   │   ├── verifyAccount.js
-│   │   │   │   │   ├── verifyAccountOtp.js
-│   │   │   │   │
-│   │   │   │   
-│   │   │   ├── routes
-│   │   │   │   ├── index.js
-│   │   │   
-│   │   │   
-│   │   ├── admin
-│   │   │   ├── index.js
-│   │   │   ├── controllers
-│   │   │   │   ├── index.js
-│   │   │   │   ├── user
-│   │   │   │   │   ├── deleteUser.js
-│   │   │   │   │   ├── getAllUsers.js
-│   │   │   │   │   ├── getUserDetails.js
-│   │   │   │   │   ├── updateUser.js
-│   │   │   │   │   ├── updateUserRole.js
-│   │   │   │   │   ├── searchUser.js
-│   │   │   │   │   ├── updateAccountStatus.js
-│   │   │   │   │   ├── updateVerificationStatus.js
-│   │   │   │   │
-│   │   │   │   ├── post
-│   │   │   │   │   ├── deletePost.js
-│   │   │   │   │   ├── getAllPosts.js
-│   │   │   │   │   ├── getPostDetails.js
-│   │   │   │   │   ├── updatePost.js
-│   │   │   │   │   ├── updatePostStatus.js
-│   │   │   │   │   ├── searchPost.js
-│   │   │   │   
-│   │   │   ├── routes
-│   │   │   │   ├── index.js
-│   │   │
-│   │   ├── user
-|
-├── .gitignore
-|
-├── CODE_OF_CONDUCT.md
-|
-├── CONTRIBUTING.md
-|
-├── LICENSE.md
-|
-├── package.json
-|
-├── pnpm-lock.yaml
-|
-└── README.md
-```
-
-## STEP-2 : `Contributing`
-
-We'd love your contributions! Kindly follow the steps below to get started:
-
-0. Star <a href="https://github.com/nixrajput/social-media-api-nodejs" title="this">this</a> repository.
-
-1. Fork <a href="https://github.com/nixrajput/social-media-api-nodejs" title="this">this</a> repository.
-
-2. Clone the forked repository.
-
-```css
-git clone https://github.com/<your-github-username>/social-media-api-nodejs
-```
-
-3. Create a new branch.
-
-```css
-git checkout -b <your_branch_name>
-```
-
-4. Make changes.
-
-5. Stage your changes and commit
-
-```css
-git add -A
-
-git commit -m "<your_commit_message>"
-```
-
-6. Push your local commits to the remote repo.
-
-```css
-git push -u origin <your_branch_name>
-```
-
-7. Create a <a href="https://github.com/nixrajput/social-media-api-nodejs/pulls" title="Pull Request">Pull-Request</a>.
-
-8. Congratulations! 🎉 Sit and relax, you've made your contribution to <a href="https://github.com/nixrajput/social-media-api-nodejs" title="Social Media API - By NixLab">Social Media API - By NixLab</a>. ✌️ ❤️ 💥
-
-## **Note**
-
-- New categories, or improvements to the existing categorisation, are always welcome.
-- If you have any idea or suggestions then check this [Discussion Tab](https://github.com/nixrajput/social-media-api-nodejs/discussions). and put your [idea](https://github.com/nixrajput/social-media-api-nodejs/discussions/categories/ideas) or [suggestions](https://github.com/nixrajput/social-media-api-nodejs/discussions/categories/ideas)🏆
-  
-### [`Welcome to Discussions!`](https://github.com/nixrajput/social-media-api-nodejs/discussions)
-
-[Discussion Tab](https://github.com/nixrajput/social-media-api-nodejs/discussions)
-  
-## Need more help?🤔  
-
-You can refer to the following articles on basics of Git and Github and also contact the Project [Admin](https://github.com/nixrajput), in case you are stuck:  
-
-- [Forking a Repo](https://help.github.com/en/github/getting-started-with-github/fork-a-repo)  
-- [Cloning a Repo](https://help.github.com/en/desktop/contributing-to-projects/creating-an-issue-or-pull-request)  
-- [How to create a Pull Request](https://opensource.com/article/19/7/create-pull-request-github)  
-- [Getting started with Git and GitHub](https://towardsdatascience.com/getting-started-with-git-and-github-6fcd0f2d4ac6)  
-- [Learn GitHub from Scratch](https://www.youtube.com/watch?v=BCQHnlnPusY&list=PLozRqGzj97d02YjR5JVqDwN2K0cAiT7VK)  
+Thank you for contributing to the Portfolio Website project. Your contributions help make this project better and more valuable to its users. We appreciate your time and effort in making this project a success!
