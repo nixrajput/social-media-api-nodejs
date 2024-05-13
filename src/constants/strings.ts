@@ -141,6 +141,7 @@ class StringValues {
     "Phone number length should be equal to 10 characters";
   public static INCORRECT_PASSWORD = "Password is incorrect";
   public static INCORRECT_OLD_PASSWORD = "Old password is incorrect";
+  public static POST_NOT_FOUND = "Post not found";
 }
 
 export default StringValues;

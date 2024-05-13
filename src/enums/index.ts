@@ -18,3 +18,17 @@ export enum EUserStatus {
   withheld = "withheld",
   restricted = "restricted",
 }
+
+export enum EPostStatus {
+  active = "active",
+  inactive = "inactive",
+  deactivated = "deactivated",
+  suspended = "suspended",
+  blocked = "blocked",
+  deleted = "deleted",
+  banned = "banned",
+  reported = "reported",
+  pending = "pending",
+  withheld = "withheld",
+  restricted = "restricted",
+}

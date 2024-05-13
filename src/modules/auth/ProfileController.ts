@@ -2,14 +2,12 @@
  * Define Profile Controller Class
  */
 
-import { EHttpMethod, EUserType } from "../../enums";
+import { EHttpMethod } from "../../enums";
 import type { IRequest, IResponse, INext } from "../../interfaces/core/express";
 import ApiError from "../../exceptions/ApiError";
 import StatusCodes from "../../constants/statusCodes";
 import StringValues from "../../constants/strings";
 import Logger from "../../logger";
-import RecruiterProfile from "../../models/RecruiterProfile";
-import JobSeekerProfile from "../../models/JobSeekerProfile";
 
 class ProfileController {
   //   private readonly _userSvc: UserService;
@@ -45,98 +43,98 @@ class ProfileController {
     try {
       const currentUser = req.currentUser;
 
-      if (currentUser.userType === EUserType.Recruiter) {
-        const userProfile = await RecruiterProfile.findOne({
-          userId: currentUser._id,
-        });
+      // if (currentUser.userType === EUserType.Recruiter) {
+      //   const userProfile = await RecruiterProfile.findOne({
+      //     userId: currentUser._id,
+      //   });
 
-        if (!userProfile) {
-          return next(
-            new ApiError(StringValues.PROFILE_NOT_FOUND, StatusCodes.NOT_FOUND)
-          );
-        }
+      //   if (!userProfile) {
+      //     return next(
+      //       new ApiError(StringValues.PROFILE_NOT_FOUND, StatusCodes.NOT_FOUND)
+      //     );
+      //   }
 
-        const profileDetails = {
-          name: currentUser.name,
-          nameChangedAt: currentUser.nameChangedAt,
-          email: currentUser.email,
-          isEmailVerified: currentUser.isEmailVerified,
-          emailChangedAt: currentUser.emailChangedAt,
-          countryCode: currentUser.countryCode,
-          phone: currentUser.phone,
-          isPhoneVerified: currentUser.isPhoneVerified,
-          phoneChangedAt: currentUser.phoneChangedAt,
-          whatsAppNo: currentUser.whatsAppNo,
-          userType: currentUser.userType,
-          accountStatus: currentUser.accountStatus,
-          profileId: userProfile._id,
-          jobPostsCount: userProfile.jobPostsCount,
-          companyName: userProfile.companyName,
-          designation: userProfile.designation,
-          linkedInUrl: userProfile.linkedInUrl,
-          website: userProfile.website,
-          totalEmployees: userProfile.totalEmployees,
-          address: userProfile.address,
-          industryType: userProfile.industryType,
-          companyType: userProfile.companyType,
-          about: userProfile.about,
-          logoUrl: userProfile.logoUrl,
-          tagline: userProfile.tagline,
-          xUrl: userProfile.xUrl,
-          instagramUrl: userProfile.instagramUrl,
-          facebookUrl: userProfile.facebookUrl,
-          createdAt: currentUser.createdAt,
-          updatedAt: currentUser.updatedAt,
-        };
+      //   const profileDetails = {
+      //     name: currentUser.name,
+      //     nameChangedAt: currentUser.nameChangedAt,
+      //     email: currentUser.email,
+      //     isEmailVerified: currentUser.isEmailVerified,
+      //     emailChangedAt: currentUser.emailChangedAt,
+      //     countryCode: currentUser.countryCode,
+      //     phone: currentUser.phone,
+      //     isPhoneVerified: currentUser.isPhoneVerified,
+      //     phoneChangedAt: currentUser.phoneChangedAt,
+      //     whatsAppNo: currentUser.whatsAppNo,
+      //     userType: currentUser.userType,
+      //     accountStatus: currentUser.accountStatus,
+      //     profileId: userProfile._id,
+      //     jobPostsCount: userProfile.jobPostsCount,
+      //     companyName: userProfile.companyName,
+      //     designation: userProfile.designation,
+      //     linkedInUrl: userProfile.linkedInUrl,
+      //     website: userProfile.website,
+      //     totalEmployees: userProfile.totalEmployees,
+      //     address: userProfile.address,
+      //     industryType: userProfile.industryType,
+      //     companyType: userProfile.companyType,
+      //     about: userProfile.about,
+      //     logoUrl: userProfile.logoUrl,
+      //     tagline: userProfile.tagline,
+      //     xUrl: userProfile.xUrl,
+      //     instagramUrl: userProfile.instagramUrl,
+      //     facebookUrl: userProfile.facebookUrl,
+      //     createdAt: currentUser.createdAt,
+      //     updatedAt: currentUser.updatedAt,
+      //   };
 
-        return res.status(StatusCodes.CREATED).json({
-          success: true,
-          message: StringValues.SUCCESS,
-          data: profileDetails,
-        });
-      }
+      //   return res.status(StatusCodes.CREATED).json({
+      //     success: true,
+      //     message: StringValues.SUCCESS,
+      //     data: profileDetails,
+      //   });
+      // }
 
-      const userProfile = await JobSeekerProfile.findOne({
-        userId: currentUser._id,
-      });
+      // const userProfile = await JobSeekerProfile.findOne({
+      //   userId: currentUser._id,
+      // });
 
-      if (!userProfile) {
-        return next(
-          new ApiError(StringValues.PROFILE_NOT_FOUND, StatusCodes.NOT_FOUND)
-        );
-      }
+      // if (!userProfile) {
+      //   return next(
+      //     new ApiError(StringValues.PROFILE_NOT_FOUND, StatusCodes.NOT_FOUND)
+      //   );
+      // }
 
-      const profileDetails = {
-        name: currentUser.name,
-        nameChangedAt: currentUser.nameChangedAt,
-        email: currentUser.email,
-        isEmailVerified: currentUser.isEmailVerified,
-        emailChangedAt: currentUser.emailChangedAt,
-        countryCode: currentUser.countryCode,
-        phone: currentUser.phone,
-        isPhoneVerified: currentUser.isPhoneVerified,
-        phoneChangedAt: currentUser.phoneChangedAt,
-        whatsAppNo: currentUser.whatsAppNo,
-        userType: currentUser.userType,
-        accountStatus: currentUser.accountStatus,
-        profileId: userProfile._id,
-        aadhar: userProfile.aadhar,
-        gender: userProfile.gender,
-        dob: userProfile.dob,
-        address: userProfile.address,
-        highestEducationalQualification:
-          userProfile.highestEducationalQualification,
-        educationalDetails: userProfile.educationalDetails,
-        appliedJobs: userProfile.appliedJobs,
-        appliedJobsCount: userProfile.appliedJobsCount,
-        createdAt: currentUser.createdAt,
-        updatedAt: currentUser.updatedAt,
-      };
+      // const profileDetails = {
+      //   name: currentUser.name,
+      //   nameChangedAt: currentUser.nameChangedAt,
+      //   email: currentUser.email,
+      //   isEmailVerified: currentUser.isEmailVerified,
+      //   emailChangedAt: currentUser.emailChangedAt,
+      //   countryCode: currentUser.countryCode,
+      //   phone: currentUser.phone,
+      //   isPhoneVerified: currentUser.isPhoneVerified,
+      //   phoneChangedAt: currentUser.phoneChangedAt,
+      //   whatsAppNo: currentUser.whatsAppNo,
+      //   userType: currentUser.userType,
+      //   accountStatus: currentUser.accountStatus,
+      //   profileId: userProfile._id,
+      //   aadhar: userProfile.aadhar,
+      //   gender: userProfile.gender,
+      //   dob: userProfile.dob,
+      //   address: userProfile.address,
+      //   highestEducationalQualification:
+      //     userProfile.highestEducationalQualification,
+      //   educationalDetails: userProfile.educationalDetails,
+      //   appliedJobs: userProfile.appliedJobs,
+      //   appliedJobsCount: userProfile.appliedJobsCount,
+      //   createdAt: currentUser.createdAt,
+      //   updatedAt: currentUser.updatedAt,
+      // };
 
       return res.status(StatusCodes.CREATED).json({
         success: true,
         message: StringValues.SUCCESS,
-        data: profileDetails,
+        data: {},
       });
     } catch (error: any) {
       const errorMessage =

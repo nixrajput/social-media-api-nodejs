@@ -1,5 +1,5 @@
-import App from "./src/app";
-import Logger from "./src/logger";
+import App from "./app";
+import Logger from "./logger";
 
 const main = (): void => {
   // Run the Server

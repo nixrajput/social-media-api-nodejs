@@ -3,9 +3,9 @@
  */
 
 import sgMail from "@sendgrid/mail";
-import LocalConfig from "../config/LocalConfig";
+import LocalConfig from "../configs/LocalConfig";
 import Logger from "../logger";
-import StringValues from "../constants/Strings";
+import StringValues from "../constants/strings";
 
 export interface MailTo {
   name: string;

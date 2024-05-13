@@ -3,9 +3,9 @@
  */
 
 import jwt from "jsonwebtoken";
-import LocalConfig from "../config/LocalConfig";
+import LocalConfig from "../configs/LocalConfig";
 import Logger from "../logger";
-import Strings from "../constants/Strings";
+import Strings from "../constants/strings";
 import type { IAuthTokenModel } from "../interfaces/entities/authToken";
 import AuthToken from "../models/AuthToken";
 
