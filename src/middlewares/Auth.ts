@@ -2,8 +2,8 @@
  * Define Auth Middleware
  */
 
-import StatusCodes from "../constants/StatusCodes";
-import Strings from "../constants/Strings";
+import StatusCodes from "../constants/statusCodes";
+import Strings from "../constants/strings";
 import ApiError from "../exceptions/ApiError";
 import type { INext, IRequest, IResponse } from "../interfaces/core/express";
 import User from "../models/User";

@@ -446,6 +446,8 @@ class RegisterController {
       // Set Password
       await newUser.setPassword(password.trim());
 
+      await this._profileSvc.getProfileExc(newUser);
+
       // Create Recuiter Profile
       //  if (userType === EUserType.Recruiter) {
       //   await this._profileSvc.createRecruiterExc({

@@ -3,7 +3,7 @@
  */
 
 import { Router } from "express";
-import AuthMiddleware from "../../middlewares/Auth";
+// import AuthMiddleware from "../../middlewares/Auth";
 import PostController from "./PostController";
 import PostService from "../../services/PostService";
 
@@ -18,10 +18,10 @@ const postCtlr = new PostController(postSvc);
  * @route GET /api/v1/post/create
  * @access private
  */
-PostRouter.route("/create").all(
-  AuthMiddleware.isAuthenticatedUser,
-  postCtlr.createPost
-);
+// PostRouter.route("/create").all(
+//   AuthMiddleware.isAuthenticatedUser,
+//   postCtlr.createPost
+// );
 
 /**
  * @name getPostFeed

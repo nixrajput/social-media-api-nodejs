@@ -41,7 +41,7 @@ class ProfileController {
     }
 
     try {
-      const currentUser = req.currentUser;
+      // const currentUser = req.currentUser;
 
       // if (currentUser.userType === EUserType.Recruiter) {
       //   const userProfile = await RecruiterProfile.findOne({

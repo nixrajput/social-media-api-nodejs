@@ -38,7 +38,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "outDir": "./dist",
-    // "rootDir": "api",
+    "rootDir": "./src",
     "baseUrl": ".",
 
     "types": ["bun-types"]
