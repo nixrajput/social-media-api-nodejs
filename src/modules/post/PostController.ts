@@ -1,3 +1,4 @@
+import { escapeRegExp } from "lodash";
 import { EHttpMethod } from "../../enums";
 import StatusCodes from "../../constants/statusCodes";
 import StringValues from "../../constants/strings";
@@ -359,7 +360,7 @@ class PostController {
         findParams = {
           ...findParams,
           title: {
-            $regex: new RegExp(reqQueries["q"], "i"),
+            $regex: new RegExp(escapeRegExp(reqQueries["q"]), "i"),
           },
         };
       }

@@ -9,8 +9,7 @@ class Validators {
   public static validateEmail(email: string): boolean {
     if (!email) throw new Error("Email is not defined");
 
-    const EMAIL_REG_EXP: RegExp =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const EMAIL_REG_EXP: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return EMAIL_REG_EXP.test(email);
   }
@@ -43,8 +42,7 @@ class Validators {
   public static validateUrl(url: string): boolean {
     if (!url) throw new Error("URL is not defined");
 
-    const URL_REG_EXP: RegExp =
-      /^((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+    const URL_REG_EXP: RegExp = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*)/;
 
     return URL_REG_EXP.test(url);
   }
@@ -55,8 +53,7 @@ class Validators {
   public static validateLinkedUrl(url: string): boolean {
     if (!url) throw new Error("URL is not defined");
 
-    const LINKED_URL_REG_EXP: RegExp =
-      /(https?)?:?(\/\/)?(([w]{3}||\w\w)\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
+    const LINKED_URL_REG_EXP: RegExp = /(https?)?:?(\/\/)?(([w]{3}||\w\w)\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
 
     return LINKED_URL_REG_EXP.test(url);
   }

@@ -1,6 +1,6 @@
 # Social Media API
 
-A social media API built with Node.js, Express, and MongoDB. This API is built for developers to use in their projects. It is not meant to be used as a standalone social media platform. This API is still in development and is not ready for production use.
+A social media API built with Node.js, Express.js, and MongoDB. This API is built for developers to use in their projects. It is not meant to be used as a standalone social media platform. This API is still in development and is not ready for production use.
 
 [![Stars](https://img.shields.io/github/stars/nixrajput/social-media-api-nodejs?label=Stars&style=flat)][repo]
 [![Forks](https://img.shields.io/github/forks/nixrajput/social-media-api-nodejs?label=Forks&style=flat)][repo]
