@@ -3,6 +3,7 @@
  */
 
 import { Router } from "express";
+import { rateLimit } from "express-rate-limit";
 import RegisterController from "./RegisterController";
 import LoginController from "./LoginController";
 import AuthMiddleware from "../../middlewares/Auth";
@@ -20,13 +21,24 @@ const loginCtlr = new LoginController(userSvc);
 const profileCtlr = new ProfileController();
 const passwordCtlr = new PasswordController(userSvc);
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 10, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: "You can only make 10 requests every 15 minutes",
+});
+
 /**
  * @name RegisterController.sendRegisterOtp
  * @description Send OTP for registration.
  * @route POST /api/v1/auth/send-register-otp
  * @access public
  */
-AuthRouter.route("/send-register-otp").all(registerCtlr.sendRegisterOtp);
+AuthRouter.route("/send-register-otp").all(
+  registerCtlr.sendRegisterOtp,
+  limiter
+);
 
 /**
  * @name RegisterController.register
@@ -34,7 +46,7 @@ AuthRouter.route("/send-register-otp").all(registerCtlr.sendRegisterOtp);
  * @route POST /api/v1/auth/register
  * @access public
  */
-AuthRouter.route("/register").all(registerCtlr.register);
+AuthRouter.route("/register").all(registerCtlr.register, limiter);
 
 /**
  * @name LoginController.login
@@ -42,7 +54,7 @@ AuthRouter.route("/register").all(registerCtlr.register);
  * @route POST /api/v1/auth/login
  * @access public
  */
-AuthRouter.route("/login").all(loginCtlr.login);
+AuthRouter.route("/login").all(loginCtlr.login, limiter);
 
 /**
  * @name ProfileController.getProfileDetails
@@ -62,7 +74,8 @@ AuthRouter.route("/me").all(
  * @access public
  */
 AuthRouter.route("/send-reset-password-otp").all(
-  passwordCtlr.sendResetPasswordOtp
+  passwordCtlr.sendResetPasswordOtp,
+  limiter
 );
 
 /**
@@ -71,6 +84,6 @@ AuthRouter.route("/send-reset-password-otp").all(
  * @route POST /api/v1/auth/reset-password
  * @access public
  */
-AuthRouter.route("/reset-password").all(passwordCtlr.resetPassword);
+AuthRouter.route("/reset-password").all(passwordCtlr.resetPassword, limiter);
 
 export default AuthRouter;
