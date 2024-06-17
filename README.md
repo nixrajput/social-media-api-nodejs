@@ -249,6 +249,6 @@ Thank you for considering sponsoring my work!
 [gmail]: mailto:nkr.nikhil.nkr@gmail.com
 
 [repo]: https://github.com/nixrajput/social-media-api-nodejs
-[issues]: https://github.com/nixrajput/social-media-api-nodejs
+[issues]: https://github.com/nixrajput/social-media-api-nodejs/issues
 [pulls]: https://github.com/nixrajput/social-media-api-nodejs/pulls
 [license]: https://github.com/nixrajput/social-media-api-nodejs/blob/master/LICENSE.md
