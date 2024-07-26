@@ -132,9 +132,6 @@ class ExpressApp {
         Logger.getInstance().info(
           `Server :: Running @ 'http://localhost:${port}'`
         );
-        Logger.getInstance().info(
-          `Swagger docs available at http://localhost:${port}/api-docs`
-        );
       })
       .on("error", (_error) => {
         Logger.getInstance().error("Error: ", _error.message);

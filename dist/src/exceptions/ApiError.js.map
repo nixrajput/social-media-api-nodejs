@@ -1,0 +1,1 @@
+{"version":3,"file":"ApiError.js","sourceRoot":"","sources":["../../../src/exceptions/ApiError.ts"],"names":[],"mappings":";;AAAA,MAAM,QAAS,SAAQ,KAAK;IACnB,UAAU,CAAS;IAE1B,YAAmB,OAAe,EAAE,UAAkB;QACpD,KAAK,CAAC,OAAO,CAAC,CAAC;QACf,IAAI,CAAC,UAAU,GAAG,UAAU,CAAC;QAE7B,KAAK,CAAC,iBAAiB,CAAC,IAAI,EAAE,IAAI,CAAC,WAAW,CAAC,CAAC;IAClD,CAAC;CACF;AAED,kBAAe,QAAQ,CAAC"}
