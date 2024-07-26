@@ -39,7 +39,7 @@ class FirebaseConfig {
   public static init(_express: Application): Application {
     _express.locals["app"] = this.getConfig();
 
-    Logger.info("Firebase Config :: Loaded");
+    Logger.getInstance().info("Firebase Config :: Loaded");
     return _express;
   }
 }

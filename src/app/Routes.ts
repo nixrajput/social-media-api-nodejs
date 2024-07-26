@@ -16,7 +16,7 @@ class Routes {
    */
   public mountApi(_express: Application): Application {
     const apiPrefix = LocalConfig.getConfig().API_PREFIX;
-    Logger.info("Routes :: Mounting API routes...");
+    Logger.getInstance().info("Routes :: Mounting API routes...");
 
     // Mounting Routes
     _express.use(`/${apiPrefix}/auth`, AuthRouter);

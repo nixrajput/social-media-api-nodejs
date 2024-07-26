@@ -45,7 +45,7 @@ class LocalConfig {
   public static init(_express: Application): Application {
     _express.locals["app"] = this.getConfig();
 
-    Logger.info("Env Config :: Loaded");
+    Logger.getInstance().info("Env Config :: Loaded");
     return _express;
   }
 }

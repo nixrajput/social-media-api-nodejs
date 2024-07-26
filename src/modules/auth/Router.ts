@@ -46,6 +46,43 @@ AuthRouter.route("/send-register-otp").all(
  * @route POST /api/v1/auth/register
  * @access public
  */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: API for user authentication
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       500:
+ *         description: Server error
+ */
 AuthRouter.route("/register").all(registerCtlr.register, limiter);
 
 /**
@@ -53,6 +90,35 @@ AuthRouter.route("/register").all(registerCtlr.register, limiter);
  * @description Create a new account.
  * @route POST /api/v1/auth/login
  * @access public
+ */
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login a user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *       400:
+ *         description: Invalid email or password
+ *       500:
+ *         description: Server error
  */
 AuthRouter.route("/login").all(loginCtlr.login, limiter);
 

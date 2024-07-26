@@ -46,12 +46,12 @@ class MailServiceHelper {
     const smtpFrom = LocalConfig.getConfig().SMTP_FROM!;
 
     if (!sendgridApiKey) {
-      Logger.error("Env :: SendGrid API key not found");
+      Logger.getInstance().error("Env :: SendGrid API key not found");
       throw new Error("SendGrid API key not found in ENV file");
     }
 
     if (!smtpFrom) {
-      Logger.error("Env :: SMTP From not found");
+      Logger.getInstance().error("Env :: SMTP From not found");
       throw new Error("SMTP From not found in ENV file");
     }
 
@@ -59,21 +59,21 @@ class MailServiceHelper {
     sgMail.setApiKey(sendgridApiKey);
 
     if (!to) {
-      Logger.error("Mail reciever is required");
+      Logger.getInstance().error("Mail reciever is required");
       throw new Error("Mail reciever is required");
     }
 
     if (!subject) {
-      Logger.error("Mail subject is required");
+      Logger.getInstance().error("Mail subject is required");
       throw new Error("Mail subject is required");
     }
 
     if (!htmlContent && !textContent && !content) {
-      Logger.error("Mail content is required");
+      Logger.getInstance().error("Mail content is required");
       throw new Error("Mail content is required");
     }
 
-    Logger.info("SendGrid :: Sending email...");
+    Logger.getInstance().info("SendGrid :: Sending email...");
 
     if (textContent) {
       return await sgMail
@@ -88,11 +88,11 @@ class MailServiceHelper {
         })
         .then(
           (result) => {
-            Logger.info(result);
-            Logger.info(`${StringValues.EMAIL_SEND_SUCCESS} to ${to}`);
+            Logger.getInstance().info(result);
+            Logger.getInstance().info(`${StringValues.EMAIL_SEND_SUCCESS} to ${to}`);
           },
           (err) => {
-            Logger.error(err);
+            Logger.getInstance().error(err);
             if (err.response) {
               throw new Error(err.response.body.errors[0].message);
             }
@@ -111,11 +111,11 @@ class MailServiceHelper {
         })
         .then(
           (result) => {
-            Logger.info(result);
-            Logger.info(`${StringValues.EMAIL_SEND_SUCCESS} to ${to}`);
+            Logger.getInstance().info(result);
+            Logger.getInstance().info(`${StringValues.EMAIL_SEND_SUCCESS} to ${to}`);
           },
           (err) => {
-            Logger.error(err);
+            Logger.getInstance().error(err);
             if (err.response) {
               throw new Error(err.response.body.errors[0].message);
             }
@@ -134,11 +134,11 @@ class MailServiceHelper {
         })
         .then(
           (result) => {
-            Logger.info(result);
-            Logger.info(`${StringValues.EMAIL_SEND_SUCCESS} to ${to}`);
+            Logger.getInstance().info(result);
+            Logger.getInstance().info(`${StringValues.EMAIL_SEND_SUCCESS} to ${to}`);
           },
           (err) => {
-            Logger.error(err);
+            Logger.getInstance().error(err);
             if (err.response) {
               throw new Error(err.response.body.errors[0].message);
             }

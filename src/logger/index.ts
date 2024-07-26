@@ -1,9 +1,8 @@
 /**
- * Define Logger
+ * Define Logger.getInstance()
  */
 
 import winston from "winston";
-import LocalConfig from "../configs/LocalConfig";
 
 // const {
 //   MongoDB,
@@ -30,7 +29,7 @@ const colors = {
 // Link colors of the log levels.
 winston.addColors(colors);
 
-// Define format of the logger
+// Define format of the Logger.getInstance()
 let _consoleFormat = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
@@ -39,7 +38,7 @@ let _consoleFormat = winston.format.combine(
   })
 );
 
-if (LocalConfig.getConfig().NODE_ENV !== "development") {
+if (process.env.NODE_ENV !== "development") {
   _consoleFormat = winston.format.combine(
     winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
     winston.format.printf(({ timestamp, level, message }) => {
@@ -48,7 +47,7 @@ if (LocalConfig.getConfig().NODE_ENV !== "development") {
   );
 }
 
-// Define transports of the logger
+// Define transports of the Logger.getInstance()
 const transports: winston.transport[] = [
   new winston.transports.Console({
     handleExceptions: true,
@@ -56,11 +55,28 @@ const transports: winston.transport[] = [
   }),
 ];
 
-// Create the logger instance
-const Logger = winston.createLogger({
-  level: "debug",
-  levels,
-  transports,
-});
+class Logger {
+  private static instance: winston.Logger;
+  private constructor() {}
+
+  public static getInstance(): winston.Logger {
+    if (!Logger.instance) {
+      Logger.instance = winston.createLogger({
+        level: "debug",
+        levels,
+        transports,
+      });
+    }
+    return Logger.instance;
+  }
+
+  public static _init(): void {
+    Logger.instance = winston.createLogger({
+      level: "debug",
+      levels,
+      transports,
+    });
+  }
+}
 
 export default Logger;

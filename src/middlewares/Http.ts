@@ -8,11 +8,11 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
-import Logger from "../logger";
+import Logger from "src/logger";
 
 class Http {
   public static mount(_express: Application): Application {
-    Logger.info("App :: Registering HTTP middleware...");
+    Logger.getInstance().info("App :: Registering HTTP middleware...");
 
     _express.use(cors());
 

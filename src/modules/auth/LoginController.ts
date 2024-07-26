@@ -101,7 +101,7 @@ class LoginController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(errorMessage);
+      Logger.getInstance().error(errorMessage);
 
       res.status(StatusCodes.BAD_REQUEST);
       return res.json({
@@ -130,12 +130,12 @@ class LoginController {
       );
     }
 
-    Logger.info("Login Start");
+    Logger.getInstance().info("Login Start");
 
     try {
       const { email, password }: ILoginBodyData = req.body;
 
-      Logger.info("Validation Start");
+      Logger.getInstance().info("Validation Start");
 
       if (!email) {
         return next(
@@ -176,15 +176,15 @@ class LoginController {
         );
       }
 
-      Logger.info("Validation End");
+      Logger.getInstance().info("Validation End");
 
       const _email = email?.toLowerCase().trim();
       const _password = password?.trim();
 
-      Logger.info("Check Email Exists Start");
+      Logger.getInstance().info("Check Email Exists Start");
 
       const isEmailExists = await this._userSvc.checkIsEmailExistsExc(_email);
-      Logger.info("Check Email Exists End");
+      Logger.getInstance().info("Check Email Exists End");
       if (!isEmailExists) {
         return next(
           new ApiError(
@@ -194,13 +194,13 @@ class LoginController {
         );
       }
 
-      Logger.info("Find User Start");
+      Logger.getInstance().info("Find User Start");
       const user = await this._userSvc.findUserByEmailExc(_email);
-      Logger.info("Find User End");
+      Logger.getInstance().info("Find User End");
 
-      Logger.info("Match Password Start");
+      Logger.getInstance().info("Match Password Start");
       const isPasswordMatched = await user.matchPassword(_password);
-      Logger.info("Match Password End");
+      Logger.getInstance().info("Match Password End");
 
       if (!isPasswordMatched) {
         return next(
@@ -208,16 +208,16 @@ class LoginController {
         );
       }
 
-      Logger.info("Get Token Start");
+      Logger.getInstance().info("Get Token Start");
       const authToken = await user.getToken();
-      Logger.info("Get Token End");
+      Logger.getInstance().info("Get Token End");
 
       const resData = {
         token: authToken.token,
         expiresAt: authToken.expiresAt,
       };
 
-      Logger.info("Login End");
+      Logger.getInstance().info("Login End");
 
       res.status(StatusCodes.OK);
       return res.json({
@@ -229,7 +229,7 @@ class LoginController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "LoginController: login",
         "errorInfo:" + JSON.stringify(error)
       );

@@ -4,7 +4,7 @@
 
 import jwt from "jsonwebtoken";
 import LocalConfig from "../configs/LocalConfig";
-import Logger from "../logger";
+import Logger from "src/logger";
 import Strings from "../constants/strings";
 import type { IAuthTokenModel } from "../interfaces/entities/authToken";
 import AuthToken from "../models/AuthToken";
@@ -32,13 +32,13 @@ class TokenServiceHelper {
       });
 
       if (!authToken) {
-        Logger.error(Strings.TOKEN_NOT_FOUND);
+        Logger.getInstance().error(Strings.TOKEN_NOT_FOUND);
         return null;
       }
 
       return authToken;
     } catch (error: any) {
-      Logger.error(error.message);
+      Logger.getInstance().error(error.message);
       return null;
     }
   }

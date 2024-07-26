@@ -35,7 +35,7 @@ class ExceptionHandler {
         req.headers["x-real-ip"] ||
         req.socket.remoteAddress;
 
-      Logger.error(`${ip} Path '${url}' not found!`);
+      Logger.getInstance().error(`${ip} Path '${url}' not found!`);
 
       return res.status(404).json({
         success: false,
@@ -64,7 +64,7 @@ class ExceptionHandler {
     res: IResponse,
     next: INext
   ) {
-    Logger.error(err.stack);
+    Logger.getInstance().error(err.stack);
 
     if (req.xhr) {
       return res.status(500).send({ error: "Something went wrong!" });
@@ -120,7 +120,7 @@ class ExceptionHandler {
         err = new ApiError(message, StatusCodes.UNAUTHORIZED);
       }
 
-      Logger.error(err.message);
+      Logger.getInstance().error(err.message);
 
       return res.status(err.statusCode).json({
         success: false,
@@ -149,7 +149,7 @@ class ExceptionHandler {
     _res: IResponse,
     next: INext
   ) {
-    Logger.error(err.stack);
+    Logger.getInstance().error(err.stack);
 
     return next(err);
   }

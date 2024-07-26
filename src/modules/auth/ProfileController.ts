@@ -140,7 +140,7 @@ class ProfileController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "ProfileController: getProfileDetails",
         "errorInfo:" + JSON.stringify(error)
       );

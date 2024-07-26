@@ -4,7 +4,7 @@
 
 import type { ObjectId } from "mongoose";
 import type { IUser, IUserModel } from "../interfaces/entities/user";
-import Logger from "../logger";
+import Logger from "src/logger";
 import User from "../models/User";
 
 class UserService {
@@ -15,7 +15,7 @@ class UserService {
 
       return Promise.resolve(user);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "UserService: createUserExc",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -32,7 +32,7 @@ class UserService {
 
       return Promise.resolve(user);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "UserService: findUserByIdExc",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -47,7 +47,7 @@ class UserService {
 
       return Promise.resolve(user);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "UserService: findUserByEmailExc",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -66,7 +66,7 @@ class UserService {
 
       return Promise.resolve(true);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "UserService: checkIsEmailExistsExc",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -87,7 +87,7 @@ class UserService {
 
       return Promise.resolve(true);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "UserService: checkIsUsernameExistsExc",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -106,7 +106,7 @@ class UserService {
 
       return Promise.resolve(true);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "UserService: checkIsEmailExistsExc",
         "errorInfo:" + JSON.stringify(error)
       );

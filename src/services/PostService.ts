@@ -6,7 +6,7 @@ import type { PipelineStage } from "mongoose";
 import StringValues from "../constants/strings";
 import type { IUserModel } from "../interfaces/entities/user";
 import type { IListResponse } from "../interfaces/responses/listResponse";
-import Logger from "../logger";
+import Logger from "src/logger";
 import type { IPost, IPostModel } from "../interfaces/entities/post";
 import Post from "../models/Post";
 
@@ -36,7 +36,7 @@ class PostService {
 
   //       return Promise.resolve(job);
   //     } catch (error) {
-  //       Logger.error(
+  //       Logger.getInstance().error(
   //         "PostService: createExc",
   //         "errorInfo:" + JSON.stringify(error)
   //       );
@@ -172,7 +172,7 @@ class PostService {
 
       return Promise.resolve(response);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "PostService: findAllExc",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -191,7 +191,7 @@ class PostService {
 
       return Promise.resolve(job);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "PostService: findByIdExc",
         "errorInfo:" + JSON.stringify(error)
       );

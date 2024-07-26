@@ -3,7 +3,7 @@
  */
 
 import type { IUserModel } from "src/interfaces/entities/user";
-import Logger from "../logger";
+import Logger from "src/logger";
 
 class ProfileService {
   // Get Recruiter Profile Service
@@ -44,7 +44,7 @@ class ProfileService {
       // };
       return Promise.resolve(currentUser);
     } catch (error) {
-      Logger.error(
+      Logger.getInstance().error(
         "ProfileService: getProfileExc",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -60,7 +60,7 @@ class ProfileService {
   //     const recruiterProfile = await RecruiterProfile.create(_profile);
   //     return Promise.resolve(recruiterProfile);
   //   } catch (error) {
-  //     Logger.error(
+  //     Logger.getInstance().error(
   //       "ProfileService: createRecruiterExc",
   //       "errorInfo:" + JSON.stringify(error)
   //     );

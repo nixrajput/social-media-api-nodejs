@@ -6,7 +6,7 @@ import type { IUserModel } from "../interfaces/entities/user";
 import { EUserStatus } from "../enums";
 import LocalConfig from "../configs/LocalConfig";
 import StringValues from "../constants/strings";
-import Logger from "../logger";
+import Logger from "src/logger";
 import AuthToken from "./AuthToken";
 import TokenServiceHelper from "../helpers/TokenServiceHelper";
 
@@ -188,14 +188,14 @@ UserSchema.methods.generateToken = async function (): Promise<IAuthTokenModel> {
   });
 
   if (!token) {
-    Logger.error(`JwtError :: An error occurred while creating JwtToken`);
+    Logger.getInstance().error(`JwtError :: An error occurred while creating JwtToken`);
     throw new Error(StringValues.JWT_TOKEN_CREATE_ERROR);
   }
 
   const decodedData = jwt.decode(token);
 
   if (!decodedData || typeof decodedData === "string") {
-    Logger.error(`JwtError :: An error occurred while decoding JwtToken`);
+    Logger.getInstance().error(`JwtError :: An error occurred while decoding JwtToken`);
     throw new Error(StringValues.JWT_TOKEN_CREATE_ERROR);
   }
 
@@ -206,11 +206,11 @@ UserSchema.methods.generateToken = async function (): Promise<IAuthTokenModel> {
   });
 
   if (!authToken) {
-    Logger.error(`AuthToken :: An error occurred while creating AuthToken`);
+    Logger.getInstance().error(`AuthToken :: An error occurred while creating AuthToken`);
     throw new Error(StringValues.JWT_TOKEN_CREATE_ERROR);
   }
 
-  Logger.info(`AuthToken :: created`);
+  Logger.getInstance().info(`AuthToken :: created`);
   return authToken;
 };
 

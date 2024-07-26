@@ -293,7 +293,7 @@ class PostController {
   //     const errorMessage =
   //       error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-  //     Logger.error(
+  //     Logger.getInstance().error(
   //       "JobController: createJob",
   //       "errorInfo:" + JSON.stringify(error)
   //     );
@@ -419,7 +419,7 @@ class PostController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "PostController: getJobs",
         "errorInfo:" + JSON.stringify(error)
       );

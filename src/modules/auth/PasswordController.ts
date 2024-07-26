@@ -170,7 +170,7 @@ class PasswordController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "PasswordController: sendResetPasswordOtp",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -367,7 +367,7 @@ class PasswordController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "PasswordController: resetPassword",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -542,7 +542,7 @@ class PasswordController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "PasswordController: changePassword",
         "errorInfo:" + JSON.stringify(error)
       );

@@ -219,7 +219,7 @@ class RegisterController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "RegisterController: sendRegisterOtp",
         "errorInfo:" + JSON.stringify(error)
       );
@@ -486,7 +486,7 @@ class RegisterController {
       const errorMessage =
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
-      Logger.error(
+      Logger.getInstance().error(
         "RegisterController: register",
         "errorInfo:" + JSON.stringify(error)
       );

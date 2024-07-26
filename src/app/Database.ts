@@ -8,21 +8,21 @@ class Database {
   private _count: number = 0;
 
   private constructor() {
-    Logger.info("Database :: Initializing...");
+    Logger.getInstance().info("Database :: Initializing...");
 
     if (!LocalConfig.getConfig().MONGO_URI) {
-      Logger.error(`Database :: MongoDB URI not defined`);
+      Logger.getInstance().error(`Database :: MongoDB URI not defined`);
       throw new Error(`Database :: MongoDB URI not defined`);
     }
 
     if (!LocalConfig.getConfig().DB_NAME) {
-      Logger.error(`Database :: Database name not defined`);
+      Logger.getInstance().error(`Database :: Database name not defined`);
       throw new Error(`Database :: Database name not defined`);
     }
 
     this._isConnected = false;
 
-    Logger.info("Database :: Initialized");
+    Logger.getInstance().info("Database :: Initialized");
   }
 
   /**
@@ -52,7 +52,7 @@ class Database {
    */
   public _connect = async (): Promise<void> => {
     if (this._isConnected) {
-      Logger.info("Database :: Already Connected");
+      Logger.getInstance().info("Database :: Already Connected");
       return;
     }
 
@@ -60,9 +60,9 @@ class Database {
     _db._count++;
 
     if (_db._count > 1) {
-      Logger.info("Database :: Reconnecting...");
+      Logger.getInstance().info("Database :: Reconnecting...");
     } else {
-      Logger.info("Database :: Connecting...");
+      Logger.getInstance().info("Database :: Connecting...");
     }
 
     await mongoose
@@ -73,11 +73,11 @@ class Database {
         serverSelectionTimeoutMS: 5000,
       })
       .then(function () {
-        Logger.info("Database :: Connected @ MongoDB");
+        Logger.getInstance().info("Database :: Connected @ MongoDB");
         _db._isConnected = true;
       })
       .catch(function (_err: mongoose.Error) {
-        Logger.error(`Database :: Error: ${_err.message}`);
+        Logger.getInstance().error(`Database :: Error: ${_err.message}`);
         _db._isConnected = false;
         throw _err;
       });

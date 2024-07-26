@@ -4,7 +4,7 @@
 
 import cors from "cors";
 import type { Application } from "express";
-import Logger from "../logger";
+import Logger from "src/logger";
 
 class CORS {
   // CORS Options
@@ -17,7 +17,7 @@ class CORS {
   };
 
   public mount(_express: Application): Application {
-    Logger.info("App :: Registering CORS middleware...");
+    Logger.getInstance().info("App :: Registering CORS middleware...");
 
     _express.use(cors(this.corsOptions));
 

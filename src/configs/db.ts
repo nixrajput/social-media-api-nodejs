@@ -1,0 +1,56 @@
+import mongoose from "mongoose";
+// import { Sequelize } from 'sequelize';
+import LocalConfig from "src/configs/LocalConfig";
+import Logger from "src/logger";
+
+class MongoDB {
+  private static instance: MongoDB;
+  private constructor() {}
+
+  public static getInstance(): MongoDB {
+    if (!MongoDB.instance) {
+      MongoDB.instance = new MongoDB();
+    }
+    return MongoDB.instance;
+  }
+
+  public async connect() {
+    try {
+      await mongoose.connect(LocalConfig.getConfig().MONGO_URI!, {
+        dbName: LocalConfig.getConfig().DB_NAME,
+        autoIndex: true,
+        socketTimeoutMS: 30000,
+        serverSelectionTimeoutMS: 5000,
+      });
+      Logger.getInstance().info("Database :: Connected @ MongoDB");
+    } catch (error: any) {
+      Logger.getInstance().error(`Database :: Error: ${error.message}`);
+      process.exit(1);
+    }
+  }
+}
+
+// class PostgresDB {
+//   private static instance: Sequelize;
+
+//   private constructor() {}
+
+//   public static getInstance(): Sequelize {
+//     if (!PostgresDB.instance) {
+//       PostgresDB.instance = new Sequelize(process.env.POSTGRES_URI!, { dialect: 'postgres' });
+//     }
+//     return PostgresDB.instance;
+//   }
+
+//   public static async connect() {
+//     try {
+//       await PostgresDB.getInstance().authenticate();
+//       console.log('PostgreSQL connected');
+//     } catch (error) {
+//       console.error('Error connecting to PostgreSQL', error);
+//       process.exit(1);
+//     }
+//   }
+// }
+
+export { MongoDB };
