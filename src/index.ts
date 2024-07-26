@@ -14,3 +14,10 @@ const main = (): void => {
  * Booting MainApp
  */
 main();
+
+// "builds": [
+//         {
+//             "src": "/dist/index.js",
+//             "use": "@vercel/node"
+//         }
+//     ],
