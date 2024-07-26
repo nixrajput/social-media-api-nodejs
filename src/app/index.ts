@@ -6,7 +6,7 @@ import ExceptionHandler from "../exceptions/Handler";
 import Http from "../middlewares/Http";
 import CORS from "../middlewares/CORS";
 import Morgan from "../middlewares/Morgan";
-import Routes from "./routes";
+import Routes from "./Routes";
 import FirebaseConfig from "../configs/FirebaseConfig";
 import SwaggerDocs from "src/configs/swagger";
 import { MongoDB } from "../configs/db";
