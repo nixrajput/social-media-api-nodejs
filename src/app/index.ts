@@ -1,15 +1,15 @@
 import express from "express";
 import type { Application } from "express";
-import LocalConfig from "../configs/LocalConfig";
+import LocalConfig from "../config/LocalConfig";
 import Logger from "../logger";
 import ExceptionHandler from "../exceptions/Handler";
 import Http from "../middlewares/Http";
 import CORS from "../middlewares/CORS";
 import Morgan from "../middlewares/Morgan";
-import Routes from "./Routes";
-import FirebaseConfig from "../configs/FirebaseConfig";
-import SwaggerDocs from "src/configs/swagger";
-import { MongoDB } from "../configs/db";
+import Routes from "./app-routes";
+import FirebaseConfig from "../config/FirebaseConfig";
+import SwaggerDocs from "src/config/swagger";
+import { MongoDB } from "../config/db";
 
 /**
  * @name ExpressApp

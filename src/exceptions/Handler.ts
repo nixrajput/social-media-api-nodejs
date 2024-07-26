@@ -3,7 +3,7 @@
  */
 
 import type { Application } from "express";
-import LocalConfig from "../configs/LocalConfig";
+import LocalConfig from "../config/LocalConfig";
 import Logger from "../logger";
 import ApiError from "../exceptions/ApiError";
 import StatusCodes from "../constants/statusCodes";

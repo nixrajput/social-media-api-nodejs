@@ -3,7 +3,7 @@
  */
 
 import jwt from "jsonwebtoken";
-import LocalConfig from "../configs/LocalConfig";
+import LocalConfig from "../config/LocalConfig";
 import Logger from "src/logger";
 import Strings from "../constants/strings";
 import type { IAuthTokenModel } from "../interfaces/entities/authToken";

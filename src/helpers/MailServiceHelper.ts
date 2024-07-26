@@ -3,7 +3,7 @@
  */
 
 import sgMail from "@sendgrid/mail";
-import LocalConfig from "../configs/LocalConfig";
+import LocalConfig from "../config/LocalConfig";
 import Logger from "../logger";
 import StringValues from "../constants/strings";
 

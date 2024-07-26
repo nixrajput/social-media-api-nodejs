@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 // import { Sequelize } from 'sequelize';
-import LocalConfig from "src/configs/LocalConfig";
+import LocalConfig from "src/config/LocalConfig";
 import Logger from "src/logger";
 
 class MongoDB {

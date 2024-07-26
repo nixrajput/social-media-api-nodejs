@@ -3,7 +3,7 @@
  */
 
 import type { Application } from "express";
-import LocalConfig from "../configs/LocalConfig";
+import LocalConfig from "../config/LocalConfig";
 import Logger from "../logger";
 import AuthRouter from "../modules/auth/Router";
 
