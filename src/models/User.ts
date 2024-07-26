@@ -10,6 +10,43 @@ import Logger from "src/logger";
 import AuthToken from "./AuthToken";
 import TokenServiceHelper from "../helpers/TokenServiceHelper";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - username
+ *         - email
+ *         - password
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the user
+ *         username:
+ *           type: string
+ *         email:
+ *           type: string
+ *         password:
+ *           type: string
+ *         profile:
+ *           type: object
+ *           properties:
+ *             bio:
+ *               type: string
+ *             avatar:
+ *               type: string
+ *       example:
+ *         id: d5fE_asz
+ *         username: johndoe
+ *         email: johndoe@example.com
+ *         password: securepassword
+ *         profile:
+ *           bio: Hello, I'm John Doe!
+ *           avatar: http://example.com/avatar.jpg
+ */
+
 const UserSchema = new Schema<IUserModel>(
   {
     fname: {

@@ -1,5 +1,5 @@
 /**
- * Define Logger.getInstance()
+ * Define Logger
  */
 
 import winston from "winston";

@@ -5,7 +5,7 @@
 import type { Application } from "express";
 import LocalConfig from "../config/LocalConfig";
 import Logger from "../logger";
-import AuthRouter from "../modules/auth/Router";
+import AuthRouter from "../routes/auth";
 
 class Routes {
   /**

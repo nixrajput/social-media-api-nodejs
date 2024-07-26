@@ -1,4 +1,4 @@
-import type UserService from "../../services/UserService";
+import type UserService from "../../services/user";
 import StatusCodes from "../../constants/statusCodes";
 import StringValues from "../../constants/strings";
 import ApiError from "../../exceptions/ApiError";

@@ -5,7 +5,7 @@ import StringValues from "../../constants/strings";
 import ApiError from "../../exceptions/ApiError";
 import type { IRequest, IResponse, INext } from "../../interfaces/core/express";
 import Logger from "../../logger";
-import PostService from "../../services/PostService";
+import PostService from "../../services/post";
 
 class PostController {
   private readonly _postSvc: PostService;

@@ -4,13 +4,13 @@
 
 import { Router } from "express";
 import { rateLimit } from "express-rate-limit";
-import RegisterController from "./RegisterController";
-import LoginController from "./LoginController";
-import AuthMiddleware from "../../middlewares/Auth";
-import UserService from "../../services/UserService";
-import ProfileService from "../../services/ProfileService";
-import ProfileController from "./ProfileController";
-import PasswordController from "./PasswordController";
+import RegisterController from "../controllers/auth/register";
+import LoginController from "../controllers/auth/login";
+import AuthMiddleware from "../middlewares/Auth";
+import UserService from "../services/user";
+import ProfileService from "../services/profile";
+import ProfileController from "../controllers/auth/profile";
+import PasswordController from "../controllers/auth/password";
 
 const AuthRouter: Router = Router();
 
@@ -29,23 +29,23 @@ const limiter = rateLimit({
   message: "You can only make 10 requests every 15 minutes",
 });
 
-/**
- * @name RegisterController.sendRegisterOtp
- * @description Send OTP for registration.
- * @route POST /api/v1/auth/send-register-otp
- * @access public
- */
+// /**
+//  * @name RegisterController.sendRegisterOtp
+//  * @description Send OTP for registration.
+//  * @route POST /api/v1/auth/send-register-otp
+//  * @access public
+//  */
 AuthRouter.route("/send-register-otp").all(
   registerCtlr.sendRegisterOtp,
   limiter
 );
 
-/**
- * @name RegisterController.register
- * @description Create a new account.
- * @route POST /api/v1/auth/register
- * @access public
- */
+// /**
+//  * @name RegisterController.register
+//  * @description Create a new account.
+//  * @route POST /api/v1/auth/register
+//  * @access public
+//  */
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ AuthRouter.route("/send-register-otp").all(
 
 /**
  * @swagger
- * /auth/register:
+ * /api/v1/auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Authentication]
@@ -85,16 +85,16 @@ AuthRouter.route("/send-register-otp").all(
  */
 AuthRouter.route("/register").all(registerCtlr.register, limiter);
 
-/**
- * @name LoginController.login
- * @description Create a new account.
- * @route POST /api/v1/auth/login
- * @access public
- */
+// /**
+//  * @name LoginController.login
+//  * @description Create a new account.
+//  * @route POST /api/v1/auth/login
+//  * @access public
+//  */
 
 /**
  * @swagger
- * /auth/login:
+ * /api/v1/auth/login:
  *   post:
  *     summary: Login a user
  *     tags: [Authentication]
@@ -122,34 +122,34 @@ AuthRouter.route("/register").all(registerCtlr.register, limiter);
  */
 AuthRouter.route("/login").all(loginCtlr.login, limiter);
 
-/**
- * @name ProfileController.getProfileDetails
- * @description Perform get profile detals.
- * @route GET /api/v1/auth/me
- * @access private
- */
+// /**
+//  * @name ProfileController.getProfileDetails
+//  * @description Perform get profile detals.
+//  * @route GET /api/v1/auth/me
+//  * @access private
+//  */
 AuthRouter.route("/me").all(
   AuthMiddleware.isAuthenticatedUser,
   profileCtlr.getProfileDetails
 );
 
-/**
- * @name PasswordController.sendResetPasswordOtp
- * @description Send OTP password reset.
- * @route POST /api/v1/auth/send-reset-password-otp
- * @access public
- */
+// /**
+//  * @name PasswordController.sendResetPasswordOtp
+//  * @description Send OTP password reset.
+//  * @route POST /api/v1/auth/send-reset-password-otp
+//  * @access public
+//  */
 AuthRouter.route("/send-reset-password-otp").all(
   passwordCtlr.sendResetPasswordOtp,
   limiter
 );
 
-/**
- * @name PasswordController.resetPassword
- * @description Reset the password.
- * @route POST /api/v1/auth/reset-password
- * @access public
- */
+// /**
+//  * @name PasswordController.resetPassword
+//  * @description Reset the password.
+//  * @route POST /api/v1/auth/reset-password
+//  * @access public
+//  */
 AuthRouter.route("/reset-password").all(passwordCtlr.resetPassword, limiter);
 
 export default AuthRouter;

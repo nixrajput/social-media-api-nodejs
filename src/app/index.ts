@@ -31,9 +31,9 @@ class ExpressApp {
     this.mountDotEnv();
     this.mountMiddlewares();
     this.mouteRoutes();
+    this.mountSwagger();
     this.registerHandlers();
     this.connectToDB();
-    this.mountSwagger();
 
     Logger.getInstance().info("App :: Initialized");
   }
@@ -93,7 +93,7 @@ class ExpressApp {
   private registerHandlers(): void {
     Logger.getInstance().info("App :: Registering handlers...");
 
-    // Registering Exception / Error Handlers
+    // Registering Exception Error Handlers
     this.express.use(ExceptionHandler.logErrors);
     this.express.use(ExceptionHandler.clientErrorHandler);
     this.express.use(ExceptionHandler.errorHandler);
@@ -139,6 +139,8 @@ class ExpressApp {
       .on("error", (_error) => {
         Logger.getInstance().error("Error: ", _error.message);
       });
+
+    Logger.getInstance().info("App :: Started");
   }
 
   /**

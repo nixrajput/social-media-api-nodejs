@@ -4,11 +4,11 @@
   "author": "Nikhil Rajput",
   "license": "MIT",
   "description": "An open-source RESTful API developed using NodeJS, ExpressJS and MongoDB helps you to integrate User Authentication and Social Media Post Management in your application with ease.",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "type": "commonjs",
   "scripts": {
     "dev": "bun --hot src/index.ts",
-    "start": "bun dist/index.js",
+    "start": "bun dist/src/index.js",
     "clean": "rimraf -rf dist",
     "build": "echo \"✅ Building project...\" && bun run clean && tsc",
     "ts:check": "tsc --project tsconfig.json",
