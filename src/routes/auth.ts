@@ -67,19 +67,33 @@ AuthRouter.route("/send-register-otp").all(
  *           schema:
  *             type: object
  *             required:
- *               - username
+ *               - fname
+ *               - lname
  *               - email
+ *               - username
  *               - password
+ *               - confirmPassword
+ *               - otp
  *             properties:
- *               username:
+ *               fname:
+ *                 type: string
+ *               lname:
  *                 type: string
  *               email:
  *                 type: string
+ *               username:
+ *                 type: string
  *               password:
+ *                 type: string
+ *               confirmPassword:
+ *                 type: string
+ *               otp:
  *                 type: string
  *     responses:
  *       201:
  *         description: User registered successfully
+ *       400:
+ *          description: First name is required
  *       500:
  *         description: Server error
  */
