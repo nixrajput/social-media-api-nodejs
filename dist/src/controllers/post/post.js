@@ -84,7 +84,7 @@ class PostController {
         }
         catch (error) {
             const errorMessage = error?.message || error || strings_1.default.SOMETHING_WENT_WRONG;
-            logger_1.default.getInstance().error("PostController: getJobs", "errorInfo:" + JSON.stringify(error));
+            logger_1.default.getInstance().error("PostController: getPostFeed", "errorInfo:" + JSON.stringify(error));
             res.status(statusCodes_1.default.BAD_REQUEST);
             return res.json({
                 success: false,

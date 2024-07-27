@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const env_1 = __importDefault(require("../config/env"));
 const logger_1 = __importDefault(require("../logger"));
 const auth_1 = __importDefault(require("../routes/auth"));
+const post_1 = __importDefault(require("../routes/post"));
 class Routes {
-    mountApi(_express) {
+    mountApiRoutes(_express) {
         const apiPrefix = env_1.default.getConfig().API_PREFIX;
         logger_1.default.getInstance().info("Routes :: Mounting API routes...");
         _express.use(`/${apiPrefix}/auth`, auth_1.default);
+        _express.use(`/${apiPrefix}/post`, post_1.default);
         return _express;
     }
 }

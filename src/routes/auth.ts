@@ -29,30 +29,57 @@ const limiter = rateLimit({
   message: "You can only make 10 requests every 15 minutes",
 });
 
-// /**
-//  * @name RegisterController.sendRegisterOtp
-//  * @description Send OTP for registration.
-//  * @route POST /api/v1/auth/send-register-otp
-//  * @access public
-//  */
-AuthRouter.route("/send-register-otp").all(
-  registerCtlr.sendRegisterOtp,
-  limiter
-);
-
-// /**
-//  * @name RegisterController.register
-//  * @description Create a new account.
-//  * @route POST /api/v1/auth/register
-//  * @access public
-//  */
-
 /**
  * @swagger
  * tags:
  *   name: Authentication
  *   description: API for user authentication
  */
+
+/**
+ * @swagger
+ * /api/v1/auth/send-register-otp:
+ *   post:
+ *     summary: Send OTP to register a new user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - fname
+ *               - lname
+ *               - email
+ *               - username
+ *               - password
+ *               - confirmPassword
+ *             properties:
+ *               fname:
+ *                 type: string
+ *               lname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               confirmPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: OTP sent successfully
+ *       400:
+ *          description: First name is required
+ *       500:
+ *         description: Server error
+ */
+AuthRouter.route("/send-register-otp").all(
+  registerCtlr.sendRegisterOtp,
+  limiter
+);
 
 /**
  * @swagger
@@ -98,13 +125,6 @@ AuthRouter.route("/send-register-otp").all(
  *         description: Server error
  */
 AuthRouter.route("/register").all(registerCtlr.register, limiter);
-
-// /**
-//  * @name LoginController.login
-//  * @description Create a new account.
-//  * @route POST /api/v1/auth/login
-//  * @access public
-//  */
 
 /**
  * @swagger

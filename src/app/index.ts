@@ -105,7 +105,7 @@ class ExpressApp {
    * Mount all the routes
    */
   private mouteRoutes(): void {
-    this.express = Routes.mountApi(this.express);
+    this.express = Routes.mountApiRoutes(this.express);
     Logger.getInstance().info("Routes :: API routes mounted");
   }
 

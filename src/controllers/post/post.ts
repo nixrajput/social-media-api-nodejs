@@ -420,7 +420,7 @@ class PostController {
         error?.message || error || StringValues.SOMETHING_WENT_WRONG;
 
       Logger.getInstance().error(
-        "PostController: getJobs",
+        "PostController: getPostFeed",
         "errorInfo:" + JSON.stringify(error)
       );
 

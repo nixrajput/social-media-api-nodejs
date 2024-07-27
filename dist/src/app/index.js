@@ -59,7 +59,7 @@ class ExpressApp {
         logger_1.default.getInstance().info("App :: Handlers registered");
     }
     mouteRoutes() {
-        this.express = app_routes_1.default.mountApi(this.express);
+        this.express = app_routes_1.default.mountApiRoutes(this.express);
         logger_1.default.getInstance().info("Routes :: API routes mounted");
     }
     async _init() {
