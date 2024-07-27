@@ -3,7 +3,7 @@
  */
 
 import type { IUserModel } from "src/interfaces/entities/user";
-import Logger from "src/logger";
+import Logger from "../logger";
 
 class ProfileService {
   // Get Recruiter Profile Service

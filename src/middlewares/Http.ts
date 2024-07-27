@@ -8,7 +8,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import compression from "compression";
 import cors from "cors";
-import Logger from "src/logger";
+import Logger from "../logger";
 
 class Http {
   public static mount(_express: Application): Application {

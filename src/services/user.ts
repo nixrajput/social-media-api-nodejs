@@ -4,7 +4,7 @@
 
 import type { ObjectId } from "mongoose";
 import type { IUser, IUserModel } from "../interfaces/entities/user";
-import Logger from "src/logger";
+import Logger from "../logger";
 import User from "../models/User";
 
 class UserService {

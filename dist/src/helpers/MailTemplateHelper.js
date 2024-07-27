@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger_1 = __importDefault(require("src/logger"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const logger_1 = __importDefault(require("../logger"));
 const filePath = path_1.default.join(__dirname, "../emails/", "otp-email.html");
 class EmailTemplateHelper {
     static async getOtpEmail(otp, name) {

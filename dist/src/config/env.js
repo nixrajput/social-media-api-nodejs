@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logger_1 = __importDefault(require("../logger"));
-class LocalConfig {
+class EnvConfig {
     static getConfig() {
         const config = {
             PORT: parseInt(process.env["PORT"], 10) || 4000,
@@ -36,5 +36,5 @@ class LocalConfig {
         return _express;
     }
 }
-exports.default = LocalConfig;
-//# sourceMappingURL=LocalConfig.js.map
+exports.default = EnvConfig;
+//# sourceMappingURL=env.js.map

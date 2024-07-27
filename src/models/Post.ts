@@ -1,5 +1,5 @@
 import { Schema, Types, model } from "mongoose";
-import type { IPostModel } from "src/interfaces/entities/post";
+import type { IPostModel } from "../interfaces/entities/post";
 import { EPostStatus } from "../enums";
 
 const PostSchema = new Schema<IPostModel>(

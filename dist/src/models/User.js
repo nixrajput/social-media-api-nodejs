@@ -7,9 +7,9 @@ const mongoose_1 = require("mongoose");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const crypto_1 = __importDefault(require("crypto"));
 const enums_1 = require("../enums");
-const LocalConfig_1 = __importDefault(require("../config/LocalConfig"));
+const env_1 = __importDefault(require("../config/env"));
 const strings_1 = __importDefault(require("../constants/strings"));
-const logger_1 = __importDefault(require("src/logger"));
+const logger_1 = __importDefault(require("../logger"));
 const AuthToken_1 = __importDefault(require("./AuthToken"));
 const TokenServiceHelper_1 = __importDefault(require("../helpers/TokenServiceHelper"));
 const UserSchema = new mongoose_1.Schema({
@@ -144,8 +144,8 @@ const UserSchema = new mongoose_1.Schema({
     },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 UserSchema.methods.generateToken = async function () {
-    const jwtSecret = LocalConfig_1.default.getConfig().JWT_SECRET;
-    const jwtExpiresIn = LocalConfig_1.default.getConfig().JWT_EXPIRES_IN || 2592000000;
+    const jwtSecret = env_1.default.getConfig().JWT_SECRET;
+    const jwtExpiresIn = env_1.default.getConfig().JWT_EXPIRES_IN || 2592000000;
     if (!jwtSecret)
         throw new Error(strings_1.default.JWT_SECRET_NOT_FOUND);
     const token = jsonwebtoken_1.default.sign({ id: this._id }, jwtSecret, {

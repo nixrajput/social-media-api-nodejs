@@ -1,6 +1,6 @@
-import Logger from "src/logger";
 import fs from "fs";
 import path from "path";
+import Logger from "../logger";
 
 const filePath = path.join(__dirname, "../emails/", "otp-email.html");
 

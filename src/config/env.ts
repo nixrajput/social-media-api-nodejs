@@ -2,7 +2,7 @@ import type { Application } from "express";
 import type { IEnvConfig } from "../interfaces/core/config";
 import Logger from "../logger";
 
-class LocalConfig {
+class EnvConfig {
   // Loading process.env as IEnvConfig interface
 
   public static getConfig(): IEnvConfig {
@@ -50,4 +50,4 @@ class LocalConfig {
   }
 }
 
-export default LocalConfig;
+export default EnvConfig;

@@ -3,8 +3,8 @@
  */
 
 import jwt from "jsonwebtoken";
-import LocalConfig from "../config/LocalConfig";
-import Logger from "src/logger";
+import EnvConfig from "../config/env";
+import Logger from "../logger";
 import Strings from "../constants/strings";
 import type { IAuthTokenModel } from "../interfaces/entities/authToken";
 import AuthToken from "../models/AuthToken";
@@ -20,7 +20,7 @@ class TokenServiceHelper {
     token: string
   ): Promise<IAuthTokenModel | null> {
     try {
-      const decoded = jwt.verify(token, LocalConfig.getConfig().JWT_SECRET!);
+      const decoded = jwt.verify(token, EnvConfig.getConfig().JWT_SECRET!);
 
       if (!decoded || typeof decoded === "string") {
         throw new Error(Strings.TOKEN_NOT_VERIFIED);

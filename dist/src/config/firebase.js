@@ -32,4 +32,4 @@ class FirebaseConfig {
     }
 }
 exports.default = FirebaseConfig;
-//# sourceMappingURL=FirebaseConfig.js.map
+//# sourceMappingURL=firebase.js.map

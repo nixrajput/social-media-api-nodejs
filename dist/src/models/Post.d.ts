@@ -24,7 +24,7 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
-import type { IPostModel } from "src/interfaces/entities/post";
+import type { IPostModel } from "../interfaces/entities/post";
 declare const Post: import("mongoose").Model<IPostModel, {}, {}, {}, import("mongoose").Document<unknown, {}, IPostModel> & IPostModel & Required<{
     _id: unknown;
 }>, any>;

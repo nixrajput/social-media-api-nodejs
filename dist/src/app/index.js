@@ -4,14 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const LocalConfig_1 = __importDefault(require("../config/LocalConfig"));
+const env_1 = __importDefault(require("../config/env"));
 const logger_1 = __importDefault(require("../logger"));
 const Handler_1 = __importDefault(require("../exceptions/Handler"));
 const Http_1 = __importDefault(require("../middlewares/Http"));
 const CORS_1 = __importDefault(require("../middlewares/CORS"));
 const Morgan_1 = __importDefault(require("../middlewares/Morgan"));
 const app_routes_1 = __importDefault(require("./app-routes"));
-const FirebaseConfig_1 = __importDefault(require("../config/FirebaseConfig"));
+const firebase_1 = __importDefault(require("../config/firebase"));
 const swagger_1 = __importDefault(require("src/config/swagger"));
 const db_1 = require("../config/db");
 class ExpressApp {
@@ -31,8 +31,8 @@ class ExpressApp {
     }
     mountDotEnv() {
         logger_1.default.getInstance().info("Config :: Loading...");
-        this.express = LocalConfig_1.default.init(this.express);
-        this.express = FirebaseConfig_1.default.init(this.express);
+        this.express = env_1.default.init(this.express);
+        this.express = firebase_1.default.init(this.express);
     }
     mountLogger() {
         logger_1.default._init();
@@ -46,7 +46,7 @@ class ExpressApp {
         logger_1.default.getInstance().info("App :: Registering middlewares...");
         this.express = Http_1.default.mount(this.express);
         this.express = Morgan_1.default.mount(this.express);
-        if (LocalConfig_1.default.getConfig().CORS_ENABLED) {
+        if (env_1.default.getConfig().CORS_ENABLED) {
             this.express = CORS_1.default.mount(this.express);
         }
         logger_1.default.getInstance().info("App :: Middlewares registered");
@@ -69,7 +69,7 @@ class ExpressApp {
     }
     _init() {
         logger_1.default.getInstance().info("Server :: Starting...");
-        const port = LocalConfig_1.default.getConfig().PORT || 5000;
+        const port = env_1.default.getConfig().PORT || 5000;
         this._server = this.express
             .listen(port, () => {
             logger_1.default.getInstance().info(`Server :: Running @ 'http://localhost:${port}'`);

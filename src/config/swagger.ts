@@ -1,7 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Application } from "express";
-import Logger from "src/logger";
+import Logger from "../logger";
 
 class SwaggerDocs {
   private static options = {

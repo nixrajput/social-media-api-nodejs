@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 // import { Sequelize } from 'sequelize';
-import LocalConfig from "src/config/LocalConfig";
-import Logger from "src/logger";
+import EnvConfig from "./env";
+import Logger from "../logger";
 
 class MongoDB {
   private static instance: MongoDB;
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): MongoDB {
     if (!MongoDB.instance) {
@@ -16,8 +16,8 @@ class MongoDB {
 
   public async connect() {
     try {
-      await mongoose.connect(LocalConfig.getConfig().MONGO_URI!, {
-        dbName: LocalConfig.getConfig().DB_NAME,
+      await mongoose.connect(EnvConfig.getConfig().MONGO_URI!, {
+        dbName: EnvConfig.getConfig().DB_NAME,
         autoIndex: true,
         socketTimeoutMS: 30000,
         serverSelectionTimeoutMS: 5000,

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const strings_1 = __importDefault(require("../constants/strings"));
-const logger_1 = __importDefault(require("src/logger"));
+const logger_1 = __importDefault(require("../logger"));
 const Post_1 = __importDefault(require("../models/Post"));
 class PostService {
     findAllExc = async ({ findParams, sortParams, page, limit, skip, currentUser, }) => {

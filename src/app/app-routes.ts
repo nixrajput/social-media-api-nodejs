@@ -3,7 +3,7 @@
  */
 
 import type { Application } from "express";
-import LocalConfig from "../config/LocalConfig";
+import EnvConfig from "../config/env";
 import Logger from "../logger";
 import AuthRouter from "../routes/auth";
 
@@ -15,7 +15,7 @@ class Routes {
    * @returns Application
    */
   public mountApi(_express: Application): Application {
-    const apiPrefix = LocalConfig.getConfig().API_PREFIX;
+    const apiPrefix = EnvConfig.getConfig().API_PREFIX;
     Logger.getInstance().info("Routes :: Mounting API routes...");
 
     // Mounting Routes

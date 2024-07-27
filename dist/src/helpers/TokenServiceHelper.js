@@ -4,14 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const LocalConfig_1 = __importDefault(require("../config/LocalConfig"));
-const logger_1 = __importDefault(require("src/logger"));
+const env_1 = __importDefault(require("../config/env"));
+const logger_1 = __importDefault(require("../logger"));
 const strings_1 = __importDefault(require("../constants/strings"));
 const AuthToken_1 = __importDefault(require("../models/AuthToken"));
 class TokenServiceHelper {
     static async verifyToken(token) {
         try {
-            const decoded = jsonwebtoken_1.default.verify(token, LocalConfig_1.default.getConfig().JWT_SECRET);
+            const decoded = jsonwebtoken_1.default.verify(token, env_1.default.getConfig().JWT_SECRET);
             if (!decoded || typeof decoded === "string") {
                 throw new Error(strings_1.default.TOKEN_NOT_VERIFIED);
             }

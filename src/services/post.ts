@@ -6,7 +6,7 @@ import type { PipelineStage } from "mongoose";
 import StringValues from "../constants/strings";
 import type { IUserModel } from "../interfaces/entities/user";
 import type { IListResponse } from "../interfaces/responses/listResponse";
-import Logger from "src/logger";
+import Logger from "../logger";
 import type { IPost, IPostModel } from "../interfaces/entities/post";
 import Post from "../models/Post";
 

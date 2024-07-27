@@ -1,13 +1,13 @@
 import express from "express";
 import type { Application } from "express";
-import LocalConfig from "../config/LocalConfig";
+import EnvConfig from "../config/env";
 import Logger from "../logger";
 import ExceptionHandler from "../exceptions/Handler";
 import Http from "../middlewares/Http";
 import CORS from "../middlewares/CORS";
 import Morgan from "../middlewares/Morgan";
 import Routes from "./app-routes";
-import FirebaseConfig from "../config/FirebaseConfig";
+import FirebaseConfig from "../config/firebase";
 import SwaggerDocs from "src/config/swagger";
 import { MongoDB } from "../config/db";
 
@@ -44,7 +44,7 @@ class ExpressApp {
   private mountDotEnv(): void {
     Logger.getInstance().info("Config :: Loading...");
 
-    this.express = LocalConfig.init(this.express);
+    this.express = EnvConfig.init(this.express);
     this.express = FirebaseConfig.init(this.express);
   }
 
@@ -79,7 +79,7 @@ class ExpressApp {
     this.express = Morgan.mount(this.express);
 
     // Check if CORS is enabled
-    if (LocalConfig.getConfig().CORS_ENABLED) {
+    if (EnvConfig.getConfig().CORS_ENABLED) {
       // Mount CORS middleware
       this.express = CORS.mount(this.express);
     }
@@ -124,7 +124,7 @@ class ExpressApp {
   public _init(): void {
     Logger.getInstance().info("Server :: Starting...");
 
-    const port = LocalConfig.getConfig().PORT || 5000;
+    const port = EnvConfig.getConfig().PORT || 5000;
 
     // Start the server on the specified port
     this._server = this.express

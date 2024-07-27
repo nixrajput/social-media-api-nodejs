@@ -4,13 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mail_1 = __importDefault(require("@sendgrid/mail"));
-const LocalConfig_1 = __importDefault(require("../config/LocalConfig"));
+const env_1 = __importDefault(require("../config/env"));
 const logger_1 = __importDefault(require("../logger"));
 const strings_1 = __importDefault(require("../constants/strings"));
 class MailServiceHelper {
     static async sendEmail({ to, cc, bcc, subject, textContent, htmlContent, category, content, }) {
-        const sendgridApiKey = LocalConfig_1.default.getConfig().SENDGRID_API_KEY;
-        const smtpFrom = LocalConfig_1.default.getConfig().SMTP_FROM;
+        const sendgridApiKey = env_1.default.getConfig().SENDGRID_API_KEY;
+        const smtpFrom = env_1.default.getConfig().SMTP_FROM;
         if (!sendgridApiKey) {
             logger_1.default.getInstance().error("Env :: SendGrid API key not found");
             throw new Error("SendGrid API key not found in ENV file");

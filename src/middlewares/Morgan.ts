@@ -5,7 +5,7 @@
 import type { Application } from "express";
 import morgan from "morgan";
 import type { StreamOptions } from "morgan";
-import Logger from "src/logger";
+import Logger from "../logger";
 
 class Morgan {
   // Override the stream method by telling

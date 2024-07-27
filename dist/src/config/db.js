@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDB = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const LocalConfig_1 = __importDefault(require("src/config/LocalConfig"));
-const logger_1 = __importDefault(require("src/logger"));
+const env_1 = __importDefault(require("./env"));
+const logger_1 = __importDefault(require("../logger"));
 class MongoDB {
     static instance;
     constructor() { }
@@ -18,8 +18,8 @@ class MongoDB {
     }
     async connect() {
         try {
-            await mongoose_1.default.connect(LocalConfig_1.default.getConfig().MONGO_URI, {
-                dbName: LocalConfig_1.default.getConfig().DB_NAME,
+            await mongoose_1.default.connect(env_1.default.getConfig().MONGO_URI, {
+                dbName: env_1.default.getConfig().DB_NAME,
                 autoIndex: true,
                 socketTimeoutMS: 30000,
                 serverSelectionTimeoutMS: 5000,

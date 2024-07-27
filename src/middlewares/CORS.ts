@@ -4,7 +4,7 @@
 
 import cors from "cors";
 import type { Application } from "express";
-import Logger from "src/logger";
+import Logger from "../logger";
 
 class CORS {
   // CORS Options

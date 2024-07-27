@@ -8,7 +8,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const helmet_1 = __importDefault(require("helmet"));
 const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
-const logger_1 = __importDefault(require("src/logger"));
+const logger_1 = __importDefault(require("../logger"));
 class Http {
     static mount(_express) {
         logger_1.default.getInstance().info("App :: Registering HTTP middleware...");

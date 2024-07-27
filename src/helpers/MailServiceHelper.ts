@@ -3,7 +3,7 @@
  */
 
 import sgMail from "@sendgrid/mail";
-import LocalConfig from "../config/LocalConfig";
+import EnvConfig from "../config/env";
 import Logger from "../logger";
 import StringValues from "../constants/strings";
 
@@ -42,8 +42,8 @@ class MailServiceHelper {
     category,
     content,
   }: MailOptions): Promise<void> {
-    const sendgridApiKey = LocalConfig.getConfig().SENDGRID_API_KEY!;
-    const smtpFrom = LocalConfig.getConfig().SMTP_FROM!;
+    const sendgridApiKey = EnvConfig.getConfig().SENDGRID_API_KEY!;
+    const smtpFrom = EnvConfig.getConfig().SMTP_FROM!;
 
     if (!sendgridApiKey) {
       Logger.getInstance().error("Env :: SendGrid API key not found");

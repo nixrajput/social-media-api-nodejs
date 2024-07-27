@@ -4,9 +4,9 @@ import crypto from "crypto";
 import type { IAuthTokenModel } from "../interfaces/entities/authToken";
 import type { IUserModel } from "../interfaces/entities/user";
 import { EUserStatus } from "../enums";
-import LocalConfig from "../config/LocalConfig";
+import EnvConfig from "../config/env";
 import StringValues from "../constants/strings";
-import Logger from "src/logger";
+import Logger from "../logger";
 import AuthToken from "./AuthToken";
 import TokenServiceHelper from "../helpers/TokenServiceHelper";
 
@@ -215,8 +215,8 @@ const UserSchema = new Schema<IUserModel>(
  * @returns Promise<IAuthTokenModel>
  */
 UserSchema.methods.generateToken = async function (): Promise<IAuthTokenModel> {
-  const jwtSecret = LocalConfig.getConfig().JWT_SECRET!;
-  const jwtExpiresIn = LocalConfig.getConfig().JWT_EXPIRES_IN! || 2592000000;
+  const jwtSecret = EnvConfig.getConfig().JWT_SECRET!;
+  const jwtExpiresIn = EnvConfig.getConfig().JWT_EXPIRES_IN! || 2592000000;
 
   if (!jwtSecret) throw new Error(StringValues.JWT_SECRET_NOT_FOUND);
 

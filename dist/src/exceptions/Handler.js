@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const LocalConfig_1 = __importDefault(require("../config/LocalConfig"));
+const env_1 = __importDefault(require("../config/env"));
 const logger_1 = __importDefault(require("../logger"));
 const ApiError_1 = __importDefault(require("../exceptions/ApiError"));
 const statusCodes_1 = __importDefault(require("../constants/statusCodes"));
@@ -46,7 +46,7 @@ class ExceptionHandler {
     static errorHandler(err, req, res, _next) {
         err.statusCode = err.statusCode || statusCodes_1.default.INTERNAL_SERVER_ERROR;
         err.message = err.message || strings_1.default.INTERNAL_SERVER_ERROR;
-        const apiPrefix = LocalConfig_1.default.getConfig().API_PREFIX;
+        const apiPrefix = env_1.default.getConfig().API_PREFIX;
         console.log(req.originalUrl);
         if (req.originalUrl.includes(`/${apiPrefix}/`)) {
             if (err.name && err.name === "UnauthorizedError") {

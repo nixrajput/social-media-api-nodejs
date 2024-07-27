@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const logger_1 = __importDefault(require("src/logger"));
+const logger_1 = __importDefault(require("../logger"));
 class SwaggerDocs {
     static options = {
         definition: {
