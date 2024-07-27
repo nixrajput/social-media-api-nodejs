@@ -8,7 +8,7 @@ import CORS from "../middlewares/CORS";
 import Morgan from "../middlewares/Morgan";
 import Routes from "./app-routes";
 import FirebaseConfig from "../config/firebase";
-import SwaggerDocs from "src/config/swagger";
+import SwaggerDocs from "../config/swagger";
 import { MongoDB } from "../config/db";
 
 /**

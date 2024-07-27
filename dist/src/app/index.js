@@ -12,7 +12,7 @@ const CORS_1 = __importDefault(require("../middlewares/CORS"));
 const Morgan_1 = __importDefault(require("../middlewares/Morgan"));
 const app_routes_1 = __importDefault(require("./app-routes"));
 const firebase_1 = __importDefault(require("../config/firebase"));
-const swagger_1 = __importDefault(require("src/config/swagger"));
+const swagger_1 = __importDefault(require("../config/swagger"));
 const db_1 = require("../config/db");
 class ExpressApp {
     express;
