@@ -33,7 +33,6 @@ class ExpressApp {
     this.mouteRoutes();
     this.mountSwagger();
     this.registerHandlers();
-    this.connectToDB();
 
     Logger.getInstance().info("App :: Initialized");
   }
@@ -111,17 +110,16 @@ class ExpressApp {
   }
 
   /**
-   * Connect to Database
-   */
-  private connectToDB(): void {
-    Logger.getInstance().info("Database :: Connecting...");
-    MongoDB.getInstance().connect();
-  }
-
-  /**
    * Starts the express server
    */
-  public _init(): void {
+  public async _init(): Promise<void> {
+    Logger.getInstance().info("Database :: Connecting...");
+    const isConnected = await MongoDB.getInstance().connect();
+
+    if (!isConnected) {
+      process.exit(1);
+    }
+
     Logger.getInstance().info("Server :: Starting...");
 
     const port = EnvConfig.getConfig().PORT || 5000;

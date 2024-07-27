@@ -26,7 +26,6 @@ class ExpressApp {
         this.mouteRoutes();
         this.mountSwagger();
         this.registerHandlers();
-        this.connectToDB();
         logger_1.default.getInstance().info("App :: Initialized");
     }
     mountDotEnv() {
@@ -63,11 +62,12 @@ class ExpressApp {
         this.express = app_routes_1.default.mountApi(this.express);
         logger_1.default.getInstance().info("Routes :: API routes mounted");
     }
-    connectToDB() {
+    async _init() {
         logger_1.default.getInstance().info("Database :: Connecting...");
-        db_1.MongoDB.getInstance().connect();
-    }
-    _init() {
+        const isConnected = await db_1.MongoDB.getInstance().connect();
+        if (!isConnected) {
+            process.exit(1);
+        }
         logger_1.default.getInstance().info("Server :: Starting...");
         const port = env_1.default.getConfig().PORT || 5000;
         this._server = this.express

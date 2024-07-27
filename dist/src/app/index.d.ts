@@ -9,8 +9,7 @@ declare class ExpressApp {
     private mountMiddlewares;
     private registerHandlers;
     private mouteRoutes;
-    private connectToDB;
-    _init(): void;
+    _init(): Promise<void>;
     _close(): void;
 }
 declare const _default: ExpressApp;

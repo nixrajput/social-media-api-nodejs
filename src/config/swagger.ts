@@ -45,7 +45,7 @@ class SwaggerDocs {
    */
   public static init(_express: Application): Application {
     _express.use(
-      "/",
+      "/docs",
       swaggerUi.serve,
       swaggerUi.setup(this.swaggerSpecs, { explorer: true })
     );

@@ -40,7 +40,7 @@ class SwaggerDocs {
     };
     static swaggerSpecs = (0, swagger_jsdoc_1.default)(this.options);
     static init(_express) {
-        _express.use("/", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(this.swaggerSpecs, { explorer: true }));
+        _express.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(this.swaggerSpecs, { explorer: true }));
         logger_1.default.getInstance().info("Swagger :: Initialized");
         return _express;
     }

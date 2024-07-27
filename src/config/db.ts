@@ -5,7 +5,7 @@ import Logger from "../logger";
 
 class MongoDB {
   private static instance: MongoDB;
-  private constructor() { }
+  private constructor() {}
 
   public static getInstance(): MongoDB {
     if (!MongoDB.instance) {
@@ -14,7 +14,7 @@ class MongoDB {
     return MongoDB.instance;
   }
 
-  public async connect() {
+  public async connect(): Promise<boolean> {
     try {
       await mongoose.connect(EnvConfig.getConfig().MONGO_URI!, {
         dbName: EnvConfig.getConfig().DB_NAME,
@@ -23,9 +23,10 @@ class MongoDB {
         serverSelectionTimeoutMS: 5000,
       });
       Logger.getInstance().info("Database :: Connected @ MongoDB");
+      return true;
     } catch (error: any) {
       Logger.getInstance().error(`Database :: Error: ${error.message}`);
-      process.exit(1);
+      return false;
     }
   }
 }

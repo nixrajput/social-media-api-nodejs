@@ -25,10 +25,11 @@ class MongoDB {
                 serverSelectionTimeoutMS: 5000,
             });
             logger_1.default.getInstance().info("Database :: Connected @ MongoDB");
+            return true;
         }
         catch (error) {
             logger_1.default.getInstance().error(`Database :: Error: ${error.message}`);
-            process.exit(1);
+            return false;
         }
     }
 }
