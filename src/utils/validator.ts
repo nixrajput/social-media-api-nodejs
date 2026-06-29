@@ -42,7 +42,7 @@ class Validators {
   public static validateUrl(url: string): boolean {
     if (!url) throw new Error("URL is not defined");
 
-    const URL_REG_EXP: RegExp = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&=]*)/;
+    const URL_REG_EXP: RegExp = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&=]*)/;
 
     return URL_REG_EXP.test(url);
   }

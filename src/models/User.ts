@@ -338,7 +338,7 @@ UserSchema.methods.setPassword = async function (
 UserSchema.methods.matchPassword = async function (
   password: string
 ): Promise<boolean> {
-  var hash = crypto
+  const hash = crypto
     .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
     .toString(`hex`);
 
