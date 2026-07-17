@@ -1,4 +1,4 @@
-import { bigserial, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { bigserial, integer, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 export const telemetryEvents = pgTable('telemetry_events', {
   id: bigserial('id', { mode: 'number' }).primaryKey(),
@@ -26,5 +26,5 @@ export const crashReports = pgTable('crash_reports', {
 export const telemetryDailyRollups = pgTable('telemetry_daily_rollups', {
   day: text('day').notNull(),
   name: text('name').notNull(),
-  count: bigserial('count', { mode: 'number' }).notNull(),
+  count: integer('count').notNull(),
 });

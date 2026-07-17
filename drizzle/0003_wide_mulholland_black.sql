@@ -1,0 +1,1 @@
+ALTER TABLE "telemetry_daily_rollups" ALTER COLUMN "count" SET DATA TYPE integer;
