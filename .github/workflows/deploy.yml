@@ -1,0 +1,47 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check deploy secrets
+        id: gate
+        run: |
+          if [ -z "${{ secrets.DEPLOY_HOST }}" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "DEPLOY_HOST not set; skipping deploy."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: docker/login-action@v3
+        if: steps.gate.outputs.configured == 'true'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        if: steps.gate.outputs.configured == 'true'
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/nixrajput/social-media-api:latest
+      - name: Deploy over SSH
+        if: steps.gate.outputs.configured == 'true'
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/social-api
+            docker compose -f compose.prod.yaml pull api
+            docker compose -f compose.prod.yaml up -d
+            docker compose -f compose.prod.yaml exec -T api node -e "console.log('deployed')"
