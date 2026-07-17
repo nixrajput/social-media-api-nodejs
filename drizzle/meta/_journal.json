@@ -8,6 +8,13 @@
       "when": 1784284916239,
       "tag": "0000_extensions",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784288387753,
+      "tag": "0001_elite_lightspeed",
+      "breakpoints": true
     }
   ]
 }

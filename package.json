@@ -39,6 +39,7 @@
     "pino-http": "^11.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
+    "uuidv7": "^1.2.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
