@@ -7,6 +7,8 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.spec.ts', 'test/**/*.spec.ts'],
   },
+  // swc handles all transforms (decorator metadata for Nest DI); disable Oxc.
+  oxc: false,
   plugins: [
     swc.vite({
       jsc: {
