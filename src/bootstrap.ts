@@ -41,7 +41,7 @@ export async function createApp(): Promise<NestFastifyApplication> {
 
   if (env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()
-      .setTitle('Social API')
+      .setTitle('Social Media API')
       .setVersion('2.0')
       .addBearerAuth()
       .build();

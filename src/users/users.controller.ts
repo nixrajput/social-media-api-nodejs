@@ -86,6 +86,39 @@ export class UsersController {
     return this.users.listFollowing(id, cursor, limit);
   }
 
+  @Get('me/blocked')
+  blocked(
+    @CurrentUser() ctx: AuthContext,
+    @Query('cursor') cursor?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.users.listBlocked(ctx.userId, cursor, limit);
+  }
+
+  @Post(':id/block')
+  @HttpCode(204)
+  async block(@CurrentUser() ctx: AuthContext, @Param('id') id: string): Promise<void> {
+    await this.users.block(ctx.userId, id);
+  }
+
+  @Delete(':id/block')
+  @HttpCode(204)
+  async unblock(@CurrentUser() ctx: AuthContext, @Param('id') id: string): Promise<void> {
+    await this.users.unblock(ctx.userId, id);
+  }
+
+  @Post(':id/mute')
+  @HttpCode(204)
+  async mute(@CurrentUser() ctx: AuthContext, @Param('id') id: string): Promise<void> {
+    await this.users.mute(ctx.userId, id);
+  }
+
+  @Delete(':id/mute')
+  @HttpCode(204)
+  async unmute(@CurrentUser() ctx: AuthContext, @Param('id') id: string): Promise<void> {
+    await this.users.unmute(ctx.userId, id);
+  }
+
   @Get(':username')
   byUsername(@CurrentUser() ctx: AuthContext, @Param('username') username: string) {
     return this.users.getByUsername(ctx.userId, username);

@@ -4,7 +4,7 @@ import { toSelfUser } from '../auth/auth.service';
 import { ApiException } from '../common/exception.filter';
 import { buildPage, decodeCursor, encodeCursor, parseLimit } from '../common/pagination';
 import { DB, type Db } from '../db/db.module';
-import { blocks, fieldVisibility, follows, profiles, users } from '../db/schema';
+import { blocks, fieldVisibility, follows, mutes, profiles, users } from '../db/schema';
 import { RelationshipService } from './relationship.service';
 import { toUserLite, type UserLite } from './user-lite';
 import { filterProfileForViewer, type PublicProfile } from './visibility';
@@ -238,5 +238,58 @@ export class UsersService {
       items: page.items.map(({ createdAt: _c, ...lite }) => lite),
       nextCursor: page.nextCursor,
     };
+  }
+
+  async block(blockerId: string, blockedId: string): Promise<void> {
+    if (blockerId === blockedId) {
+      throw new ApiException('VALIDATION', 'Cannot block yourself', 400);
+    }
+    await this.db.insert(blocks).values({ blockerId, blockedId }).onConflictDoNothing();
+    // Blocking severs the follow relationship both ways (accepted and pending).
+    await this.db
+      .delete(follows)
+      .where(
+        or(
+          and(eq(follows.followerId, blockerId), eq(follows.followeeId, blockedId)),
+          and(eq(follows.followerId, blockedId), eq(follows.followeeId, blockerId)),
+        ),
+      );
+  }
+
+  async unblock(blockerId: string, blockedId: string): Promise<void> {
+    await this.db
+      .delete(blocks)
+      .where(and(eq(blocks.blockerId, blockerId), eq(blocks.blockedId, blockedId)));
+  }
+
+  async listBlocked(userId: string, cursor?: string, limitRaw?: string) {
+    const limit = parseLimit(limitRaw);
+    const c = decodeCursor(cursor);
+    const rows = await this.db
+      .select({ user: users, createdAt: blocks.createdAt })
+      .from(blocks)
+      .innerJoin(users, eq(users.id, blocks.blockedId))
+      .where(and(eq(blocks.blockerId, userId), c ? lt(blocks.createdAt, c.createdAt) : undefined))
+      .orderBy(desc(blocks.createdAt))
+      .limit(limit + 1);
+    const mapped = rows.map((r) => ({ ...toUserLite(r.user), createdAt: r.createdAt }));
+    const page = buildPage(mapped, limit, (r) =>
+      encodeCursor({ createdAt: r.createdAt, id: r.id }),
+    );
+    return {
+      items: page.items.map(({ createdAt: _c, ...lite }) => lite),
+      nextCursor: page.nextCursor,
+    };
+  }
+
+  async mute(muterId: string, mutedId: string): Promise<void> {
+    if (muterId === mutedId) {
+      throw new ApiException('VALIDATION', 'Cannot mute yourself', 400);
+    }
+    await this.db.insert(mutes).values({ muterId, mutedId }).onConflictDoNothing();
+  }
+
+  async unmute(muterId: string, mutedId: string): Promise<void> {
+    await this.db.delete(mutes).where(and(eq(mutes.muterId, muterId), eq(mutes.mutedId, mutedId)));
   }
 }
