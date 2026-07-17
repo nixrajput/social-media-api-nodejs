@@ -6,6 +6,7 @@ const valid = {
   PORT: '4100',
   DATABASE_URL: 'postgres://app:app@localhost:5432/social_test',
   REDIS_URL: 'redis://localhost:6379',
+  JWT_ACCESS_SECRET: 'test-secret-least-16-chars',
 };
 
 describe('loadEnv', () => {
@@ -24,6 +25,7 @@ describe('loadEnv', () => {
     const env = loadEnv({
       DATABASE_URL: valid.DATABASE_URL,
       REDIS_URL: valid.REDIS_URL,
+      JWT_ACCESS_SECRET: valid.JWT_ACCESS_SECRET,
     });
     expect(env.NODE_ENV).toBe('development');
     expect(env.PORT).toBe(4000);

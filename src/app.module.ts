@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
+import { AuthModule } from './auth/auth.module';
 import { AppThrottlerModule } from './common/throttler.module';
 import { DbModule } from './db/db.module';
 import { HealthModule } from './health/health.module';
@@ -20,6 +21,7 @@ import { MailModule } from './mail/mail.module';
     AppThrottlerModule,
     DbModule,
     MailModule,
+    AuthModule,
     HealthModule,
   ],
 })

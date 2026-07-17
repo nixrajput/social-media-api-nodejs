@@ -9,6 +9,9 @@ export const envSchema = z.object({
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(60),
   SMTP_URL: z.string().default(''),
   MAIL_FROM: z.string().default('no-reply@localhost'),
+  JWT_ACCESS_SECRET: z.string().min(16),
+  JWT_ACCESS_TTL: z.coerce.number().int().positive().default(900),
+  REFRESH_TTL_DAYS: z.coerce.number().int().positive().default(30),
 });
 
 export type Env = z.infer<typeof envSchema>;
