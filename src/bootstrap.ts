@@ -48,5 +48,18 @@ export async function createApp(): Promise<NestFastifyApplication> {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document);
   }
+
+  // Service descriptor at the true root, which sits outside the api/v1 prefix.
+  app
+    .getHttpAdapter()
+    .getInstance()
+    .get('/', () => ({
+      name: 'Social Media API',
+      status: 'ok',
+      apiBase: '/api/v1',
+      health: '/api/v1/health',
+      ...(env.NODE_ENV !== 'production' ? { docs: '/docs' } : {}),
+    }));
+
   return app;
 }
