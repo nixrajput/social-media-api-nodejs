@@ -18,11 +18,16 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@fastify/cors": "^11.3.0",
+    "@fastify/helmet": "^13.1.0",
+    "@nest-lab/throttler-storage-redis": "^1.2.0",
     "@nestjs/common": "^11",
     "@nestjs/core": "^11",
     "@nestjs/platform-fastify": "^11",
+    "@nestjs/throttler": "^6.5.0",
     "drizzle-orm": "^0.45.2",
     "fastify": "^5.10.0",
+    "ioredis": "^5.11.1",
     "nestjs-pino": "^4.6.1",
     "pg": "^8.22.0",
     "pino": "^10.3.1",

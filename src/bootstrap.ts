@@ -1,9 +1,12 @@
 import type { IncomingMessage } from 'node:http';
 import type { Http2ServerRequest } from 'node:http2';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
+import { loadEnv } from './config/env';
 import { GlobalExceptionFilter } from './common/exception.filter';
 import { requestId } from './common/request-id';
 
@@ -26,5 +29,12 @@ export async function createApp(): Promise<NestFastifyApplication> {
       void reply.header('x-request-id', req.id);
       done();
     });
+
+  const env = loadEnv();
+  await app.register(helmet);
+  const origins = env.CORS_ORIGINS.split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+  await app.register(cors, { origin: origins.length > 0 ? origins : false, credentials: true });
   return app;
 }

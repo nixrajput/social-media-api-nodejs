@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
+import { AppThrottlerModule } from './common/throttler.module';
 import { DbModule } from './db/db.module';
 import { HealthModule } from './health/health.module';
 
@@ -15,6 +16,7 @@ import { HealthModule } from './health/health.module';
         redact: ['req.headers.authorization', 'req.headers.cookie'],
       },
     }),
+    AppThrottlerModule,
     DbModule,
     HealthModule,
   ],
