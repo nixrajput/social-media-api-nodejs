@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 import { ApiException } from '../common/exception.filter';
 import { DB, type Db } from '../db/db.module';
 import { sessions, users } from '../db/schema';
@@ -113,5 +113,28 @@ export class AuthService {
 
   async logout(sessionId: string): Promise<void> {
     await this.db.update(sessions).set({ revokedAt: new Date() }).where(eq(sessions.id, sessionId));
+  }
+
+  async listSessions(userId: string, currentId: string) {
+    const rows = await this.db
+      .select()
+      .from(sessions)
+      .where(and(eq(sessions.userId, userId), isNull(sessions.revokedAt)));
+    return {
+      items: rows.map((s) => ({
+        id: s.id,
+        deviceName: s.deviceName,
+        platform: s.platform,
+        lastSeenAt: s.lastSeenAt.toISOString(),
+        current: s.id === currentId,
+      })),
+    };
+  }
+
+  async revokeSession(userId: string, sessionId: string): Promise<void> {
+    await this.db
+      .update(sessions)
+      .set({ revokedAt: new Date() })
+      .where(and(eq(sessions.id, sessionId), eq(sessions.userId, userId)));
   }
 }

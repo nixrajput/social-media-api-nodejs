@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { ZodValidationPipe } from '../common/zod.pipe';
 import { AuthGuard } from './auth.guard';
@@ -50,5 +50,18 @@ export class AuthController {
   @UseGuards(AuthGuard)
   async logout(@CurrentUser() ctx: AuthContext): Promise<void> {
     await this.auth.logout(ctx.sessionId);
+  }
+
+  @Get('sessions')
+  @UseGuards(AuthGuard)
+  sessions(@CurrentUser() ctx: AuthContext) {
+    return this.auth.listSessions(ctx.userId, ctx.sessionId);
+  }
+
+  @Delete('sessions/:id')
+  @HttpCode(204)
+  @UseGuards(AuthGuard)
+  async revoke(@CurrentUser() ctx: AuthContext, @Param('id') id: string): Promise<void> {
+    await this.auth.revokeSession(ctx.userId, id);
   }
 }
