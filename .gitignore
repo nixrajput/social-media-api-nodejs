@@ -2,6 +2,8 @@
 /node_modules
 /build
 /src-old
+dist/
+!.env.example
 
 # Logs
 logs
@@ -55,3 +57,12 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+graphify-out/
+
+# Local-only AI-collab artifacts
+docs/superpowers/
+.superpowers/
+code-reviews/
+settings.local.json
+.playwright-mcp/
+bug-reports/
