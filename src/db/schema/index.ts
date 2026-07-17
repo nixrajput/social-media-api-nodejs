@@ -11,3 +11,5 @@ export * from './graph';
 export * from './lists';
 export * from './telemetry';
 export * from './uploads';
+export * from './posts';
+export * from './engagement';

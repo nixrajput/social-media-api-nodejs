@@ -43,6 +43,13 @@
       "when": 1784306666557,
       "tag": "0005_pretty_strong_guy",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1784307380462,
+      "tag": "0006_public_elektra",
+      "breakpoints": true
     }
   ]
 }

@@ -6,6 +6,7 @@ import { DbModule } from './db/db.module';
 import { HealthModule } from './health/health.module';
 import { MailModule } from './mail/mail.module';
 import { MediaModule } from './media/media.module';
+import { PostsModule } from './posts/posts.module';
 import { TelemetryModule } from './telemetry/telemetry.module';
 import { UsersModule } from './users/users.module';
 
@@ -27,6 +28,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
     MediaModule,
+    PostsModule,
     TelemetryModule,
     HealthModule,
   ],
