@@ -6,11 +6,12 @@ import { AuthService } from './auth.service';
 import { OtpService } from './otp.service';
 import { PasswordService } from './password.service';
 import { TokenService } from './token.service';
+import { TotpService } from './totp.service';
 
 @Module({
   imports: [JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, PasswordService, OtpService, TokenService, AuthGuard],
+  providers: [AuthService, PasswordService, OtpService, TokenService, TotpService, AuthGuard],
   exports: [TokenService, PasswordService, AuthGuard],
 })
 export class AuthModule {}

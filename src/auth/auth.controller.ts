@@ -5,10 +5,13 @@ import { AuthGuard } from './auth.guard';
 import { CurrentUser, type AuthContext } from './current-user.decorator';
 import { AuthService } from './auth.service';
 import {
+  login2faDto,
   loginDto,
   refreshDto,
   registerDto,
   sendOtpDto,
+  totpDisableDto,
+  totpVerifyDto,
   type LoginDto,
   type RegisterDto,
 } from './dto';
@@ -63,5 +66,38 @@ export class AuthController {
   @UseGuards(AuthGuard)
   async revoke(@CurrentUser() ctx: AuthContext, @Param('id') id: string): Promise<void> {
     await this.auth.revokeSession(ctx.userId, id);
+  }
+
+  @Post('2fa/setup')
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  setup2fa(@CurrentUser() ctx: AuthContext) {
+    return this.auth.begin2faSetup(ctx.userId);
+  }
+
+  @Post('2fa/verify')
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  verify2fa(
+    @CurrentUser() ctx: AuthContext,
+    @Body(new ZodValidationPipe(totpVerifyDto)) b: { totp: string },
+  ) {
+    return this.auth.confirm2fa(ctx.userId, b.totp);
+  }
+
+  @Delete('2fa')
+  @HttpCode(204)
+  @UseGuards(AuthGuard)
+  async remove2fa(
+    @CurrentUser() ctx: AuthContext,
+    @Body(new ZodValidationPipe(totpDisableDto)) b: { totp: string },
+  ): Promise<void> {
+    await this.auth.disable2fa(ctx.userId, b.totp);
+  }
+
+  @Post('login/2fa')
+  @HttpCode(200)
+  login2fa(@Body(new ZodValidationPipe(login2faDto)) b: { challengeToken: string; totp: string }) {
+    return this.auth.complete2faLogin(b.challengeToken, b.totp);
   }
 }

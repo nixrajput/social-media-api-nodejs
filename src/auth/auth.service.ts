@@ -7,6 +7,7 @@ import { MailService } from '../mail/mail.service';
 import { OtpService } from './otp.service';
 import { PasswordService } from './password.service';
 import { TokenService, type Tokens } from './token.service';
+import { TotpService } from './totp.service';
 import type { LoginDto, RegisterDto } from './dto';
 
 export interface SelfUser {
@@ -38,6 +39,7 @@ export class AuthService {
     private readonly passwords: PasswordService,
     private readonly otps: OtpService,
     private readonly tokens: TokenService,
+    private readonly totp: TotpService,
     private readonly mail: MailService,
   ) {}
 
@@ -136,5 +138,45 @@ export class AuthService {
       .update(sessions)
       .set({ revokedAt: new Date() })
       .where(and(eq(sessions.id, sessionId), eq(sessions.userId, userId)));
+  }
+
+  async begin2faSetup(userId: string): Promise<{ otpauthUrl: string; secret: string }> {
+    const [user] = await this.db.select().from(users).where(eq(users.id, userId)).limit(1);
+    const secret = this.totp.generateSecret();
+    await this.db.update(users).set({ totpSecret: secret }).where(eq(users.id, userId));
+    return { otpauthUrl: this.totp.otpauthUrl(secret, user!.email), secret };
+  }
+
+  async confirm2fa(userId: string, token: string): Promise<{ recoveryCodes: string[] }> {
+    const [user] = await this.db.select().from(users).where(eq(users.id, userId)).limit(1);
+    if (!user?.totpSecret || !this.totp.verify(user.totpSecret, token)) {
+      throw new ApiException('VALIDATION', 'Invalid code', 400);
+    }
+    const { plain, hashes } = this.totp.makeRecoveryCodes();
+    await this.db
+      .update(users)
+      .set({ totpEnabledAt: new Date(), totpRecoveryCodes: hashes })
+      .where(eq(users.id, userId));
+    return { recoveryCodes: plain };
+  }
+
+  async disable2fa(userId: string, token: string): Promise<void> {
+    const [user] = await this.db.select().from(users).where(eq(users.id, userId)).limit(1);
+    if (!user?.totpSecret || !this.totp.verify(user.totpSecret, token)) {
+      throw new ApiException('VALIDATION', 'Invalid code', 400);
+    }
+    await this.db
+      .update(users)
+      .set({ totpSecret: null, totpEnabledAt: null, totpRecoveryCodes: null })
+      .where(eq(users.id, userId));
+  }
+
+  async complete2faLogin(challengeToken: string, token: string) {
+    const { userId, deviceName, platform } = await this.tokens.verify2faChallenge(challengeToken);
+    const [user] = await this.db.select().from(users).where(eq(users.id, userId)).limit(1);
+    if (!user?.totpSecret || !this.totp.verify(user.totpSecret, token)) {
+      throw new ApiException('UNAUTHORIZED', 'Invalid code', 401);
+    }
+    return this.startSession(user, deviceName, platform);
   }
 }
