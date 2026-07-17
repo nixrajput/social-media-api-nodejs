@@ -6,6 +6,7 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     include: ['src/**/*.spec.ts', 'test/**/*.spec.ts'],
+    setupFiles: ['test/setup.ts'],
   },
   // swc handles all transforms (decorator metadata for Nest DI); disable Oxc.
   oxc: false,
