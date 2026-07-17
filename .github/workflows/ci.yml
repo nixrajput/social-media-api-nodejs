@@ -1,9 +1,17 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches: [master, revamp]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
