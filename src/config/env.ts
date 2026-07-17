@@ -13,6 +13,11 @@ export const envSchema = z.object({
   JWT_ACCESS_TTL: z.coerce.number().int().positive().default(900),
   REFRESH_TTL_DAYS: z.coerce.number().int().positive().default(30),
   GOOGLE_OAUTH_CLIENT_IDS: z.string().default(''),
+  R2_ACCOUNT_ID: z.string().default(''),
+  R2_ACCESS_KEY_ID: z.string().default(''),
+  R2_SECRET_ACCESS_KEY: z.string().default(''),
+  R2_BUCKET: z.string().default('rippl-dev'),
+  MEDIA_CDN_URL: z.string().default('https://cdn.local'),
 });
 
 export type Env = z.infer<typeof envSchema>;

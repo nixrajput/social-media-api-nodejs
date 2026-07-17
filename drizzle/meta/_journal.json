@@ -36,6 +36,13 @@
       "when": 1784300162328,
       "tag": "0004_green_liz_osborn",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1784306666557,
+      "tag": "0005_pretty_strong_guy",
+      "breakpoints": true
     }
   ]
 }

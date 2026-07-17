@@ -5,6 +5,7 @@ import { AppThrottlerModule } from './common/throttler.module';
 import { DbModule } from './db/db.module';
 import { HealthModule } from './health/health.module';
 import { MailModule } from './mail/mail.module';
+import { MediaModule } from './media/media.module';
 import { TelemetryModule } from './telemetry/telemetry.module';
 import { UsersModule } from './users/users.module';
 
@@ -25,6 +26,7 @@ import { UsersModule } from './users/users.module';
     MailModule,
     AuthModule,
     UsersModule,
+    MediaModule,
     TelemetryModule,
     HealthModule,
   ],

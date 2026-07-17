@@ -10,3 +10,4 @@ export * from './field-visibility';
 export * from './graph';
 export * from './lists';
 export * from './telemetry';
+export * from './uploads';
