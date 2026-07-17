@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { ApiException } from '../common/exception.filter';
 import { DB, type Db } from '../db/db.module';
 import { sessions, users } from '../db/schema';
@@ -6,7 +7,7 @@ import { MailService } from '../mail/mail.service';
 import { OtpService } from './otp.service';
 import { PasswordService } from './password.service';
 import { TokenService, type Tokens } from './token.service';
-import type { RegisterDto } from './dto';
+import type { LoginDto, RegisterDto } from './dto';
 
 export interface SelfUser {
   id: string;
@@ -69,5 +70,48 @@ export class AuthService {
   async sendRegisterOtp(email: string): Promise<void> {
     const code = await this.otps.issue(email, 'register');
     await this.mail.enqueueOtp(email, code, 'register');
+  }
+
+  async login(
+    dto: LoginDto,
+  ): Promise<
+    | { user: SelfUser; tokens: Tokens; deviceId: string }
+    | { twoFactorRequired: true; challengeToken: string }
+  > {
+    const [user] = await this.db.select().from(users).where(eq(users.email, dto.email)).limit(1);
+    if (!user || !(await this.passwords.verify(user.passwordHash, dto.password))) {
+      throw new ApiException('UNAUTHORIZED', 'Invalid credentials', 401);
+    }
+    if (user.accountStatus === 'banned') throw new ApiException('FORBIDDEN', 'Account banned', 403);
+    if (user.totpEnabledAt) {
+      const challengeToken = await this.tokens.issue2faChallenge(
+        user.id,
+        dto.deviceName,
+        dto.platform,
+      );
+      return { twoFactorRequired: true, challengeToken };
+    }
+    return this.startSession(user, dto.deviceName, dto.platform);
+  }
+
+  async startSession(
+    user: typeof users.$inferSelect,
+    deviceName: string,
+    platform: string,
+  ): Promise<{ user: SelfUser; tokens: Tokens; deviceId: string }> {
+    const [session] = await this.db
+      .insert(sessions)
+      .values({ userId: user.id, deviceName, platform })
+      .returning();
+    const tokens = await this.tokens.issueForSession(user.id, session!.id);
+    return { user: toSelfUser(user), tokens, deviceId: session!.id };
+  }
+
+  async refresh(refreshToken: string): Promise<{ tokens: Tokens }> {
+    return { tokens: await this.tokens.rotate(refreshToken) };
+  }
+
+  async logout(sessionId: string): Promise<void> {
+    await this.db.update(sessions).set({ revokedAt: new Date() }).where(eq(sessions.id, sessionId));
   }
 }

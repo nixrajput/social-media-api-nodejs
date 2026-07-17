@@ -92,4 +92,26 @@ export class TokenService {
       .where(eq(sessions.id, sessionId));
     return next;
   }
+
+  async issue2faChallenge(userId: string, deviceName: string, platform: string): Promise<string> {
+    return this.jwt.signAsync(
+      { sub: userId, dn: deviceName, pf: platform, twofa: true },
+      { secret: this.env.JWT_ACCESS_SECRET, expiresIn: 300 },
+    );
+  }
+
+  async verify2faChallenge(
+    token: string,
+  ): Promise<{ userId: string; deviceName: string; platform: string }> {
+    try {
+      const p = await this.jwt.verifyAsync<{ sub: string; dn: string; pf: string; twofa: boolean }>(
+        token,
+        { secret: this.env.JWT_ACCESS_SECRET },
+      );
+      if (!p.twofa) throw new Error('not a 2fa challenge');
+      return { userId: p.sub, deviceName: p.dn, platform: p.pf };
+    } catch {
+      throw new ApiException('UNAUTHORIZED', 'Invalid or expired challenge', 401);
+    }
+  }
 }
