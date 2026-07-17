@@ -15,6 +15,13 @@
       "when": 1784288387753,
       "tag": "0001_elite_lightspeed",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784290217452,
+      "tag": "0002_loose_terror",
+      "breakpoints": true
     }
   ]
 }
