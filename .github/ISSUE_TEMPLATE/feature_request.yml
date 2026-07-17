@@ -1,7 +1,7 @@
 name: Feature Request
 description: Suggest an improvement or new feature for the social media API
-title: "[Feature Request]: "
-labels: ["enhancement"]
+title: '[Feature Request]: '
+labels: ['enhancement']
 assignees:
   - nixrajput
 body:
@@ -35,7 +35,7 @@ body:
     attributes:
       label: Problem statement
       description: What problem does this feature solve? Why is it needed?
-      placeholder: "As a client / user, I find it hard to ..."
+      placeholder: 'As a client / user, I find it hard to ...'
     validations:
       required: true
 
@@ -44,7 +44,7 @@ body:
     attributes:
       label: Proposed solution
       description: Describe the feature you would like to see.
-      placeholder: "I would like ..."
+      placeholder: 'I would like ...'
     validations:
       required: true
 
@@ -53,7 +53,7 @@ body:
     attributes:
       label: Alternatives considered
       description: Any alternative approaches you have thought about?
-      placeholder: "Instead, one could ..."
+      placeholder: 'Instead, one could ...'
 
   - type: textarea
     id: context

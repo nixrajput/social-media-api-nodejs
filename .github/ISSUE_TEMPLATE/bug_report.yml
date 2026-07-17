@@ -1,8 +1,8 @@
 name: Bug Report
 description: File a bug report for the social media API
-title: "[Bug]: "
-labels: ["bug", "triage"]
-assignees: ["nixrajput"]
+title: '[Bug]: '
+labels: ['bug', 'triage']
+assignees: ['nixrajput']
 body:
   - type: markdown
     attributes:
@@ -34,7 +34,7 @@ body:
     attributes:
       label: What happened?
       description: Describe the bug clearly. What did you see, and what did you expect?
-      placeholder: "Expected: ... Actual: ..."
+      placeholder: 'Expected: ... Actual: ...'
     validations:
       required: true
 
@@ -55,7 +55,7 @@ body:
     attributes:
       label: API version or commit
       description: package.json version or the commit SHA you are running.
-      placeholder: "e.g. 2.0.0 or abc1234"
+      placeholder: 'e.g. 2.0.0 or abc1234'
     validations:
       required: true
 
