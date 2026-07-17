@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { and, eq, ilike, ne, notInArray, or } from 'drizzle-orm';
+import { and, desc, eq, ilike, lt, ne, notInArray, or, type Column } from 'drizzle-orm';
 import { toSelfUser } from '../auth/auth.service';
 import { ApiException } from '../common/exception.filter';
+import { buildPage, decodeCursor, encodeCursor, parseLimit } from '../common/pagination';
 import { DB, type Db } from '../db/db.module';
-import { blocks, fieldVisibility, profiles, users } from '../db/schema';
+import { blocks, fieldVisibility, follows, profiles, users } from '../db/schema';
 import { RelationshipService } from './relationship.service';
 import { toUserLite, type UserLite } from './user-lite';
 import { filterProfileForViewer, type PublicProfile } from './visibility';
@@ -119,5 +120,123 @@ export class UsersService {
       )
       .limit(20);
     return { items: rows.map(toUserLite) };
+  }
+
+  async follow(
+    followerId: string,
+    followeeId: string,
+  ): Promise<{ status: 'accepted' | 'pending' }> {
+    if (followerId === followeeId) {
+      throw new ApiException('VALIDATION', 'Cannot follow yourself', 400);
+    }
+    const [target] = await this.db.select().from(users).where(eq(users.id, followeeId)).limit(1);
+    if (!target || target.accountStatus !== 'active') {
+      throw new ApiException('NOT_FOUND', 'User not found', 404);
+    }
+    if (await this.rel.isBlockedEitherWay(followerId, followeeId)) {
+      throw new ApiException('NOT_FOUND', 'User not found', 404);
+    }
+    const status = target.isPrivate ? 'pending' : 'accepted';
+    await this.db.insert(follows).values({ followerId, followeeId, status }).onConflictDoNothing();
+    return { status };
+  }
+
+  async unfollow(followerId: string, followeeId: string): Promise<void> {
+    await this.db
+      .delete(follows)
+      .where(and(eq(follows.followerId, followerId), eq(follows.followeeId, followeeId)));
+  }
+
+  async followRequests(userId: string, cursor?: string, limitRaw?: string) {
+    const limit = parseLimit(limitRaw);
+    const c = decodeCursor(cursor);
+    const rows = await this.db
+      .select({ user: users, createdAt: follows.createdAt, followerId: follows.followerId })
+      .from(follows)
+      .innerJoin(users, eq(users.id, follows.followerId))
+      .where(
+        and(
+          eq(follows.followeeId, userId),
+          eq(follows.status, 'pending'),
+          c ? lt(follows.createdAt, c.createdAt) : undefined,
+        ),
+      )
+      .orderBy(desc(follows.createdAt))
+      .limit(limit + 1);
+    const mapped = rows.map((r) => ({
+      id: `${r.followerId}:${userId}`,
+      createdAt: r.createdAt,
+      user: toUserLite(r.user),
+    }));
+    const page = buildPage(mapped, limit, (r) =>
+      encodeCursor({ createdAt: r.createdAt, id: r.id }),
+    );
+    return {
+      items: page.items.map((p) => ({
+        id: p.id,
+        user: p.user,
+        createdAt: p.createdAt.toISOString(),
+      })),
+      nextCursor: page.nextCursor,
+    };
+  }
+
+  async respondToRequest(userId: string, requestId: string, accept: boolean): Promise<void> {
+    const [followerId, followeeId] = requestId.split(':');
+    if (!followerId || followeeId !== userId) {
+      throw new ApiException('FORBIDDEN', 'Not your request', 403);
+    }
+    const where = and(
+      eq(follows.followerId, followerId),
+      eq(follows.followeeId, userId),
+      eq(follows.status, 'pending'),
+    );
+    if (accept) {
+      await this.db.update(follows).set({ status: 'accepted' }).where(where);
+    } else {
+      await this.db.delete(follows).where(where);
+    }
+  }
+
+  async listFollowers(targetId: string, cursor?: string, limitRaw?: string) {
+    return this.graphList(follows.followeeId, follows.followerId, targetId, cursor, limitRaw);
+  }
+
+  async listFollowing(targetId: string, cursor?: string, limitRaw?: string) {
+    return this.graphList(follows.followerId, follows.followeeId, targetId, cursor, limitRaw);
+  }
+
+  // ponytail: simple createdAt keyset; ties on identical timestamps could skip a
+  // row across pages. Fine at v1 scale; add (createdAt,id) composite if it bites.
+  private async graphList(
+    matchCol: Column,
+    pickCol: Column,
+    targetId: string,
+    cursor?: string,
+    limitRaw?: string,
+  ) {
+    const limit = parseLimit(limitRaw);
+    const c = decodeCursor(cursor);
+    const rows = await this.db
+      .select({ user: users, createdAt: follows.createdAt })
+      .from(follows)
+      .innerJoin(users, eq(users.id, pickCol))
+      .where(
+        and(
+          eq(matchCol, targetId),
+          eq(follows.status, 'accepted'),
+          c ? lt(follows.createdAt, c.createdAt) : undefined,
+        ),
+      )
+      .orderBy(desc(follows.createdAt))
+      .limit(limit + 1);
+    const mapped = rows.map((r) => ({ ...toUserLite(r.user), createdAt: r.createdAt }));
+    const page = buildPage(mapped, limit, (r) =>
+      encodeCursor({ createdAt: r.createdAt, id: r.id }),
+    );
+    return {
+      items: page.items.map(({ createdAt: _c, ...lite }) => lite),
+      nextCursor: page.nextCursor,
+    };
   }
 }
