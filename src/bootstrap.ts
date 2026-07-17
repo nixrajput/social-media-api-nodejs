@@ -21,6 +21,7 @@ export async function createApp(): Promise<NestFastifyApplication> {
     { bufferLogs: true },
   );
   app.useLogger(app.get(Logger));
+  app.enableShutdownHooks();
   app.setGlobalPrefix('api/v1');
   app.useGlobalFilters(new GlobalExceptionFilter());
   app

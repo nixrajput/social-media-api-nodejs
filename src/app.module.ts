@@ -3,6 +3,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { AppThrottlerModule } from './common/throttler.module';
 import { DbModule } from './db/db.module';
 import { HealthModule } from './health/health.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { HealthModule } from './health/health.module';
     }),
     AppThrottlerModule,
     DbModule,
+    MailModule,
     HealthModule,
   ],
 })

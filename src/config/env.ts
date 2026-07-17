@@ -7,6 +7,8 @@ export const envSchema = z.object({
   REDIS_URL: z.string().min(1),
   CORS_ORIGINS: z.string().default(''),
   RATE_LIMIT_MAX: z.coerce.number().int().positive().default(60),
+  SMTP_URL: z.string().default(''),
+  MAIL_FROM: z.string().default('no-reply@localhost'),
 });
 
 export type Env = z.infer<typeof envSchema>;
