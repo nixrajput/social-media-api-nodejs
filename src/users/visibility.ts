@@ -51,7 +51,8 @@ export function filterProfileForViewer(
     avatarUrl: profile.avatarUrl,
   };
   for (const field of VISIBLE_FIELDS) {
-    const level = levels.get(field) ?? 'public';
+    // Email is sensitive: hidden by default. Other fields default to public.
+    const level = levels.get(field) ?? (field === 'email' ? 'private' : 'public');
     if (isSelf || allowed(level, relationship)) {
       const value = profile[field];
       if (value != null) out[field] = value;

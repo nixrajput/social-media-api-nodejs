@@ -12,6 +12,6 @@ import { TotpService } from './totp.service';
   imports: [JwtModule.register({})],
   controllers: [AuthController],
   providers: [AuthService, PasswordService, OtpService, TokenService, TotpService, AuthGuard],
-  exports: [TokenService, PasswordService, AuthGuard],
+  exports: [TokenService, PasswordService, AuthGuard, JwtModule],
 })
 export class AuthModule {}

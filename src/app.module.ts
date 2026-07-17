@@ -5,6 +5,7 @@ import { AppThrottlerModule } from './common/throttler.module';
 import { DbModule } from './db/db.module';
 import { HealthModule } from './health/health.module';
 import { MailModule } from './mail/mail.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MailModule } from './mail/mail.module';
     DbModule,
     MailModule,
     AuthModule,
+    UsersModule,
     HealthModule,
   ],
 })
