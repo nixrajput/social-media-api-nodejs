@@ -1,3 +1,4 @@
+import 'dotenv/config'; // load .env in dev; a no-op in prod where the host sets env
 import { loadEnv } from './config/env';
 import { createApp } from './bootstrap';
 
