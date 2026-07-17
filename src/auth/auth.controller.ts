@@ -9,7 +9,9 @@ import {
   loginDto,
   refreshDto,
   registerDto,
+  resetDto,
   sendOtpDto,
+  sendResetDto,
   totpDisableDto,
   totpVerifyDto,
   type LoginDto,
@@ -99,5 +101,24 @@ export class AuthController {
   @HttpCode(200)
   login2fa(@Body(new ZodValidationPipe(login2faDto)) b: { challengeToken: string; totp: string }) {
     return this.auth.complete2faLogin(b.challengeToken, b.totp);
+  }
+
+  @Post('password/send-reset-otp')
+  @HttpCode(202)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  async sendReset(
+    @Body(new ZodValidationPipe(sendResetDto)) b: { email: string },
+  ): Promise<object> {
+    await this.auth.sendResetOtp(b.email);
+    return {};
+  }
+
+  @Post('password/reset')
+  @HttpCode(204)
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  async reset(
+    @Body(new ZodValidationPipe(resetDto)) b: { email: string; otp: string; newPassword: string },
+  ): Promise<void> {
+    await this.auth.resetPassword(b.email, b.otp, b.newPassword);
   }
 }

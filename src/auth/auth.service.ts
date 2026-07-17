@@ -179,4 +179,28 @@ export class AuthService {
     }
     return this.startSession(user, deviceName, platform);
   }
+
+  async sendResetOtp(email: string): Promise<void> {
+    const [user] = await this.db.select().from(users).where(eq(users.email, email)).limit(1);
+    if (!user) return; // do not reveal whether the email exists
+    const code = await this.otps.issue(email, 'reset_password');
+    await this.mail.enqueueOtp(email, code, 'reset_password');
+  }
+
+  async resetPassword(email: string, otp: string, newPassword: string): Promise<void> {
+    const ok = await this.otps.consume(email, otp, 'reset_password');
+    if (!ok) throw new ApiException('VALIDATION', 'Invalid or expired code', 400);
+    const passwordHash = await this.passwords.hash(newPassword);
+    const [user] = await this.db
+      .update(users)
+      .set({ passwordHash })
+      .where(eq(users.email, email))
+      .returning();
+    if (user) {
+      await this.db
+        .update(sessions)
+        .set({ revokedAt: new Date() })
+        .where(eq(sessions.userId, user.id));
+    }
+  }
 }
