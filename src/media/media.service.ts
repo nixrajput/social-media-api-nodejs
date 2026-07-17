@@ -1,11 +1,15 @@
 import { randomUUID } from 'node:crypto';
+import { InjectQueue } from '@nestjs/bullmq';
 import { Inject, Injectable } from '@nestjs/common';
+import type { Queue } from 'bullmq';
 import { and, eq } from 'drizzle-orm';
 import { ApiException } from '../common/exception.filter';
 import { loadEnv } from '../config/env';
 import { DB, type Db } from '../db/db.module';
 import { uploads } from '../db/schema';
 import { S3LIKE, type S3Like } from './r2.client';
+
+const VARIANT_KINDS = new Set(['post-image', 'avatar']);
 
 const MAX_BYTES: Record<string, number> = {
   'post-image': 10 * 1024 * 1024,
@@ -26,6 +30,7 @@ export class MediaService {
   constructor(
     @Inject(DB) private readonly db: Db,
     @Inject(S3LIKE) private readonly s3: S3Like,
+    @InjectQueue('media') private readonly queue: Queue,
   ) {}
 
   publicUrl(key: string): string {
@@ -59,6 +64,11 @@ export class MediaService {
       .where(and(eq(uploads.id, uploadId), eq(uploads.userId, userId)))
       .returning();
     if (!row) throw new ApiException('NOT_FOUND', 'Upload not found', 404);
+    // Server-readable images get thumb/feed variants; chat blobs are E2EE and
+    // never processed. Best-effort: a failed enqueue must not fail the upload.
+    if (VARIANT_KINDS.has(row.kind)) {
+      await this.queue.add('variant', { key: row.key });
+    }
     return { uploadId: row.id, status: 'ready' };
   }
 

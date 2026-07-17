@@ -9,9 +9,12 @@ import type { S3Like } from './r2.client';
 const fakeS3: S3Like = {
   getSignedPutUrl: async (key) => `https://r2.local/${key}?sig=x`,
   objectExists: async () => true,
+  getObject: async () => Buffer.alloc(0),
+  putObject: async () => {},
 };
+const fakeQueue = { add: async () => ({}) } as never;
 const { db, close } = testDb();
-const svc = new MediaService(db, fakeS3);
+const svc = new MediaService(db, fakeS3, fakeQueue);
 
 describe('MediaService', () => {
   afterAll(async () => close());

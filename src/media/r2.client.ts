@@ -8,6 +8,8 @@ export const S3LIKE = Symbol('S3LIKE');
 export interface S3Like {
   getSignedPutUrl(key: string, contentLength: number): Promise<string>;
   objectExists(key: string): Promise<boolean>;
+  getObject(key: string): Promise<Buffer>;
+  putObject(key: string, body: Buffer, contentType: string): Promise<void>;
 }
 
 @Injectable()
@@ -45,5 +47,24 @@ export class R2Client implements S3Like {
     } catch {
       return false;
     }
+  }
+
+  async getObject(key: string): Promise<Buffer> {
+    const res = await this.client.send(
+      new GetObjectCommand({ Bucket: this.env.R2_BUCKET, Key: key }),
+    );
+    const bytes = await res.Body!.transformToByteArray();
+    return Buffer.from(bytes);
+  }
+
+  async putObject(key: string, body: Buffer, contentType: string): Promise<void> {
+    await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.env.R2_BUCKET,
+        Key: key,
+        Body: body,
+        ContentType: contentType,
+      }),
+    );
   }
 }
