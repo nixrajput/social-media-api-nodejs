@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import {
   login2faDto,
   loginDto,
+  oauthDto,
   refreshDto,
   registerDto,
   resetDto,
@@ -15,6 +16,7 @@ import {
   totpDisableDto,
   totpVerifyDto,
   type LoginDto,
+  type OAuthDto,
   type RegisterDto,
 } from './dto';
 
@@ -42,6 +44,16 @@ export class AuthController {
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
   login(@Body(new ZodValidationPipe(loginDto)) body: LoginDto) {
     return this.auth.login(body);
+  }
+
+  @Post('oauth/:provider')
+  @HttpCode(200)
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  oauth(
+    @Param('provider') provider: string,
+    @Body(new ZodValidationPipe(oauthDto)) body: OAuthDto,
+  ) {
+    return this.auth.oauthLogin(provider, body);
   }
 
   @Post('token/refresh')

@@ -12,6 +12,7 @@ export const envSchema = z.object({
   JWT_ACCESS_SECRET: z.string().min(16),
   JWT_ACCESS_TTL: z.coerce.number().int().positive().default(900),
   REFRESH_TTL_DAYS: z.coerce.number().int().positive().default(30),
+  GOOGLE_OAUTH_CLIENT_IDS: z.string().default(''),
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -12,7 +12,7 @@ export const users = pgTable(
       .$defaultFn(() => uuidv7()),
     email: citext('email').notNull(),
     username: citext('username').notNull(),
-    passwordHash: text('password_hash').notNull(),
+    passwordHash: text('password_hash'),
     displayName: text('display_name'),
     avatarUrl: text('avatar_url'),
     emailVerifiedAt: timestamp('email_verified_at', { withTimezone: true }),

@@ -1,14 +1,16 @@
+import { randomBytes } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { and, eq, isNull } from 'drizzle-orm';
 import { ApiException } from '../common/exception.filter';
 import { DB, type Db } from '../db/db.module';
-import { sessions, users } from '../db/schema';
+import { identities, sessions, users } from '../db/schema';
 import { MailService } from '../mail/mail.service';
+import type { LoginDto, OAuthDto, RegisterDto } from './dto';
+import { GoogleVerifier, type GoogleIdentity } from './google.verifier';
 import { OtpService } from './otp.service';
 import { PasswordService } from './password.service';
 import { TokenService, type Tokens } from './token.service';
 import { TotpService } from './totp.service';
-import type { LoginDto, RegisterDto } from './dto';
 
 export interface SelfUser {
   id: string;
@@ -41,6 +43,7 @@ export class AuthService {
     private readonly tokens: TokenService,
     private readonly totp: TotpService,
     private readonly mail: MailService,
+    private readonly google: GoogleVerifier,
   ) {}
 
   async register(dto: RegisterDto): Promise<{ user: SelfUser; tokens: Tokens; deviceId: string }> {
@@ -81,7 +84,11 @@ export class AuthService {
     | { twoFactorRequired: true; challengeToken: string }
   > {
     const [user] = await this.db.select().from(users).where(eq(users.email, dto.email)).limit(1);
-    if (!user || !(await this.passwords.verify(user.passwordHash, dto.password))) {
+    if (
+      !user ||
+      !user.passwordHash ||
+      !(await this.passwords.verify(user.passwordHash, dto.password))
+    ) {
       throw new ApiException('UNAUTHORIZED', 'Invalid credentials', 401);
     }
     if (user.accountStatus === 'banned') throw new ApiException('FORBIDDEN', 'Account banned', 403);
@@ -107,6 +114,80 @@ export class AuthService {
       .returning();
     const tokens = await this.tokens.issueForSession(user.id, session!.id);
     return { user: toSelfUser(user), tokens, deviceId: session!.id };
+  }
+
+  async oauthLogin(
+    provider: string,
+    dto: OAuthDto,
+  ): Promise<{ user: SelfUser; tokens: Tokens; deviceId: string; needsProfile: boolean }> {
+    if (provider !== 'google') throw new ApiException('VALIDATION', 'Unsupported provider', 400);
+    const identity = await this.google.verify(dto.idToken);
+    if (!identity.emailVerified) {
+      throw new ApiException('UNAUTHORIZED', 'Google email not verified', 401);
+    }
+
+    let user: typeof users.$inferSelect | undefined;
+    let needsProfile = false;
+
+    const [link] = await this.db
+      .select()
+      .from(identities)
+      .where(
+        and(
+          eq(identities.provider, provider),
+          eq(identities.providerAccountId, identity.providerAccountId),
+        ),
+      )
+      .limit(1);
+
+    if (link) {
+      [user] = await this.db.select().from(users).where(eq(users.id, link.userId)).limit(1);
+    } else {
+      // No link yet: attach to an existing password account with the same email,
+      // otherwise create a fresh passwordless account and flag the profile step.
+      [user] = await this.db.select().from(users).where(eq(users.email, identity.email)).limit(1);
+      if (!user) {
+        user = await this.createOAuthUser(identity);
+        needsProfile = true;
+      }
+      await this.db
+        .insert(identities)
+        .values({ userId: user.id, provider, providerAccountId: identity.providerAccountId });
+    }
+
+    if (!user) throw new ApiException('UNAUTHORIZED', 'Account not found', 401);
+    if (user.accountStatus === 'banned') throw new ApiException('FORBIDDEN', 'Account banned', 403);
+
+    const session = await this.startSession(user, dto.deviceName, dto.platform);
+    return { ...session, needsProfile };
+  }
+
+  private async createOAuthUser(identity: GoogleIdentity): Promise<typeof users.$inferSelect> {
+    const base =
+      (identity.displayName ?? identity.email.split('@')[0] ?? 'user')
+        .toLowerCase()
+        .replace(/[^a-z0-9_.]/g, '')
+        .slice(0, 20) || 'user';
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const username = `${base}${randomBytes(3).toString('hex')}`.slice(0, 30);
+      try {
+        const [user] = await this.db
+          .insert(users)
+          .values({
+            email: identity.email,
+            username,
+            passwordHash: null,
+            displayName: identity.displayName,
+            avatarUrl: identity.avatarUrl,
+            emailVerifiedAt: new Date(),
+          })
+          .returning();
+        return user!;
+      } catch {
+        // Unique collision on username (or email race); retry with a new suffix.
+      }
+    }
+    throw new ApiException('CONFLICT', 'Could not create account', 409);
   }
 
   async refresh(refreshToken: string): Promise<{ tokens: Tokens }> {

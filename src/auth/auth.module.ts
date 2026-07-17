@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { GoogleVerifier } from './google.verifier';
 import { OtpService } from './otp.service';
 import { PasswordService } from './password.service';
 import { TokenService } from './token.service';
@@ -11,7 +12,15 @@ import { TotpService } from './totp.service';
 @Module({
   imports: [JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, PasswordService, OtpService, TokenService, TotpService, AuthGuard],
+  providers: [
+    AuthService,
+    PasswordService,
+    OtpService,
+    TokenService,
+    TotpService,
+    GoogleVerifier,
+    AuthGuard,
+  ],
   exports: [TokenService, PasswordService, AuthGuard, JwtModule],
 })
 export class AuthModule {}
