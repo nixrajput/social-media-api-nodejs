@@ -34,7 +34,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const reply = ctx.getResponse<FastifyReply>();
     const req = ctx.getRequest<FastifyRequest>();
-    const id = (req.id) ?? 'unknown';
+    const id = req.id ?? 'unknown';
 
     let status: number = HttpStatus.INTERNAL_SERVER_ERROR;
     let code = 'INTERNAL';

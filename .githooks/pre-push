@@ -1,0 +1,21 @@
+#!/bin/sh
+# Pre-push gate. Runs ESLint + Prettier-check + typecheck before every push so
+# unformatted, lint-broken, or type-broken code never reaches the remote.
+#
+# Enable once per clone:   git config core.hooksPath .githooks
+# Bypass in an emergency:  git push --no-verify
+set -eu
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd "$REPO_ROOT"
+
+if [ ! -d node_modules ]; then
+  echo "pre-push: node_modules missing - run 'pnpm install' first." >&2
+  exit 1
+fi
+
+echo "pre-push: running lint + format check + typecheck..."
+pnpm lint || { echo "pre-push: ESLint failed - fix it or run 'pnpm lint:fix'." >&2; exit 1; }
+pnpm format:check || { echo "pre-push: formatting issues - run 'pnpm format'." >&2; exit 1; }
+pnpm ts:check || { echo "pre-push: type errors - fix them before pushing." >&2; exit 1; }
+echo "pre-push: checks passed."
