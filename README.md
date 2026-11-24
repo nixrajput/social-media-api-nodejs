@@ -196,6 +196,8 @@ This API can be deployed using various platforms such as Heroku, AWS, Google Clo
 
 6. **Monitor the deployment**: Monitor the deployed application for any issues. Make sure that it's running smoothly and handle any errors or performance issues as needed.
 
+Behind a reverse proxy outside Vercel, set `trust proxy` in `src/middlewares/Http.ts` to the number of proxy hops, or the auth rate limit counts every client as the proxy's IP address.
+
 ## Technologies Used
 
 - Node.js

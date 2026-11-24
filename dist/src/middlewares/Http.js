@@ -23,7 +23,7 @@ class Http {
             req.body ??= {};
             next();
         });
-        _express.set("trust proxy", 1);
+        _express.set("trust proxy", process.env.VERCEL ? 1 : false);
         return _express;
     }
 }

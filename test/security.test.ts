@@ -1,9 +1,13 @@
 import { afterAll, afterEach, beforeAll, describe, expect, mock, spyOn, test } from "bun:test";
+import { once } from "node:events";
 import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
+import express from "express";
 import jwt from "jsonwebtoken";
 
+// VERCEL makes the app trust one proxy hop, as in production.
 Object.assign(process.env, {
+  VERCEL: "1",
   NODE_ENV: "test",
   MONGO_URI: "mongodb://127.0.0.1:1",
   DB_NAME: "test",
@@ -35,6 +39,8 @@ const { default: app } = await import("../src/app");
 const { default: User } = await import("../src/models/User");
 const { default: Otp } = await import("../src/models/Otp");
 const { default: AuthToken } = await import("../src/models/AuthToken");
+const { default: Http } = await import("../src/middlewares/Http");
+const { default: AuthRouter } = await import("../src/routes/auth");
 
 let server: Server;
 let base: string;
@@ -79,6 +85,30 @@ describe("rate limiting on auth routes", () => {
     for (let i = 1; i <= 11; i++) {
       last = (await post("/login", {}, "", `${i}.1.1.1, 10.0.0.2`)).status;
     }
+    expect(last).toBe(429);
+  });
+
+  test("off Vercel, a rotating X-Forwarded-For value does not reset the limit", async () => {
+    delete process.env.VERCEL;
+    const direct = Http.mount(express());
+    process.env.VERCEL = "1";
+    direct.use("/api/v1/auth", AuthRouter);
+
+    const directServer = direct.listen(0, "127.0.0.1");
+    await once(directServer, "listening");
+    const url = `http://127.0.0.1:${(directServer.address() as AddressInfo).port}/api/v1/auth/login`;
+
+    let last = 0;
+    for (let i = 1; i <= 11; i++) {
+      last = (
+        await fetch(url, {
+          method: "POST",
+          headers: { "content-type": "application/json", "x-forwarded-for": `203.0.113.${i}` },
+          body: "{}",
+        })
+      ).status;
+    }
+    directServer.close();
     expect(last).toBe(429);
   });
 });
