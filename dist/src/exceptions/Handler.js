@@ -3,14 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const env_1 = __importDefault(require("../config/env"));
 const logger_1 = __importDefault(require("../logger"));
 const ApiError_1 = __importDefault(require("../exceptions/ApiError"));
 const statusCodes_1 = __importDefault(require("../constants/statusCodes"));
 const strings_1 = __importDefault(require("../constants/strings"));
 class ExceptionHandler {
     static notFoundHandler(_express) {
-        _express.use("*", (req, res) => {
+        _express.use((req, res) => {
             const url = req.originalUrl;
             if (url === "/") {
                 return res.status(200).json({
@@ -43,37 +42,31 @@ class ExceptionHandler {
             return next(err);
         }
     }
-    static errorHandler(err, req, res, _next) {
+    static errorHandler(err, _req, res, _next) {
         err.statusCode = err.statusCode || statusCodes_1.default.INTERNAL_SERVER_ERROR;
         err.message = err.message || strings_1.default.INTERNAL_SERVER_ERROR;
-        const apiPrefix = env_1.default.getConfig().API_PREFIX;
-        console.log(req.originalUrl);
-        if (req.originalUrl.includes(`/${apiPrefix}/`)) {
-            if (err.name && err.name === "UnauthorizedError") {
-                const message = strings_1.default.INVALID_TOKEN;
-                err = new ApiError_1.default(message, statusCodes_1.default.UNAUTHORIZED);
-            }
-            if (err.name === "CastError") {
-                const message = strings_1.default.RESOURCE_NOT_FOUND;
-                err = new ApiError_1.default(message, statusCodes_1.default.NOT_FOUND);
-            }
-            if (err.name === "jsonWebTokenError") {
-                const message = strings_1.default.INVALID_TOKEN;
-                err = new ApiError_1.default(message, statusCodes_1.default.UNAUTHORIZED);
-            }
-            if (err.name === "TokenExpiredError") {
-                const message = strings_1.default.TOKEN_EXPIRED;
-                err = new ApiError_1.default(message, statusCodes_1.default.UNAUTHORIZED);
-            }
-            logger_1.default.getInstance().error(err.message);
-            return res.status(err.statusCode).json({
-                success: false,
-                error: err.message,
-            });
+        if (err.name && err.name === "UnauthorizedError") {
+            const message = strings_1.default.INVALID_TOKEN;
+            err = new ApiError_1.default(message, statusCodes_1.default.UNAUTHORIZED);
         }
-        return res.render("pages/error", {
-            error: err.message,
-            title: "Under Maintenance",
+        if (err.name === "CastError") {
+            const message = strings_1.default.RESOURCE_NOT_FOUND;
+            err = new ApiError_1.default(message, statusCodes_1.default.NOT_FOUND);
+        }
+        if (err.name === "jsonWebTokenError") {
+            const message = strings_1.default.INVALID_TOKEN;
+            err = new ApiError_1.default(message, statusCodes_1.default.UNAUTHORIZED);
+        }
+        if (err.name === "TokenExpiredError") {
+            const message = strings_1.default.TOKEN_EXPIRED;
+            err = new ApiError_1.default(message, statusCodes_1.default.UNAUTHORIZED);
+        }
+        logger_1.default.getInstance().error(err.message);
+        return res.status(err.statusCode).json({
+            success: false,
+            error: err.statusCode >= statusCodes_1.default.INTERNAL_SERVER_ERROR
+                ? strings_1.default.INTERNAL_SERVER_ERROR
+                : err.message,
         });
     }
     static logErrors(err, _req, _res, next) {

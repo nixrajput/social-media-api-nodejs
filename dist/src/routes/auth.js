@@ -26,11 +26,11 @@ const limiter = (0, express_rate_limit_1.rateLimit)({
     legacyHeaders: false,
     message: "You can only make 10 requests every 15 minutes",
 });
-AuthRouter.route("/send-register-otp").all(registerCtlr.sendRegisterOtp, limiter);
-AuthRouter.route("/register").all(registerCtlr.register, limiter);
-AuthRouter.route("/login").all(loginCtlr.login, limiter);
+AuthRouter.route("/send-register-otp").all(limiter, registerCtlr.sendRegisterOtp);
+AuthRouter.route("/register").all(limiter, registerCtlr.register);
+AuthRouter.route("/login").all(limiter, loginCtlr.login);
 AuthRouter.route("/me").all(Auth_1.default.isAuthenticatedUser, profileCtlr.getProfileDetails);
-AuthRouter.route("/send-reset-password-otp").all(passwordCtlr.sendResetPasswordOtp, limiter);
-AuthRouter.route("/reset-password").all(passwordCtlr.resetPassword, limiter);
+AuthRouter.route("/send-reset-password-otp").all(limiter, passwordCtlr.sendResetPasswordOtp);
+AuthRouter.route("/reset-password").all(limiter, passwordCtlr.resetPassword);
 exports.default = AuthRouter;
 //# sourceMappingURL=auth.js.map
