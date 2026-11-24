@@ -145,7 +145,8 @@ const UserSchema = new mongoose_1.Schema({
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 UserSchema.methods.generateToken = async function () {
     const jwtSecret = env_1.default.getConfig().JWT_SECRET;
-    const jwtExpiresIn = env_1.default.getConfig().JWT_EXPIRES_IN || 2592000000;
+    const jwtExpiresIn = (env_1.default.getConfig().JWT_EXPIRES_IN ||
+        "30d");
     if (!jwtSecret)
         throw new Error(strings_1.default.JWT_SECRET_NOT_FOUND);
     const token = jsonwebtoken_1.default.sign({ id: this._id }, jwtSecret, {
@@ -174,7 +175,7 @@ UserSchema.methods.generateToken = async function () {
 };
 UserSchema.methods.getToken = async function (refreshToken = false) {
     if (refreshToken) {
-        await AuthToken_1.default.deleteOne({ userId: this._id });
+        await AuthToken_1.default.deleteMany({ userId: this._id });
         const newToken = await this.generateToken();
         return newToken;
     }
@@ -185,7 +186,7 @@ UserSchema.methods.getToken = async function (refreshToken = false) {
     }
     const isExpired = await TokenServiceHelper_1.default.isTokenExpired(authToken.expiresAt);
     if (isExpired) {
-        await AuthToken_1.default.deleteOne({ userId: this._id });
+        await AuthToken_1.default.deleteMany({ userId: this._id });
         const newToken = await this.generateToken();
         return newToken;
     }
@@ -210,7 +211,7 @@ UserSchema.methods.setPassword = async function (password) {
     await this.save();
 };
 UserSchema.methods.matchPassword = async function (password) {
-    var hash = crypto_1.default
+    const hash = crypto_1.default
         .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
         .toString(`hex`);
     return this.password === hash;

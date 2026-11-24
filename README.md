@@ -59,7 +59,7 @@ You can follow these instructions to get the project up and running on your loca
 
 You need to have the following software installed on your computer:
 
-- [Bun](https://bun.sh/) (v1.1.0 or later) or [Node.js](https://nodejs.org/) (LTS version recommended)
+- [Bun](https://bun.sh/) (v1.4.0 or later, for the text `bun.lock` lockfile) or [Node.js](https://nodejs.org/) 26
 - [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [Yarn](https://yarnpkg.com/) or [Bun](https://bun.sh/) package manager
 
 ### Installation
@@ -195,6 +195,8 @@ This API can be deployed using various platforms such as Heroku, AWS, Google Clo
 5. **Start the application**: Once deployed, start the application in your deployment environment. This might involve running a command similar to `npm start` or `yarn start`, depending on your setup.
 
 6. **Monitor the deployment**: Monitor the deployed application for any issues. Make sure that it's running smoothly and handle any errors or performance issues as needed.
+
+Behind a reverse proxy outside Vercel, set `trust proxy` in `src/middlewares/Http.ts` to the number of proxy hops, or the auth rate limit counts every client as the proxy's IP address.
 
 ## Technologies Used
 

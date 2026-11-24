@@ -11,9 +11,9 @@ export interface IRequest extends Request {
 /**
  * Define custom Express's Response interface
  */
-export interface IResponse extends Response {}
+export type IResponse = Response;
 
 /**
  * Define custom Express's NextFunction interface
  */
-export interface INext extends NextFunction {}
+export type INext = NextFunction;

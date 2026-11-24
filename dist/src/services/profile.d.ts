@@ -1,4 +1,4 @@
-import type { IUserModel } from "src/interfaces/entities/user";
+import type { IUserModel } from "../interfaces/entities/user";
 declare class ProfileService {
     getProfileExc: (currentUser: IUserModel) => Promise<any>;
 }

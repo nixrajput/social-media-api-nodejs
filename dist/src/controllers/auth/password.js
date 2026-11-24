@@ -56,7 +56,11 @@ class PasswordController {
             const _email = email?.toLowerCase().trim();
             const isEmailExists = await this._userSvc.checkIsEmailExistsExc(_email);
             if (!isEmailExists) {
-                return next(new ApiError_1.default(strings_1.default.EMAIL_NOT_REGISTERED, statusCodes_1.default.BAD_REQUEST));
+                res.status(statusCodes_1.default.OK);
+                return res.json({
+                    success: true,
+                    message: strings_1.default.SUCCESS,
+                });
             }
             const newOtp = await OtpServiceHelper_1.default.generateOtpFromEmail(_email);
             if (!newOtp) {
@@ -130,7 +134,7 @@ class PasswordController {
             const _otp = otp?.trim();
             const isEmailExists = await this._userSvc.checkIsEmailExistsExc(_email);
             if (!isEmailExists) {
-                return next(new ApiError_1.default(strings_1.default.EMAIL_NOT_REGISTERED, statusCodes_1.default.BAD_REQUEST));
+                return next(new ApiError_1.default(strings_1.default.INCORRECT_OTP, statusCodes_1.default.BAD_REQUEST));
             }
             const otpObj = await Otp_1.default.findOne({ otp: _otp, email: _email });
             if (!otpObj) {

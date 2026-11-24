@@ -3,13 +3,13 @@
     // Enable latest features
     "lib": ["ESNext"],
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
 
     // Bundler mode
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "allowArbitraryExtensions": true,
     "verbatimModuleSyntax": false,
     // "noEmit": true,
@@ -26,7 +26,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "composite": true,
-    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
 
@@ -39,7 +38,6 @@
     "esModuleInterop": true,
     "outDir": "./dist",
     // "rootDir": "./src",
-    "baseUrl": ".",
 
     "types": ["bun-types"]
   },

@@ -19,7 +19,11 @@ class Http {
         _express.use((0, express_1.urlencoded)({ extended: true, limit: "100mb" }));
         _express.use(body_parser_1.default.json({ limit: "100mb" }));
         _express.use(body_parser_1.default.urlencoded({ extended: true, limit: "100mb" }));
-        _express.set("trust proxy", true);
+        _express.use((req, _res, next) => {
+            req.body ??= {};
+            next();
+        });
+        _express.set("trust proxy", process.env.VERCEL ? 1 : false);
         return _express;
     }
 }

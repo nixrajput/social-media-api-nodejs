@@ -2,7 +2,7 @@
  * Define Profile Service Class
  */
 
-import type { IUserModel } from "src/interfaces/entities/user";
+import type { IUserModel } from "../interfaces/entities/user";
 import Logger from "../logger";
 
 class ProfileService {

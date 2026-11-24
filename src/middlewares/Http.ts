@@ -28,7 +28,14 @@ class Http {
 
     _express.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
 
-    _express.set("trust proxy", true);
+    // Express 5 leaves req.body undefined when no parser matched; controllers destructure it.
+    _express.use((req, _res, next) => {
+      req.body ??= {};
+      next();
+    });
+
+    // Trust one hop only on Vercel, whose edge sets X-Forwarded-For. Elsewhere the client controls that header.
+    _express.set("trust proxy", process.env.VERCEL ? 1 : false);
 
     return _express;
   }
