@@ -59,7 +59,7 @@ You can follow these instructions to get the project up and running on your loca
 
 You need to have the following software installed on your computer:
 
-- [Bun](https://bun.sh/) (v1.2.0 or later, for the text `bun.lock` lockfile) or [Node.js](https://nodejs.org/) 24
+- [Bun](https://bun.sh/) (v1.4.0 or later, for the text `bun.lock` lockfile) or [Node.js](https://nodejs.org/) 26
 - [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [Yarn](https://yarnpkg.com/) or [Bun](https://bun.sh/) package manager
 
 ### Installation

@@ -31,7 +31,7 @@
     "@types/jsonwebtoken": "9.0.10",
     "@types/lodash": "4.17.27",
     "@types/morgan": "1.9.10",
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.6",
     "@types/otp-generator": "4.0.2",
     "@types/swagger-jsdoc": "6.0.4",
     "@types/swagger-ui-express": "4.1.8",
@@ -68,7 +68,7 @@
     "glob": "14.0.6"
   },
   "engines": {
-    "node": "24.x",
-    "bun": ">=1.2"
+    "node": "26.x",
+    "bun": ">=1.4"
   }
 }
