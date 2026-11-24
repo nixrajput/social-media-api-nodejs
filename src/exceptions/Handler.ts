@@ -18,7 +18,7 @@ class ExceptionHandler {
    * @returns any
    */
   public static notFoundHandler(_express: Application) {
-    _express.use("*", (req, res) => {
+    _express.use((req, res) => {
       const url = req.originalUrl;
 
       if (url === "/") {

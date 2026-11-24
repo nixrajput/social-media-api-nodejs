@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import jwt from "jsonwebtoken";
+import jwt, { type SignOptions } from "jsonwebtoken";
 import crypto from "crypto";
 import type { IAuthTokenModel } from "../interfaces/entities/authToken";
 import type { IUserModel } from "../interfaces/entities/user";
@@ -216,7 +216,8 @@ const UserSchema = new Schema<IUserModel>(
  */
 UserSchema.methods.generateToken = async function (): Promise<IAuthTokenModel> {
   const jwtSecret = EnvConfig.getConfig().JWT_SECRET!;
-  const jwtExpiresIn = EnvConfig.getConfig().JWT_EXPIRES_IN! || 2592000000;
+  const jwtExpiresIn = (EnvConfig.getConfig().JWT_EXPIRES_IN ||
+    "30d") as SignOptions["expiresIn"];
 
   if (!jwtSecret) throw new Error(StringValues.JWT_SECRET_NOT_FOUND);
 

@@ -28,6 +28,12 @@ class Http {
 
     _express.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
 
+    // Express 5 leaves req.body undefined when no parser matched; controllers destructure it.
+    _express.use((req, _res, next) => {
+      req.body ??= {};
+      next();
+    });
+
     _express.set("trust proxy", true);
 
     return _express;
