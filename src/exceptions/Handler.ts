@@ -3,7 +3,6 @@
  */
 
 import type { Application } from "express";
-import EnvConfig from "../config/env";
 import Logger from "../logger";
 import ApiError from "../exceptions/ApiError";
 import StatusCodes from "../constants/statusCodes";
@@ -75,62 +74,54 @@ class ExceptionHandler {
 
   /**
    * @name errorHandler
-   * @description Show undermaintenance page incase of errors
+   * @description Send the error as JSON, hiding the message of 5xx errors
    * @param err any
-   * @param req IRequest
+   * @param _req IRequest
    * @param res IResponse
    * @param _next INext
    * @returns any
    */
   public static errorHandler(
     err: ApiError,
-    req: IRequest,
+    _req: IRequest,
     res: IResponse,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _next: INext
   ) {
     err.statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
     err.message = err.message || StringValues.INTERNAL_SERVER_ERROR;
 
-    const apiPrefix = EnvConfig.getConfig().API_PREFIX;
-    console.log(req.originalUrl);
-
-    if (req.originalUrl.includes(`/${apiPrefix}/`)) {
-      // Handle Unauthorized Error
-      if (err.name && err.name === "UnauthorizedError") {
-        const message = StringValues.INVALID_TOKEN;
-        err = new ApiError(message, StatusCodes.UNAUTHORIZED);
-      }
-
-      // Handle Wrong MongoDB Id error
-      if (err.name === "CastError") {
-        const message = StringValues.RESOURCE_NOT_FOUND;
-        err = new ApiError(message, StatusCodes.NOT_FOUND);
-      }
-
-      // Handle Wrong JWT error
-      if (err.name === "jsonWebTokenError") {
-        const message = StringValues.INVALID_TOKEN;
-        err = new ApiError(message, StatusCodes.UNAUTHORIZED);
-      }
-
-      // Handle JWT Expire error
-      if (err.name === "TokenExpiredError") {
-        const message = StringValues.TOKEN_EXPIRED;
-        err = new ApiError(message, StatusCodes.UNAUTHORIZED);
-      }
-
-      Logger.getInstance().error(err.message);
-
-      return res.status(err.statusCode).json({
-        success: false,
-        error: err.message,
-      });
+    // Handle Unauthorized Error
+    if (err.name && err.name === "UnauthorizedError") {
+      const message = StringValues.INVALID_TOKEN;
+      err = new ApiError(message, StatusCodes.UNAUTHORIZED);
     }
 
-    return res.render("pages/error", {
-      error: err.message,
-      title: "Under Maintenance",
+    // Handle Wrong MongoDB Id error
+    if (err.name === "CastError") {
+      const message = StringValues.RESOURCE_NOT_FOUND;
+      err = new ApiError(message, StatusCodes.NOT_FOUND);
+    }
+
+    // Handle Wrong JWT error
+    if (err.name === "jsonWebTokenError") {
+      const message = StringValues.INVALID_TOKEN;
+      err = new ApiError(message, StatusCodes.UNAUTHORIZED);
+    }
+
+    // Handle JWT Expire error
+    if (err.name === "TokenExpiredError") {
+      const message = StringValues.TOKEN_EXPIRED;
+      err = new ApiError(message, StatusCodes.UNAUTHORIZED);
+    }
+
+    Logger.getInstance().error(err.message);
+
+    return res.status(err.statusCode).json({
+      success: false,
+      error:
+        err.statusCode >= StatusCodes.INTERNAL_SERVER_ERROR
+          ? StringValues.INTERNAL_SERVER_ERROR
+          : err.message,
     });
   }
 

@@ -34,7 +34,8 @@ class Http {
       next();
     });
 
-    _express.set("trust proxy", true);
+    // One proxy hop (Vercel). `true` would key rate limits on the client-supplied X-Forwarded-For.
+    _express.set("trust proxy", 1);
 
     return _express;
   }

@@ -12,7 +12,6 @@ class CORS {
     origin: "*",
     optionsSuccessStatus: 200,
     methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-    credentials: true,
     exposedHeaders: ["x-auth-token"],
   };
 

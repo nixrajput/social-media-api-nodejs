@@ -10,10 +10,11 @@
     "dev": "bun --hot src/index.ts",
     "start": "bun dist/src/index.js",
     "clean": "rimraf -rf dist",
-    "build": "echo \"\u2705 Building project...\" && bun run clean && tsc",
+    "build": "echo \"✅ Building project...\" && bun run clean && tsc",
     "ts:check": "tsc --project tsconfig.json",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "test": "bun test",
     "push": "git add -A && git commit -m \"Update Changes & Bug Fixes\" && git push origin master"
   },
   "pre-commit": [

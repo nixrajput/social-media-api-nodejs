@@ -126,14 +126,14 @@ class PasswordController {
 
       const _email = email?.toLowerCase().trim();
 
+      // Answer as if the OTP was sent, so the response does not reveal which emails are registered.
       const isEmailExists = await this._userSvc.checkIsEmailExistsExc(_email);
       if (!isEmailExists) {
-        return next(
-          new ApiError(
-            StringValues.EMAIL_NOT_REGISTERED,
-            StatusCodes.BAD_REQUEST
-          )
-        );
+        res.status(StatusCodes.OK);
+        return res.json({
+          success: true,
+          message: StringValues.SUCCESS,
+        });
       }
 
       // Generating OTP
@@ -308,10 +308,7 @@ class PasswordController {
       const isEmailExists = await this._userSvc.checkIsEmailExistsExc(_email);
       if (!isEmailExists) {
         return next(
-          new ApiError(
-            StringValues.EMAIL_NOT_REGISTERED,
-            StatusCodes.BAD_REQUEST
-          )
+          new ApiError(StringValues.INCORRECT_OTP, StatusCodes.BAD_REQUEST)
         );
       }
 

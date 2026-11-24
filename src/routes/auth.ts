@@ -77,8 +77,8 @@ const limiter = rateLimit({
  *         description: Server error
  */
 AuthRouter.route("/send-register-otp").all(
-  registerCtlr.sendRegisterOtp,
-  limiter
+  limiter,
+  registerCtlr.sendRegisterOtp
 );
 
 /**
@@ -124,7 +124,7 @@ AuthRouter.route("/send-register-otp").all(
  *       500:
  *         description: Server error
  */
-AuthRouter.route("/register").all(registerCtlr.register, limiter);
+AuthRouter.route("/register").all(limiter, registerCtlr.register);
 
 /**
  * @swagger
@@ -154,7 +154,7 @@ AuthRouter.route("/register").all(registerCtlr.register, limiter);
  *       500:
  *         description: Server error
  */
-AuthRouter.route("/login").all(loginCtlr.login, limiter);
+AuthRouter.route("/login").all(limiter, loginCtlr.login);
 
 // /**
 //  * @name ProfileController.getProfileDetails
@@ -174,8 +174,8 @@ AuthRouter.route("/me").all(
 //  * @access public
 //  */
 AuthRouter.route("/send-reset-password-otp").all(
-  passwordCtlr.sendResetPasswordOtp,
-  limiter
+  limiter,
+  passwordCtlr.sendResetPasswordOtp
 );
 
 // /**
@@ -184,6 +184,6 @@ AuthRouter.route("/send-reset-password-otp").all(
 //  * @route POST /api/v1/auth/reset-password
 //  * @access public
 //  */
-AuthRouter.route("/reset-password").all(passwordCtlr.resetPassword, limiter);
+AuthRouter.route("/reset-password").all(limiter, passwordCtlr.resetPassword);
 
 export default AuthRouter;

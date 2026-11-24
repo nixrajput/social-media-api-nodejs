@@ -267,7 +267,7 @@ UserSchema.methods.getToken = async function (
   refreshToken = false
 ): Promise<IAuthTokenModel> {
   if (refreshToken) {
-    await AuthToken.deleteOne({ userId: this._id });
+    await AuthToken.deleteMany({ userId: this._id });
 
     const newToken = await this.generateToken();
     return newToken;
@@ -285,7 +285,7 @@ UserSchema.methods.getToken = async function (
   );
 
   if (isExpired) {
-    await AuthToken.deleteOne({ userId: this._id });
+    await AuthToken.deleteMany({ userId: this._id });
 
     const newToken = await this.generateToken();
     return newToken;
